@@ -90,15 +90,39 @@ def linked_list_to_list(head):
     return result
 
 
-# Problem 1: Reverse Linked List - Fundamental pointer manipulation
+# =============================================================================
+# PROBLEM 1: REVERSE LINKED LIST (EASY) - 30 MIN
+# =============================================================================
+
 def reverse_list_iterative(head):
     """
-    Reverse linked list iteratively
+    PROBLEM: Reverse Linked List
+    
+    Given the head of a singly linked list, reverse the list, and return the reversed list.
+    
+    CONSTRAINTS:
+    - The number of nodes in the list is the range [0, 5000]
+    - -5000 <= Node.val <= 5000
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [1,2,3,4,5]
+        Output: [5,4,3,2,1]
+    
+    Example 2:
+        Input: head = [1,2]
+        Output: [2,1]
+    
+    Example 3:
+        Input: head = []
+        Output: []
+    
+    APPROACH: Iterative with Three Pointers
     
     Key technique: Three pointers (prev, current, next)
     This is the foundation of pointer manipulation
     
-    Time: O(n), Space: O(1)
+    TIME: O(n), SPACE: O(1)
     """
     prev = None
     current = head
@@ -119,11 +143,11 @@ def reverse_list_iterative(head):
 
 def reverse_list_recursive(head):
     """
-    Reverse linked list recursively
+    APPROACH: Recursive
     
     Demonstrates recursive thinking with linked lists
     
-    Time: O(n), Space: O(n) due to recursion stack
+    TIME: O(n), SPACE: O(n) due to recursion stack
     """
     # Base case
     if not head or not head.next:
@@ -139,15 +163,45 @@ def reverse_list_recursive(head):
     return new_head
 
 
-# Problem 2: Merge Two Sorted Lists - Classic merge technique
+# =============================================================================
+# PROBLEM 2: MERGE TWO SORTED LISTS (EASY) - 30 MIN
+# =============================================================================
+
 def merge_two_lists(l1, l2):
     """
-    Merge two sorted linked lists
+    PROBLEM: Merge Two Sorted Lists
+    
+    You are given the heads of two sorted linked lists list1 and list2.
+    
+    Merge the two lists in a one sorted list. The list should be made by splicing 
+    together the nodes of the first two lists.
+    
+    Return the head of the merged linked list.
+    
+    CONSTRAINTS:
+    - The number of nodes in both lists is in the range [0, 50]
+    - -100 <= Node.val <= 100
+    - Both list1 and list2 are sorted in non-decreasing order
+    
+    EXAMPLES:
+    Example 1:
+        Input: list1 = [1,2,4], list2 = [1,3,4]
+        Output: [1,1,2,3,4,4]
+    
+    Example 2:
+        Input: list1 = [], list2 = []
+        Output: []
+    
+    Example 3:
+        Input: list1 = [], list2 = [0]
+        Output: [0]
+    
+    APPROACH: Dummy Head with Two Pointers
     
     Technique: Dummy head to simplify edge cases
     This pattern appears in many linked list problems
     
-    Time: O(n + m), Space: O(1)
+    TIME: O(n + m), SPACE: O(1)
     """
     # Create dummy head to simplify logic
     dummy = ListNode(0)
@@ -171,11 +225,11 @@ def merge_two_lists(l1, l2):
 
 def merge_two_lists_recursive(l1, l2):
     """
-    Recursive approach for merging
+    APPROACH: Recursive
     
     Elegant but uses O(n) space for recursion
     
-    Time: O(n + m), Space: O(n + m)
+    TIME: O(n + m), SPACE: O(n + m)
     """
     # Base cases
     if not l1:
@@ -192,20 +246,49 @@ def merge_two_lists_recursive(l1, l2):
         return l2
 
 
-# Problem 3: Remove Nth Node From End - Two pointer technique
+# =============================================================================
+# PROBLEM 3: REMOVE NTH NODE FROM END OF LIST (MEDIUM) - 45 MIN
+# =============================================================================
+
 def remove_nth_from_end(head, n):
     """
-    Remove nth node from end of list
+    PROBLEM: Remove Nth Node From End of List
+    
+    Given the head of a linked list, remove the nth node from the end of the list 
+    and return its head.
+    
+    CONSTRAINTS:
+    - The number of nodes in the list is sz
+    - 1 <= sz <= 30
+    - 0 <= Node.val <= 100
+    - 1 <= n <= sz
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [1,2,3,4,5], n = 2
+        Output: [1,2,3,5]
+        Explanation: Remove the 2nd node from the end (node with value 4)
+    
+    Example 2:
+        Input: head = [1], n = 1
+        Output: []
+    
+    Example 3:
+        Input: head = [1,2], n = 1
+        Output: [1]
+    
+    APPROACH: Two Pointers (Fast and Slow)
     
     Two pointer technique: fast pointer gets n steps head start
-    When fast reaches end, slow is at nth from end
+    When fast reaches end, slow is at the node before target
     
-    Time: O(L) where L is list length, Space: O(1)
+    TIME: O(n), SPACE: O(1)
     """
-    # Use dummy head for edge cases (removing first node)
+    # Create dummy head to handle edge cases
     dummy = ListNode(0)
     dummy.next = head
     
+    # Initialize two pointers
     fast = slow = dummy
     
     # Move fast pointer n+1 steps ahead
@@ -217,22 +300,51 @@ def remove_nth_from_end(head, n):
         fast = fast.next
         slow = slow.next
     
-    # Remove the nth node
+    # Remove the nth node from end
     slow.next = slow.next.next
     
     return dummy.next
 
 
-# Problem 4: Linked List Cycle Detection - Floyd's algorithm
+# =============================================================================
+# PROBLEM 4: LINKED LIST CYCLE (EASY) - 30 MIN
+# =============================================================================
+
 def has_cycle(head):
     """
-    Detect if linked list has cycle
+    PROBLEM: Linked List Cycle
     
-    Floyd's Cycle Detection (Tortoise and Hare):
-    - Slow pointer moves 1 step, fast moves 2 steps
-    - If cycle exists, fast will eventually meet slow
+    Given head, the head of a linked list, determine if the linked list has a cycle in it.
     
-    Time: O(n), Space: O(1)
+    There is a cycle in a linked list if there is some node in the list that can be 
+    reached again by continuously following the next pointer.
+    
+    Return true if there is a cycle in the linked list. Otherwise, return false.
+    
+    CONSTRAINTS:
+    - The number of the nodes in the list is in the range [0, 10^4]
+    - -10^5 <= Node.val <= 10^5
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [3,2,0,-4], pos = 1 (tail connects to node index 1)
+        Output: true
+        Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed)
+    
+    Example 2:
+        Input: head = [1,2], pos = 0 (tail connects to node index 0)
+        Output: true
+    
+    Example 3:
+        Input: head = [1], pos = -1 (no cycle)
+        Output: false
+    
+    APPROACH: Floyd's Cycle Detection (Tortoise and Hare)
+    
+    Use two pointers moving at different speeds. If there's a cycle,
+    the fast pointer will eventually meet the slow pointer.
+    
+    TIME: O(n), SPACE: O(1)
     """
     if not head or not head.next:
         return False
@@ -249,21 +361,54 @@ def has_cycle(head):
     return True
 
 
+# =============================================================================
+# PROBLEM 5: LINKED LIST CYCLE II (MEDIUM) - 45 MIN
+# =============================================================================
+
 def detect_cycle_start(head):
     """
-    Find the node where cycle begins
+    PROBLEM: Linked List Cycle II
     
-    Extended Floyd's algorithm:
-    1. Detect cycle with fast/slow pointers
-    2. Move one pointer to head, keep other at meeting point
-    3. Move both one step at a time until they meet
+    Given the head of a linked list, return the node where the cycle begins. 
+    If there is no cycle, return null.
     
-    Time: O(n), Space: O(1)
+    There is a cycle in a linked list if there is some node in the list that can be 
+    reached again by continuously following the next pointer.
+    
+    Do not modify the linked list.
+    
+    CONSTRAINTS:
+    - The number of the nodes in the list is in the range [0, 10^4]
+    - -10^5 <= Node.val <= 10^5
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [3,2,0,-4], pos = 1
+        Output: tail connects to node index 1
+    
+    Example 2:
+        Input: head = [1,2], pos = 0
+        Output: tail connects to node index 0
+    
+    Example 3:
+        Input: head = [1], pos = -1
+        Output: no cycle
+    
+    APPROACH: Floyd's Algorithm Extended
+    
+    1. Use fast/slow pointers to detect cycle
+    2. If cycle exists, start another pointer from head
+    3. Move both at same speed until they meet at cycle start
+    
+    Mathematical proof: Distance from head to cycle start equals
+    distance from meeting point to cycle start
+    
+    TIME: O(n), SPACE: O(1)
     """
     if not head or not head.next:
         return None
     
-    # Phase 1: Detect cycle
+    # Phase 1: Detect if cycle exists
     slow = fast = head
     
     while fast and fast.next:
@@ -275,7 +420,10 @@ def detect_cycle_start(head):
         return None  # No cycle
     
     # Phase 2: Find cycle start
+    # Start another pointer from head
     start = head
+    
+    # Move both pointers at same speed
     while start != slow:
         start = start.next
         slow = slow.next
@@ -283,20 +431,51 @@ def detect_cycle_start(head):
     return start
 
 
-# Problem 5: Merge k Sorted Lists - Divide and conquer + heap approaches
+# =============================================================================
+# PROBLEM 6: MERGE K SORTED LISTS (HARD) - 60 MIN
+# =============================================================================
+
 def merge_k_lists_divide_conquer(lists):
     """
-    Merge k sorted linked lists using divide and conquer
+    PROBLEM: Merge k Sorted Lists
     
-    Strategy: Recursively merge pairs of lists
+    You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
     
-    Time: O(n log k) where n is total nodes, k is number of lists
-    Space: O(log k) for recursion
+    Merge all the linked-lists into one sorted linked-list and return it.
+    
+    CONSTRAINTS:
+    - k == lists.length
+    - 0 <= k <= 10^4
+    - 0 <= lists[i].length <= 500
+    - -10^4 <= lists[i][j] <= 10^4
+    - lists[i] is sorted in ascending order
+    - The sum of lists[i].length will not exceed 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: lists = [[1,4,5],[1,3,4],[2,6]]
+        Output: [1,1,2,3,4,4,5,6]
+    
+    Example 2:
+        Input: lists = []
+        Output: []
+    
+    Example 3:
+        Input: lists = [[]]
+        Output: []
+    
+    APPROACH 1: Divide and Conquer
+    
+    Recursively merge pairs of lists until only one remains
+    
+    TIME: O(n log k) where n = total nodes, k = number of lists
+    SPACE: O(log k) for recursion
     """
     if not lists:
         return None
     
     def merge_two_lists_helper(l1, l2):
+        """Helper function to merge two sorted lists"""
         dummy = ListNode(0)
         current = dummy
         
@@ -313,6 +492,7 @@ def merge_k_lists_divide_conquer(lists):
         return dummy.next
     
     def merge_helper(lists, start, end):
+        """Divide and conquer helper"""
         if start == end:
             return lists[start]
         if start > end:
@@ -327,20 +507,20 @@ def merge_k_lists_divide_conquer(lists):
     return merge_helper(lists, 0, len(lists) - 1)
 
 
-import heapq
-
 def merge_k_lists_heap(lists):
     """
-    Merge k sorted lists using min-heap
+    APPROACH 2: Min Heap
     
-    Strategy: Use heap to always get minimum element
+    Use min heap to always get the smallest element among all lists
     
-    Time: O(n log k), Space: O(k)
+    TIME: O(n log k), SPACE: O(k)
     """
+    import heapq
+    
     if not lists:
         return None
     
-    # Initialize heap with first node from each list
+    # Create min heap with first node from each non-empty list
     heap = []
     for i, head in enumerate(lists):
         if head:
@@ -352,7 +532,7 @@ def merge_k_lists_heap(lists):
     while heap:
         val, list_idx, node = heapq.heappop(heap)
         
-        # Add node to result
+        # Add current smallest to result
         current.next = node
         current = current.next
         
@@ -363,33 +543,57 @@ def merge_k_lists_heap(lists):
     return dummy.next
 
 
-# ADVANCED PROBLEMS FOR DEEPER UNDERSTANDING
+# =============================================================================
+# PROBLEM 7: REORDER LIST (MEDIUM) - 45 MIN
+# =============================================================================
 
 def reorder_list(head):
     """
-    Reorder list: L0 → L1 → ... → Ln-1 → Ln becomes
-                  L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...
+    PROBLEM: Reorder List
     
-    Strategy:
-    1. Find middle of list
+    You are given the head of a singly linked-list. The list can be represented as:
+    L0 → L1 → … → Ln - 1 → Ln
+    
+    Reorder the list to be on the following form:
+    L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+    
+    You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+    
+    CONSTRAINTS:
+    - The number of nodes in the list is in the range [1, 5 * 10^4]
+    - 1 <= Node.val <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [1,2,3,4]
+        Output: [1,4,2,3]
+    
+    Example 2:
+        Input: head = [1,2,3,4,5]
+        Output: [1,5,2,4,3]
+    
+    APPROACH: Find Middle + Reverse + Merge
+    
+    1. Find middle of list using slow/fast pointers
     2. Reverse second half
     3. Merge two halves alternately
     
-    Time: O(n), Space: O(1)
+    TIME: O(n), SPACE: O(1)
     """
     if not head or not head.next:
         return
     
-    # Find middle
+    # Step 1: Find middle using slow/fast pointers
     slow = fast = head
     while fast.next and fast.next.next:
         slow = slow.next
         fast = fast.next.next
     
-    # Reverse second half
+    # Step 2: Reverse second half
     second_half = slow.next
-    slow.next = None
+    slow.next = None  # Split the list
     
+    # Reverse second half
     prev = None
     current = second_half
     while current:
@@ -397,95 +601,152 @@ def reorder_list(head):
         current.next = prev
         prev = current
         current = next_temp
+    second_half = prev
     
-    # Merge two halves
-    first = head
-    second = prev
-    
-    while second:
-        first_next = first.next
-        second_next = second.next
+    # Step 3: Merge two halves alternately
+    first_half = head
+    while second_half:
+        # Save next nodes
+        first_next = first_half.next
+        second_next = second_half.next
         
-        first.next = second
-        second.next = first_next
+        # Connect nodes
+        first_half.next = second_half
+        second_half.next = first_next
         
-        first = first_next
-        second = second_next
+        # Move to next pair
+        first_half = first_next
+        second_half = second_next
 
+
+# =============================================================================
+# PROBLEM 8: ADD TWO NUMBERS (MEDIUM) - 45 MIN
+# =============================================================================
 
 def add_two_numbers(l1, l2):
     """
-    Add two numbers represented as linked lists (digits in reverse order)
+    PROBLEM: Add Two Numbers
     
-    Example: (2 -> 4 -> 3) + (5 -> 6 -> 4) = (7 -> 0 -> 8)
-             Represents: 342 + 465 = 807
+    You are given two non-empty linked lists representing two non-negative integers. 
+    The digits are stored in reverse order, and each of their nodes contains a single digit. 
+    Add the two numbers and return the sum as a linked list.
     
-    Time: O(max(m, n)), Space: O(max(m, n))
+    You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+    
+    CONSTRAINTS:
+    - The number of nodes in each linked list is in the range [1, 100]
+    - 0 <= Node.val <= 9
+    - It is guaranteed that the list represents a number that does not have leading zeros
+    
+    EXAMPLES:
+    Example 1:
+        Input: l1 = [2,4,3], l2 = [5,6,4]
+        Output: [7,0,8]
+        Explanation: 342 + 465 = 807
+    
+    Example 2:
+        Input: l1 = [0], l2 = [0]
+        Output: [0]
+    
+    Example 3:
+        Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+        Output: [8,9,9,9,0,0,0,1]
+    
+    APPROACH: Digit-by-Digit Addition with Carry
+    
+    Simulate elementary school addition with carry
+    
+    TIME: O(max(m, n)), SPACE: O(max(m, n))
     """
     dummy = ListNode(0)
     current = dummy
     carry = 0
     
     while l1 or l2 or carry:
+        # Get values (0 if node is None)
         val1 = l1.val if l1 else 0
         val2 = l2.val if l2 else 0
         
+        # Calculate sum and carry
         total = val1 + val2 + carry
         carry = total // 10
         digit = total % 10
         
+        # Create new node
         current.next = ListNode(digit)
         current = current.next
         
+        # Move to next nodes
         l1 = l1.next if l1 else None
         l2 = l2.next if l2 else None
     
     return dummy.next
 
 
+# =============================================================================
+# PROBLEM 9: COPY LIST WITH RANDOM POINTER (MEDIUM) - 45 MIN
+# =============================================================================
+
 def copy_random_list(head):
     """
-    Deep copy linked list with random pointers
+    PROBLEM: Copy List with Random Pointer
     
-    Each node has next and random pointer
+    A linked list of length n is given such that each node contains an additional random 
+    pointer, which could point to any node in the list, or null.
     
-    Strategy:
-    1. Create new nodes and interleave with original
-    2. Set random pointers for new nodes
-    3. Separate the two lists
+    Construct a deep copy of the list. The deep copy should consist of exactly n brand new 
+    nodes, where each new node has its value set to the value of its corresponding original 
+    node. Both the next and random pointers of the new nodes should point to new nodes in 
+    the copied list.
     
-    Time: O(n), Space: O(1) excluding output
+    Return the head of the copied linked list.
+    
+    CONSTRAINTS:
+    - 0 <= n <= 1000
+    - -10^4 <= Node.val <= 10^4
+    - Node.random is null or is pointing to some node in the linked list
+    
+    EXAMPLES:
+    Example 1:
+        Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+        Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+    
+    Example 2:
+        Input: head = [[1,1],[2,1]]
+        Output: [[1,1],[2,1]]
+    
+    Example 3:
+        Input: head = [[3,null],[3,0],[3,null]]
+        Output: [[3,null],[3,0],[3,null]]
+    
+    APPROACH: Hash Map for Node Mapping
+    
+    Use hash map to maintain mapping between original and copied nodes
+    
+    TIME: O(n), SPACE: O(n)
     """
     if not head:
         return None
     
-    # Step 1: Create new nodes interleaved with original
+    # Hash map to store mapping from original to copied nodes
+    node_map = {}
+    
+    # First pass: Create all nodes
     current = head
     while current:
-        new_node = ListNode(current.val)
-        new_node.next = current.next
-        current.next = new_node
-        current = new_node.next
-    
-    # Step 2: Set random pointers for new nodes
-    current = head
-    while current:
-        if current.random:
-            current.next.random = current.random.next
-        current = current.next.next
-    
-    # Step 3: Separate the lists
-    dummy = ListNode(0)
-    new_current = dummy
-    current = head
-    
-    while current:
-        new_current.next = current.next
-        current.next = current.next.next
-        new_current = new_current.next
+        node_map[current] = ListNode(current.val)
         current = current.next
     
-    return dummy.next
+    # Second pass: Set next and random pointers
+    current = head
+    while current:
+        if current.next:
+            node_map[current].next = node_map[current.next]
+        if current.random:
+            node_map[current].random = node_map[current.random]
+        current = current.next
+    
+    return node_map[head]
 
 
 # COMPREHENSIVE TESTING SUITE

@@ -34,11 +34,42 @@ THEORY SECTION (1 Hour)
 =============================================================================
 """
 
-# Problem 1: Two Sum - Classic example transitioning to hash table approach
+# =============================================================================
+# PROBLEM 1: TWO SUM (EASY) - 30 MIN
+# =============================================================================
+
 def two_sum_brute_force(nums, target):
     """
-    Brute force approach - helps understand the problem before optimization
-    Time: O(n²), Space: O(1)
+    PROBLEM: Two Sum
+    
+    Given an array of integers nums and an integer target, return indices of 
+    the two numbers such that they add up to target.
+    
+    You may assume that each input would have exactly one solution, and you 
+    may not use the same element twice. You can return the answer in any order.
+    
+    CONSTRAINTS:
+    - 2 <= nums.length <= 10^4
+    - -10^9 <= nums[i] <= 10^9
+    - -10^9 <= target <= 10^9
+    - Only one valid answer exists
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [2,7,11,15], target = 9
+        Output: [0,1]
+        Explanation: nums[0] + nums[1] = 2 + 7 = 9
+    
+    Example 2:
+        Input: nums = [3,2,4], target = 6
+        Output: [1,2]
+    
+    Example 3:
+        Input: nums = [3,3], target = 6
+        Output: [0,1]
+    
+    APPROACH: Brute Force (for understanding)
+    TIME: O(n²), SPACE: O(1)
     """
     for i in range(len(nums)):
         for j in range(i + 1, len(nums)):
@@ -48,8 +79,12 @@ def two_sum_brute_force(nums, target):
 
 def two_sum_optimized(nums, target):
     """
-    Hash table approach - demonstrates transition from two pointers to hash maps
-    Time: O(n), Space: O(n)
+    APPROACH: Hash Table (Optimized)
+    
+    Use hash table to store numbers and their indices. For each number,
+    check if its complement (target - number) exists in the hash table.
+    
+    TIME: O(n), SPACE: O(n)
     """
     num_map = {}
     for i, num in enumerate(nums):
@@ -60,16 +95,44 @@ def two_sum_optimized(nums, target):
     return []
 
 
-# Problem 2: Container With Most Water - Pure two pointers problem
+# =============================================================================
+# PROBLEM 2: CONTAINER WITH MOST WATER (MEDIUM) - 45 MIN
+# =============================================================================
+
 def max_area(height):
     """
-    Two pointers approach - move pointer with smaller height
+    PROBLEM: Container With Most Water
     
-    Intuition: To maximize area, we want maximum width and height.
-    Starting from maximum width, we move the pointer with smaller height
-    because moving the larger height pointer can only decrease the area.
+    You are given an integer array height of length n. There are n vertical 
+    lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
     
-    Time: O(n), Space: O(1)
+    Find two lines that together with the x-axis form a container that contains 
+    the most water.
+    
+    Return the maximum amount of water a container can store.
+    
+    CONSTRAINTS:
+    - n == height.length
+    - 2 <= n <= 10^5
+    - 0 <= height[i] <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: height = [1,8,6,2,5,4,8,3,7]
+        Output: 49
+        Explanation: Max area = 7 * 7 = 49 (between indices 1 and 8)
+    
+    Example 2:
+        Input: height = [1,1]
+        Output: 1
+    
+    APPROACH: Two Pointers
+    
+    Start with widest container (left=0, right=n-1). The area is limited by 
+    the shorter line. Move the pointer with the shorter height inward, as 
+    moving the taller pointer can only decrease the area.
+    
+    TIME: O(n), SPACE: O(1)
     """
     left, right = 0, len(height) - 1
     max_water = 0
@@ -90,18 +153,51 @@ def max_area(height):
     return max_water
 
 
-# Problem 3: 3Sum - Extension of two sum using two pointers
+# =============================================================================
+# PROBLEM 3: 3SUM (MEDIUM) - 60 MIN
+# =============================================================================
+
 def three_sum(nums):
     """
-    Sort array then use two pointers for each fixed element
+    PROBLEM: 3Sum
     
-    Strategy:
+    Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] 
+    such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+    
+    Notice that the solution set must not contain duplicate triplets.
+    
+    CONSTRAINTS:
+    - 3 <= nums.length <= 3000
+    - -10^5 <= nums[i] <= 10^5
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [-1,0,1,2,-1,-4]
+        Output: [[-1,-1,2],[-1,0,1]]
+        Explanation: 
+        nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+        nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+        nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+        The distinct triplets are [-1,0,1] and [-1,-1,2].
+    
+    Example 2:
+        Input: nums = [0,1,1]
+        Output: []
+        Explanation: The only possible triplet does not sum up to 0.
+    
+    Example 3:
+        Input: nums = [0,0,0]
+        Output: [[0,0,0]]
+        Explanation: The only possible triplet sums up to 0.
+    
+    APPROACH: Sort + Two Pointers
+    
     1. Sort the array
     2. Fix one element (i)
     3. Use two pointers to find pair that sums to -nums[i]
     4. Skip duplicates to avoid duplicate triplets
     
-    Time: O(n²), Space: O(1) excluding output
+    TIME: O(n²), SPACE: O(1) excluding output
     """
     nums.sort()
     result = []
@@ -136,16 +232,44 @@ def three_sum(nums):
     return result
 
 
-# Problem 4: Remove Duplicates from Sorted Array - Same direction two pointers
+# =============================================================================
+# PROBLEM 4: REMOVE DUPLICATES FROM SORTED ARRAY (EASY) - 30 MIN
+# =============================================================================
+
 def remove_duplicates(nums):
     """
-    Two pointers: slow pointer tracks position for next unique element
+    PROBLEM: Remove Duplicates from Sorted Array
     
-    Pattern: Slow and fast pointers moving in same direction
-    - Fast pointer explores the array
-    - Slow pointer tracks the position for next valid element
+    Given an integer array nums sorted in non-decreasing order, remove the 
+    duplicates in-place such that each unique element appears only once. 
+    The relative order of the elements should be kept the same.
     
-    Time: O(n), Space: O(1)
+    Return k after placing the final result in the first k slots of nums.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 3 * 10^4
+    - -100 <= nums[i] <= 100
+    - nums is sorted in non-decreasing order
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,1,2]
+        Output: 2, nums = [1,2,_]
+        Explanation: Your function should return k = 2, with the first two 
+        elements of nums being 1 and 2 respectively.
+    
+    Example 2:
+        Input: nums = [0,0,1,1,1,2,2,3,3,4]
+        Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+        Explanation: Your function should return k = 5, with the first five 
+        elements of nums being 0, 1, 2, 3, and 4 respectively.
+    
+    APPROACH: Two Pointers (Same Direction)
+    
+    Use slow pointer to track position for next unique element.
+    Fast pointer explores the array.
+    
+    TIME: O(n), SPACE: O(1)
     """
     if not nums:
         return 0
@@ -160,17 +284,39 @@ def remove_duplicates(nums):
     return slow + 1
 
 
-# Problem 5: Trapping Rain Water - Advanced two pointers with auxiliary variables
+# =============================================================================
+# PROBLEM 5: TRAPPING RAIN WATER (HARD) - 45 MIN
+# =============================================================================
+
 def trap_rain_water(height):
     """
-    Two pointers with left_max and right_max tracking
+    PROBLEM: Trapping Rain Water
     
-    Key insight: Water level at position i is determined by
-    min(max_left, max_right) - height[i]
+    Given n non-negative integers representing an elevation map where the width 
+    of each bar is 1, compute how much water it can trap after raining.
     
-    We can use two pointers and maintain max heights seen so far
+    CONSTRAINTS:
+    - n == height.length
+    - 1 <= n <= 2 * 10^4
+    - 0 <= height[i] <= 3 * 10^4
     
-    Time: O(n), Space: O(1)
+    EXAMPLES:
+    Example 1:
+        Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+        Output: 6
+        Explanation: The elevation map is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. 
+        In this case, 6 units of rain water are being trapped.
+    
+    Example 2:
+        Input: height = [4,2,0,3,2,5]
+        Output: 9
+    
+    APPROACH: Two Pointers with Max Height Tracking
+    
+    Water level at position i is determined by min(max_left, max_right) - height[i].
+    Use two pointers and maintain max heights seen so far from both sides.
+    
+    TIME: O(n), SPACE: O(1)
     """
     if not height:
         return 0
@@ -196,30 +342,37 @@ def trap_rain_water(height):
     return water
 
 
-# PRACTICE PROBLEMS AND TEST CASES
+# =============================================================================
+# COMPREHENSIVE TEST CASES
+# =============================================================================
+
 def test_all_problems():
     """
-    Test all implemented solutions with various test cases
+    Test all implemented solutions with comprehensive test cases
     """
-    print("=== TESTING DAY 1 PROBLEMS ===\n")
+    print("=" * 60)
+    print("           WEEK 1 - DAY 1: TESTING RESULTS")
+    print("=" * 60)
     
     # Test Two Sum
-    print("1. Two Sum Tests:")
+    print("\n🧪 PROBLEM 1: TWO SUM")
     test_cases_two_sum = [
         ([2, 7, 11, 15], 9, [0, 1]),
         ([3, 2, 4], 6, [1, 2]),
         ([3, 3], 6, [0, 1])
     ]
     
-    for nums, target, expected in test_cases_two_sum:
+    for i, (nums, target, expected) in enumerate(test_cases_two_sum, 1):
         result = two_sum_optimized(nums, target)
-        print(f"   Input: {nums}, Target: {target}")
-        print(f"   Output: {result}, Expected: {expected}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: nums = {nums}, target = {target}")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
     
     # Test Container With Most Water
-    print("2. Container With Most Water Tests:")
+    print("🧪 PROBLEM 2: CONTAINER WITH MOST WATER")
     test_cases_water = [
         ([1, 8, 6, 2, 5, 4, 8, 3, 7], 49),
         ([1, 1], 1),
@@ -227,68 +380,78 @@ def test_all_problems():
         ([1, 2, 1], 2)
     ]
     
-    for height, expected in test_cases_water:
+    for i, (height, expected) in enumerate(test_cases_water, 1):
         result = max_area(height)
-        print(f"   Input: {height}")
-        print(f"   Output: {result}, Expected: {expected}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: height = {height}")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
     
     # Test 3Sum
-    print("3. 3Sum Tests:")
+    print("🧪 PROBLEM 3: 3SUM")
     test_cases_3sum = [
         ([-1, 0, 1, 2, -1, -4], [[-1, -1, 2], [-1, 0, 1]]),
         ([0, 1, 1], []),
         ([0, 0, 0], [[0, 0, 0]])
     ]
     
-    for nums, expected in test_cases_3sum:
+    for i, (nums, expected) in enumerate(test_cases_3sum, 1):
         result = three_sum(nums)
-        print(f"   Input: {nums}")
-        print(f"   Output: {result}")
+        print(f"   Test Case {i}:")
+        print(f"   Input: nums = {nums}")
         print(f"   Expected: {expected}")
-        print(f"   ✓ Correct" if sorted(result) == sorted(expected) else f"   ✗ Wrong")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if sorted(result) == sorted(expected) else f"   ❌ FAIL")
         print()
     
     # Test Remove Duplicates
-    print("4. Remove Duplicates Tests:")
+    print("🧪 PROBLEM 4: REMOVE DUPLICATES FROM SORTED ARRAY")
     test_cases_remove_dup = [
         ([1, 1, 2], 2),
         ([0, 0, 1, 1, 1, 2, 2, 3, 3, 4], 5)
     ]
     
-    for nums, expected in test_cases_remove_dup:
-        original = nums.copy()
+    for i, (nums_input, expected) in enumerate(test_cases_remove_dup, 1):
+        nums = nums_input.copy()
         result = remove_duplicates(nums)
-        print(f"   Input: {original}")
-        print(f"   Length: {result}, Expected: {expected}")
+        print(f"   Test Case {i}:")
+        print(f"   Input: nums = {nums_input}")
+        print(f"   Expected length: {expected}")
+        print(f"   Got length: {result}")
         print(f"   Modified array: {nums[:result]}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
     
     # Test Trapping Rain Water
-    print("5. Trapping Rain Water Tests:")
+    print("🧪 PROBLEM 5: TRAPPING RAIN WATER")
     test_cases_trap = [
         ([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1], 6),
         ([4, 2, 0, 3, 2, 5], 9),
         ([3, 0, 2, 0, 4], 7)
     ]
     
-    for height, expected in test_cases_trap:
+    for i, (height, expected) in enumerate(test_cases_trap, 1):
         result = trap_rain_water(height)
-        print(f"   Input: {height}")
-        print(f"   Output: {result}, Expected: {expected}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: height = {height}")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
 
 
+# =============================================================================
 # EDUCATIONAL HELPER FUNCTIONS
+# =============================================================================
+
 def visualize_two_pointers_process(arr, target):
     """
     Visualize how two pointers work for finding pair sum
     Educational purpose - shows step by step process
     """
-    print(f"\nVisualizing Two Pointers for target sum {target}:")
+    print(f"\n📊 VISUALIZING TWO POINTERS for target sum {target}:")
     print(f"Array: {arr}")
     
     left, right = 0, len(arr) - 1
@@ -302,7 +465,7 @@ def visualize_two_pointers_process(arr, target):
         print(f"  Sum: {current_sum}")
         
         if current_sum == target:
-            print(f"  ✓ Found target! Indices: [{left}, {right}]")
+            print(f"  ✅ Found target! Indices: [{left}, {right}]")
             return [left, right]
         elif current_sum < target:
             print(f"  Sum too small, move left pointer →")
@@ -313,33 +476,34 @@ def visualize_two_pointers_process(arr, target):
         
         step += 1
     
-    print(f"  Target sum not found")
+    print(f"  ❌ Target sum not found")
     return []
 
 
-# COMPLEXITY ANALYSIS EXAMPLES
 def analyze_complexity():
     """
     Demonstrates complexity improvement with two pointers
     """
-    print("\n=== COMPLEXITY ANALYSIS ===")
-    print("\nProblem: Find pair with target sum")
-    print("\nBrute Force Approach:")
+    print("\n" + "=" * 60)
+    print("                 COMPLEXITY ANALYSIS")
+    print("=" * 60)
+    print("\n📈 PROBLEM: Find pair with target sum")
+    print("\n🔴 Brute Force Approach:")
     print("  - Nested loops: O(n²) time")
     print("  - Space: O(1)")
     print("  - Code: for i in range(n): for j in range(i+1, n):")
     
-    print("\nTwo Pointers Approach (sorted array):")
+    print("\n🟡 Two Pointers Approach (sorted array):")
     print("  - Single pass: O(n) time")
     print("  - Space: O(1)")
     print("  - Code: while left < right: if sum == target...")
     
-    print("\nHash Table Approach:")
+    print("\n🟢 Hash Table Approach:")
     print("  - Single pass: O(n) time")
     print("  - Space: O(n)")
     print("  - Code: if complement in hash_map...")
     
-    print("\nTradeoff: Two pointers needs sorted array, hash table doesn't")
+    print("\n💡 TRADEOFF: Two pointers needs sorted array, hash table doesn't")
 
 
 if __name__ == "__main__":
@@ -348,7 +512,7 @@ if __name__ == "__main__":
     
     # Educational demonstrations
     print("\n" + "="*60)
-    print("EDUCATIONAL DEMONSTRATIONS")
+    print("               EDUCATIONAL DEMONSTRATIONS")
     print("="*60)
     
     # Demonstrate two pointers process
@@ -358,12 +522,13 @@ if __name__ == "__main__":
     analyze_complexity()
     
     print("\n" + "="*60)
-    print("DAY 1 COMPLETE - KEY TAKEAWAYS:")
+    print("                   DAY 1 COMPLETE")
     print("="*60)
+    print("🎯 KEY TAKEAWAYS:")
     print("1. Two pointers reduce O(n²) to O(n) for many problems")
     print("2. Opposite ends pattern: palindromes, pair sums, containers")
     print("3. Same direction pattern: remove duplicates, sliding window")
     print("4. Always consider if array needs to be sorted first")
     print("5. Handle edge cases: empty arrays, single elements")
     print("6. Practice visualizing pointer movements")
-    print("\nNext: Day 2 - Strings & Pattern Matching") 
+    print("\n🚀 NEXT: Day 2 - Strings & Pattern Matching") 

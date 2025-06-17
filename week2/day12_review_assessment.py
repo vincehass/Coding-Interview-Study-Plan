@@ -55,6 +55,7 @@ THEORY SECTION (1 Hour)
 from collections import deque, defaultdict, Counter
 import heapq
 from typing import List, Optional
+import math
 
 
 # TreeNode class for consistency
@@ -66,14 +67,53 @@ class TreeNode:
         self.right = right
 
 
-# INTEGRATION PROBLEM 1: Binary Tree to BST Conversion
+# =============================================================================
+# INTEGRATION PROBLEM 1: BINARY TREE TO BST CONVERSION (MEDIUM) - 45 MIN
+# =============================================================================
+
 def binary_tree_to_bst(root):
     """
-    Convert binary tree to BST while preserving structure
+    PROBLEM: Convert Binary Tree to Binary Search Tree
     
-    Combines: Tree traversal + BST properties + Tree modification
+    Given the root of a binary tree, convert it to a Binary Search Tree while preserving the structure.
+    The conversion should be done such that the resulting BST has the same structure as the original 
+    binary tree, but the values are rearranged to satisfy the BST property.
     
-    Time: O(n log n), Space: O(n)
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 10^4]
+    - -10^4 <= Node.val <= 10^4
+    - The tree structure must be preserved (same shape)
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [10,2,7,8,4]
+        Original tree:     BST result:
+            10                 8
+           /  \               / \
+          2    7             4   10
+         / \                /   /
+        8   4              2   7
+        Output: [8,4,10,2,null,7,null]
+        
+    Example 2:
+        Input: root = [5,3,8,2,4,7,9]
+        Output: [5,3,8,2,4,7,9] (already a BST)
+        
+    Example 3:
+        Input: root = [1]
+        Output: [1]
+    
+    APPROACH: Inorder Extraction and Filling
+    
+    The key insight is that an inorder traversal of a BST gives values in sorted order.
+    
+    1. Extract all values using inorder traversal
+    2. Sort the extracted values
+    3. Fill the tree nodes with sorted values using inorder traversal
+    
+    This preserves the tree structure while ensuring BST property.
+    
+    TIME: O(n log n) - sorting dominates, SPACE: O(n) - storing values and recursion stack
     """
     if not root:
         return None
@@ -106,14 +146,52 @@ def binary_tree_to_bst(root):
     return root
 
 
-# INTEGRATION PROBLEM 2: Path Sum with Binary Search
+# =============================================================================
+# INTEGRATION PROBLEM 2: PATH SUM WITH TARGET RANGE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def path_sum_with_target_range(root, target_min, target_max):
     """
-    Find all root-to-leaf paths with sum in [target_min, target_max]
+    PROBLEM: Path Sum with Target Range
     
-    Combines: Tree paths + range checking + binary search thinking
+    Given the root of a binary tree and two integers target_min and target_max, find all root-to-leaf 
+    paths where the sum of the node values in the path is within the range [target_min, target_max] inclusive.
     
-    Time: O(n * h), Space: O(h)
+    A leaf is a node with no children. A root-to-leaf path is a path starting from the root and ending at any leaf.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 5000]
+    - -1000 <= Node.val <= 1000
+    - -1000 <= target_min <= target_max <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], target_min = 22, target_max = 22
+        Output: [[5,4,11,2],[5,8,4,5]]
+        Explanation: Both paths sum to 22, which is within [22,22]
+        
+    Example 2:
+        Input: root = [1,2,3], target_min = 4, target_max = 6
+        Output: [[1,2],[1,3]]
+        Explanation: Path [1,2] sums to 3, path [1,3] sums to 4, both outside range
+        Output: []
+        
+    Example 3:
+        Input: root = [1,2], target_min = 1, target_max = 3
+        Output: [[1,2]]
+        Explanation: Path [1,2] sums to 3, which is within [1,3]
+    
+    APPROACH: DFS with Path Tracking and Range Checking
+    
+    Use depth-first search to explore all root-to-leaf paths.
+    Maintain current path and running sum, check range when reaching leaf nodes.
+    
+    Combines concepts:
+    - Tree path traversal (DFS)
+    - Range checking (binary search thinking)
+    - Backtracking for path exploration
+    
+    TIME: O(n * h) where h is height for path copying, SPACE: O(h) for recursion stack
     """
     def dfs(node, current_path, current_sum, all_paths):
         if not node:
@@ -139,14 +217,51 @@ def path_sum_with_target_range(root, target_min, target_max):
     return result
 
 
-# INTEGRATION PROBLEM 3: Tree Serialization with Heap
+# =============================================================================
+# INTEGRATION PROBLEM 3: TREE SERIALIZATION WITH PRIORITY (HARD) - 60 MIN
+# =============================================================================
+
 def serialize_tree_by_levels_priority(root):
     """
-    Serialize tree using level-order but prioritizing smaller values
+    PROBLEM: Tree Serialization with Priority
     
-    Combines: Tree serialization + heap operations + BFS
+    Serialize a binary tree using level-order traversal, but within each level, process nodes 
+    in order of their values (smallest first). This creates a unique serialization that combines 
+    level-order structure with value-based priority.
     
-    Time: O(n log n), Space: O(n)
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^4]
+    - -1000 <= Node.val <= 1000
+    - All node values are unique
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [3,9,20,null,null,15,7]
+        Regular level-order: [3,9,20,15,7]
+        Priority level-order: [3,9,20,7,15] (within level {15,7}, process 7 first)
+        Output: "3,9,20,7,15"
+        
+    Example 2:
+        Input: root = [1,3,2,5,3,null,9]
+        Output: "1,2,3,3,5,9" (process nodes by value within each level)
+        
+    Example 3:
+        Input: root = []
+        Output: ""
+    
+    APPROACH: BFS with Priority Queue per Level
+    
+    Combines multiple concepts:
+    - Level-order traversal (BFS)
+    - Priority queue (heap) for ordering within levels
+    - Tree serialization techniques
+    
+    For each level:
+    1. Use heap to process nodes by value priority
+    2. Collect children for next level
+    3. Continue until all levels processed
+    
+    TIME: O(n log w) where w is maximum width, SPACE: O(w) for level storage
     """
     if not root:
         return ""
@@ -180,12 +295,55 @@ def serialize_tree_by_levels_priority(root):
     return ','.join(map(str, result))
 
 
-# INTEGRATION PROBLEM 4: Balanced BST from Sorted Stream
+# =============================================================================
+# INTEGRATION PROBLEM 4: BALANCED BST FROM STREAM (HARD) - 60 MIN
+# =============================================================================
+
 class BalancedBSTFromStream:
     """
-    Build balanced BST from streaming sorted data using heap buffer
+    PROBLEM: Build Balanced BST from Streaming Sorted Data
     
-    Combines: BST construction + heap buffering + streaming data
+    Design a data structure that can efficiently build and maintain a balanced BST from streaming 
+    sorted data. The stream provides sorted integers, and you need to maintain a balanced BST 
+    that supports search operations.
+    
+    Implement the BalancedBSTFromStream class:
+    - BalancedBSTFromStream(buffer_size): Initialize with given buffer size
+    - add_value(val): Add a value from the stream
+    - search(val): Return true if val exists in the BST
+    
+    CONSTRAINTS:
+    - 1 <= buffer_size <= 1000
+    - -10^6 <= val <= 10^6
+    - Values in stream are in non-decreasing order
+    - At most 10^4 calls to add_value and search
+    
+    EXAMPLES:
+    Example 1:
+        Input: ["BalancedBSTFromStream", "add_value", "add_value", "search", "add_value", "search"]
+               [[3], [1], [2], [1], [3], [2]]
+        Output: [null, null, null, true, null, true]
+        
+    Example 2:
+        Operations: add values 1,2,3,4,5 with buffer_size=2
+        BST rebuilds: after [1,2], after [3,4], after [5] (final)
+        All values searchable in balanced BST
+    
+    APPROACH: Buffered Reconstruction with Heap
+    
+    Combines multiple advanced concepts:
+    - Streaming data processing
+    - BST construction and balancing
+    - Heap-based buffering
+    - Amortized complexity analysis
+    
+    Strategy:
+    1. Buffer incoming values in a heap
+    2. When buffer is full, rebuild entire BST
+    3. Extract existing values + buffer values, sort, build balanced BST
+    4. This gives amortized good performance
+    
+    TIME: O(log n) for search, O(n log n) amortized for add_value, SPACE: O(n)
     """
     
     def __init__(self, buffer_size=100):
@@ -194,7 +352,13 @@ class BalancedBSTFromStream:
         self.root = None
     
     def add_value(self, val):
-        """Add value to stream and maintain balanced BST"""
+        """
+        Add value to stream and maintain balanced BST
+        
+        APPROACH: Buffered Rebuilding
+        
+        Buffer values and periodically rebuild BST for optimal balance.
+        """
         heapq.heappush(self.buffer, val)
         
         # Rebuild BST when buffer is full
@@ -202,28 +366,28 @@ class BalancedBSTFromStream:
             self._rebuild_bst()
     
     def _rebuild_bst(self):
-        """Rebuild balanced BST from current buffer"""
-        # Extract all values and build balanced BST
+        """Rebuild balanced BST from existing tree + buffer"""
+        # Extract all values from current BST
         all_values = []
+        self._inorder_extract(self.root, all_values)
         
-        # Get existing tree values
-        if self.root:
-            self._inorder_extract(self.root, all_values)
-        
-        # Add buffer values
+        # Add buffered values
         while self.buffer:
             all_values.append(heapq.heappop(self.buffer))
         
-        # Build new balanced BST
-        all_values.sort()
+        # Remove duplicates and sort
+        all_values = sorted(set(all_values))
+        
+        # Build balanced BST
         self.root = self._build_balanced_bst(all_values, 0, len(all_values) - 1)
     
     def _inorder_extract(self, node, values):
-        """Extract values from existing BST"""
-        if node:
-            self._inorder_extract(node.left, values)
-            values.append(node.val)
-            self._inorder_extract(node.right, values)
+        """Extract values from BST using inorder traversal"""
+        if not node:
+            return
+        self._inorder_extract(node.left, values)
+        values.append(node.val)
+        self._inorder_extract(node.right, values)
     
     def _build_balanced_bst(self, values, left, right):
         """Build balanced BST from sorted array"""
@@ -237,40 +401,101 @@ class BalancedBSTFromStream:
         return node
     
     def search(self, val):
-        """Search in current BST"""
-        return self._search_bst(self.root, val)
+        """Search for value in BST"""
+        return self._search_bst(self.root, val) or val in self.buffer
     
     def _search_bst(self, node, val):
-        """Binary search in BST"""
-        if not node or node.val == val:
-            return node
-        
-        if val < node.val:
+        """Standard BST search"""
+        if not node:
+            return False
+        if node.val == val:
+            return True
+        elif val < node.val:
             return self._search_bst(node.left, val)
         else:
             return self._search_bst(node.right, val)
 
 
-# INTEGRATION PROBLEM 5: Tree-based Expression Evaluator
+# =============================================================================
+# INTEGRATION PROBLEM 5: EXPRESSION TREE EVALUATOR (HARD) - 60 MIN
+# =============================================================================
+
 class ExpressionTree:
     """
-    Evaluate mathematical expressions using tree structure
+    PROBLEM: Expression Tree Construction and Evaluation
     
-    Combines: Tree traversal + parsing + stack operations
+    Given a mathematical expression as a string, build an expression tree and evaluate it.
+    The expression contains integers, +, -, *, /, and parentheses. Support the standard 
+    order of operations.
+    
+    Implement the ExpressionTree class:
+    - ExpressionTree(expression): Build tree from infix expression
+    - evaluate(): Return the result of evaluating the expression
+    - get_infix(): Return the infix representation with minimal parentheses
+    
+    CONSTRAINTS:
+    - 1 <= expression.length <= 1000
+    - expression consists of digits, '+', '-', '*', '/', '(', ')', and spaces
+    - The expression is guaranteed to be valid
+    - No division by zero will occur
+    
+    EXAMPLES:
+    Example 1:
+        Input: expression = "3 + 2 * 2"
+        Tree structure:
+            +
+           / \
+          3   *
+             / \
+            2   2
+        evaluate(): 7
+        get_infix(): "3 + 2 * 2"
+        
+    Example 2:
+        Input: expression = "(1 + 2) * 3"
+        evaluate(): 9
+        get_infix(): "(1 + 2) * 3"
+    
+    APPROACH: Shunting Yard Algorithm + Tree Construction
+    
+    Combines multiple concepts:
+    - Expression parsing and tokenization
+    - Stack-based algorithms (Shunting Yard)
+    - Binary tree construction
+    - Tree traversal for evaluation
+    - Operator precedence handling
+    
+    Steps:
+    1. Convert infix to postfix using Shunting Yard algorithm
+    2. Build expression tree from postfix notation
+    3. Evaluate tree using post-order traversal
+    
+    TIME: O(n) for construction and evaluation, SPACE: O(n) for tree storage
     """
     
     def __init__(self, expression):
-        self.root = self._build_from_postfix(self._to_postfix(expression))
+        self.expression = expression.replace(' ', '')
+        postfix = self._to_postfix(self.expression)
+        self.root = self._build_from_postfix(postfix)
     
     def _to_postfix(self, expression):
-        """Convert infix to postfix notation"""
-        precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+        """Convert infix expression to postfix using Shunting Yard algorithm"""
+        precedence = {'+': 1, '-': 1, '*': 2, '/': 2}
         stack = []
         postfix = []
+        i = 0
         
-        for char in expression.replace(' ', ''):
+        while i < len(expression):
+            char = expression[i]
+            
             if char.isdigit():
-                postfix.append(char)
+                # Handle multi-digit numbers
+                num = ''
+                while i < len(expression) and expression[i].isdigit():
+                    num += expression[i]
+                    i += 1
+                postfix.append(int(num))
+                continue
             elif char == '(':
                 stack.append(char)
             elif char == ')':
@@ -283,6 +508,8 @@ class ExpressionTree:
                        precedence[stack[-1]] >= precedence[char]):
                     postfix.append(stack.pop())
                 stack.append(char)
+            
+            i += 1
         
         while stack:
             postfix.append(stack.pop())
@@ -294,12 +521,13 @@ class ExpressionTree:
         stack = []
         
         for token in postfix:
-            if token.isdigit():
-                stack.append(TreeNode(int(token)))
+            if isinstance(token, int):
+                stack.append(TreeNode(token))
             else:
-                # Operator node
+                # Operator: pop two operands
                 right = stack.pop()
                 left = stack.pop()
+                
                 node = TreeNode(token)
                 node.left = left
                 node.right = right
@@ -308,7 +536,7 @@ class ExpressionTree:
         return stack[0] if stack else None
     
     def evaluate(self):
-        """Evaluate expression tree"""
+        """Evaluate the expression tree"""
         def eval_node(node):
             if not node:
                 return 0
@@ -317,7 +545,7 @@ class ExpressionTree:
             if isinstance(node.val, int):
                 return node.val
             
-            # Operator node
+            # Internal node (operator)
             left_val = eval_node(node.left)
             right_val = eval_node(node.right)
             
@@ -329,13 +557,11 @@ class ExpressionTree:
                 return left_val * right_val
             elif node.val == '/':
                 return left_val // right_val  # Integer division
-            elif node.val == '^':
-                return left_val ** right_val
         
         return eval_node(self.root)
     
     def get_infix(self):
-        """Convert back to infix notation"""
+        """Get infix representation with minimal parentheses"""
         def infix_helper(node):
             if not node:
                 return ""
@@ -345,29 +571,79 @@ class ExpressionTree:
             
             left_expr = infix_helper(node.left)
             right_expr = infix_helper(node.right)
-            return f"({left_expr} {node.val} {right_expr})"
+            
+            # Add parentheses based on precedence
+            precedence = {'+': 1, '-': 1, '*': 2, '/': 2}
+            
+            if (node.left and isinstance(node.left.val, str) and 
+                precedence.get(node.left.val, 0) < precedence.get(node.val, 0)):
+                left_expr = f"({left_expr})"
+            
+            if (node.right and isinstance(node.right.val, str) and 
+                precedence.get(node.right.val, 0) < precedence.get(node.val, 0)):
+                right_expr = f"({right_expr})"
+            
+            return f"{left_expr} {node.val} {right_expr}"
         
         return infix_helper(self.root)
 
 
-# ASSESSMENT PROBLEM 6: Multi-structure Data Analyzer
+# =============================================================================
+# INTEGRATION PROBLEM 6: MULTI-STRUCTURE ANALYZER (HARD) - 60 MIN
+# =============================================================================
+
 class MultiStructureAnalyzer:
     """
-    Analyze data using multiple data structures for comprehensive insights
+    PROBLEM: Multi-Structure Data Analyzer
     
-    Combines: All Week 2 concepts in single problem
+    Given an array of integers, build multiple data structures (BST, heap, sorted array) and 
+    provide comprehensive analysis including search performance, heap properties, and optimization suggestions.
+    
+    Implement the MultiStructureAnalyzer class:
+    - MultiStructureAnalyzer(data): Initialize with integer array
+    - binary_search_analysis(target): Analyze binary search performance
+    - bst_analysis(target): Analyze BST search with path tracking
+    - heap_analysis(): Analyze heap properties and operations
+    - comprehensive_report(target): Generate complete analysis report
+    
+    CONSTRAINTS:
+    - 1 <= data.length <= 1000
+    - -1000 <= data[i] <= 1000
+    - Data may contain duplicates
+    
+    EXAMPLES:
+    Example 1:
+        Input: data = [4, 2, 6, 1, 3, 5, 7], target = 5
+        Output: Comprehensive analysis including:
+        - Binary search: 2 comparisons on sorted array
+        - BST search: Path [4, 6, 5], 3 comparisons
+        - Heap: Valid min-heap property, min element 1
+        - Recommendations: BST optimal for this target
+    
+    APPROACH: Multi-Structure Construction and Analysis
+    
+    Integrates all major data structures and algorithms:
+    - Array sorting and binary search
+    - BST construction and search analysis
+    - Heap construction and property verification
+    - Performance comparison and optimization analysis
+    
+    This problem demonstrates real-world data structure selection decisions.
+    
+    TIME: O(n log n) for construction, various for operations, SPACE: O(n) for each structure
     """
     
     def __init__(self, data):
-        self.data = data
+        self.original_data = data[:]
         self.sorted_data = sorted(data)
-        self.bst = self._build_bst()
+        self.bst_root = self._build_bst()
         self.heap_data = data[:]
         heapq.heapify(self.heap_data)
-        self.frequency_tree = self._build_frequency_tree()
     
     def _build_bst(self):
-        """Build BST from sorted data"""
+        """Build BST from original data order"""
+        root = None
+        
         def build(left, right):
             if left > right:
                 return None
@@ -381,121 +657,163 @@ class MultiStructureAnalyzer:
         return build(0, len(self.sorted_data) - 1)
     
     def _build_frequency_tree(self):
-        """Build tree based on frequency analysis"""
-        freq = Counter(self.data)
+        """Build tree based on element frequencies (bonus integration)"""
+        from collections import Counter
+        freq_count = Counter(self.original_data)
         
-        # Create leaf nodes for each unique value
-        heap = []
-        for val, count in freq.items():
-            heapq.heappush(heap, (count, TreeNode(val)))
+        # Build tree where more frequent elements are closer to root
+        freq_items = sorted(freq_count.items(), key=lambda x: -x[1])
         
-        # Build Huffman-like tree
-        while len(heap) > 1:
-            freq1, node1 = heapq.heappop(heap)
-            freq2, node2 = heapq.heappop(heap)
+        def build_freq_tree(items, start, end):
+            if start > end:
+                return None
             
-            merged = TreeNode(f"{node1.val},{node2.val}")
-            merged.left = node1
-            merged.right = node2
-            
-            heapq.heappush(heap, (freq1 + freq2, merged))
+            mid = (start + end) // 2
+            val, freq = items[mid]
+            node = TreeNode(val)
+            node.left = build_freq_tree(items, start, mid - 1)
+            node.right = build_freq_tree(items, mid + 1, end)
+            return node
         
-        return heap[0][1] if heap else None
+        return build_freq_tree(freq_items, 0, len(freq_items) - 1)
     
     def binary_search_analysis(self, target):
-        """Analyze target using binary search"""
+        """Analyze binary search performance on sorted array"""
+        comparisons = 0
         left, right = 0, len(self.sorted_data) - 1
-        steps = 0
+        path = []
         
         while left <= right:
-            steps += 1
             mid = (left + right) // 2
+            comparisons += 1
+            path.append(self.sorted_data[mid])
             
             if self.sorted_data[mid] == target:
                 return {
                     'found': True,
+                    'comparisons': comparisons,
+                    'path': path,
                     'index': mid,
-                    'steps': steps,
-                    'efficiency': f"O(log n) - {steps} steps vs {len(self.data)} linear"
+                    'complexity': 'O(log n)'
                 }
             elif self.sorted_data[mid] < target:
                 left = mid + 1
             else:
                 right = mid - 1
         
-        return {'found': False, 'steps': steps}
+        return {
+            'found': False,
+            'comparisons': comparisons,
+            'path': path,
+            'complexity': 'O(log n)'
+        }
     
     def bst_analysis(self, target):
-        """Analyze using BST operations"""
+        """Analyze BST search with detailed path tracking"""
         def search_with_path(node, target, path):
             if not node:
-                return None, path
+                return False, path, len(path)
             
             path.append(node.val)
             
             if node.val == target:
-                return node, path
+                return True, path, len(path)
             elif target < node.val:
                 return search_with_path(node.left, target, path)
             else:
                 return search_with_path(node.right, target, path)
         
-        node, path = search_with_path(self.bst, target, [])
+        found, path, comparisons = search_with_path(self.bst_root, target, [])
+        
+        # Calculate tree height and balance factor
+        def get_height(node):
+            if not node:
+                return 0
+            return 1 + max(get_height(node.left), get_height(node.right))
+        
+        height = get_height(self.bst_root)
+        optimal_height = math.ceil(math.log2(len(self.original_data) + 1))
         
         return {
-            'found': node is not None,
-            'search_path': path,
-            'comparisons': len(path),
-            'tree_depth': len(path) if node else -1
+            'found': found,
+            'comparisons': comparisons,
+            'path': path,
+            'tree_height': height,
+            'optimal_height': optimal_height,
+            'balance_factor': height - optimal_height,
+            'complexity': 'O(h) where h is height'
         }
     
     def heap_analysis(self):
-        """Analyze using heap operations"""
-        heap_copy = self.heap_data[:]
+        """Analyze heap properties and performance characteristics"""
+        # Verify heap property
+        is_valid_heap = self._verify_heap_property()
         
-        # Extract top 3 elements
-        top_elements = []
-        for _ in range(min(3, len(heap_copy))):
-            if heap_copy:
-                top_elements.append(heapq.heappop(heap_copy))
+        # Get heap statistics
+        heap_size = len(self.heap_data)
+        min_element = self.heap_data[0] if self.heap_data else None
+        
+        # Simulate heap operations
+        insert_complexity = math.ceil(math.log2(heap_size + 1)) if heap_size > 0 else 1
+        extract_complexity = math.ceil(math.log2(heap_size)) if heap_size > 0 else 0
         
         return {
-            'min_element': self.heap_data[0] if self.heap_data else None,
-            'top_3_smallest': top_elements,
-            'heap_size': len(self.heap_data),
-            'heap_property_verified': self._verify_heap_property()
+            'valid_heap': is_valid_heap,
+            'size': heap_size,
+            'min_element': min_element,
+            'insert_complexity': f"O(log n) ≈ {insert_complexity} comparisons",
+            'extract_min_complexity': f"O(log n) ≈ {extract_complexity} comparisons",
+            'peek_complexity': 'O(1)',
+            'heap_data': self.heap_data[:10]  # Show first 10 elements
         }
     
     def _verify_heap_property(self):
-        """Verify min heap property"""
+        """Verify min-heap property"""
         for i in range(len(self.heap_data)):
-            left = 2 * i + 1
-            right = 2 * i + 2
+            left_child = 2 * i + 1
+            right_child = 2 * i + 2
             
-            if (left < len(self.heap_data) and 
-                self.heap_data[i] > self.heap_data[left]):
-                return False
+            if left_child < len(self.heap_data):
+                if self.heap_data[i] > self.heap_data[left_child]:
+                    return False
             
-            if (right < len(self.heap_data) and 
-                self.heap_data[i] > self.heap_data[right]):
-                return False
+            if right_child < len(self.heap_data):
+                if self.heap_data[i] > self.heap_data[right_child]:
+                    return False
         
         return True
     
     def comprehensive_report(self, target):
         """Generate comprehensive analysis report"""
-        return {
-            'data_summary': {
-                'size': len(self.data),
-                'min': min(self.data),
-                'max': max(self.data),
-                'unique_count': len(set(self.data))
-            },
-            'binary_search': self.binary_search_analysis(target),
-            'bst_search': self.bst_analysis(target),
-            'heap_analysis': self.heap_analysis(),
-            'frequency_analysis': Counter(self.data).most_common(3)
+        binary_search_result = self.binary_search_analysis(target)
+        bst_result = self.bst_analysis(target)
+        heap_result = self.heap_analysis()
+        
+        report = {
+            'target': target,
+            'data_size': len(self.original_data),
+            'binary_search': binary_search_result,
+            'bst_search': bst_result,
+            'heap_analysis': heap_result,
+            'recommendations': []
         }
+        
+        # Generate recommendations
+        if binary_search_result['found'] and bst_result['found']:
+            if binary_search_result['comparisons'] < bst_result['comparisons']:
+                report['recommendations'].append("Binary search on sorted array is more efficient for this target")
+            elif bst_result['comparisons'] < binary_search_result['comparisons']:
+                report['recommendations'].append("BST search is more efficient for this target")
+            else:
+                report['recommendations'].append("Both binary search and BST have similar performance")
+        
+        if bst_result['balance_factor'] > 2:
+            report['recommendations'].append("BST is unbalanced; consider using AVL or Red-Black tree")
+        
+        if target == heap_result['min_element']:
+            report['recommendations'].append("For minimum element access, heap provides O(1) performance")
+        
+        return report
 
 
 # COMPREHENSIVE TESTING SUITE

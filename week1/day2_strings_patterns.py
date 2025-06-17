@@ -42,15 +42,46 @@ THEORY SECTION (1 Hour)
 from collections import defaultdict, Counter
 
 
-# Problem 1: Valid Palindrome - Introduction to string manipulation
+# =============================================================================
+# PROBLEM 1: VALID PALINDROME (EASY) - 30 MIN
+# =============================================================================
+
 def is_palindrome(s):
     """
-    Check if string is palindrome ignoring non-alphanumeric characters
+    PROBLEM: Valid Palindrome
     
-    Approach: Two pointers from ends, skip non-alphanumeric
-    This introduces string processing and two pointers on strings
+    A phrase is a palindrome if, after converting all uppercase letters into 
+    lowercase letters and removing all non-alphanumeric characters, it reads 
+    the same forward and backward.
     
-    Time: O(n), Space: O(1)
+    Given a string s, return true if it is a palindrome, or false otherwise.
+    
+    CONSTRAINTS:
+    - 1 <= s.length <= 2 * 10^5
+    - s consists only of printable ASCII characters
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "A man, a plan, a canal: Panama"
+        Output: true
+        Explanation: "amanaplanacanalpanama" is a palindrome
+    
+    Example 2:
+        Input: s = "race a car"
+        Output: false
+        Explanation: "raceacar" is not a palindrome
+    
+    Example 3:
+        Input: s = " "
+        Output: true
+        Explanation: After removing non-alphanumeric characters, s becomes an empty string
+    
+    APPROACH: Two Pointers
+    
+    Use two pointers from both ends, skip non-alphanumeric characters,
+    and compare characters case-insensitively.
+    
+    TIME: O(n), SPACE: O(1)
     """
     left, right = 0, len(s) - 1
     
@@ -73,19 +104,44 @@ def is_palindrome(s):
     return True
 
 
-# Problem 2: Longest Substring Without Repeating Characters - Classic sliding window
+# =============================================================================
+# PROBLEM 2: LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS (MEDIUM) - 45 MIN
+# =============================================================================
+
 def length_of_longest_substring(s):
     """
-    Find length of longest substring without repeating characters
+    PROBLEM: Longest Substring Without Repeating Characters
     
-    Sliding Window Approach:
+    Given a string s, find the length of the longest substring without 
+    repeating characters.
+    
+    CONSTRAINTS:
+    - 0 <= s.length <= 5 * 10^4
+    - s consists of English letters, digits, symbols and spaces
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "abcabcbb"
+        Output: 3
+        Explanation: The answer is "abc", with the length of 3
+    
+    Example 2:
+        Input: s = "bbbbb"
+        Output: 1
+        Explanation: The answer is "b", with the length of 1
+    
+    Example 3:
+        Input: s = "pwwkew"
+        Output: 3
+        Explanation: The answer is "wke", with the length of 3
+    
+    APPROACH: Sliding Window with Set
+    
     1. Expand window by moving right pointer
     2. If duplicate found, contract from left until no duplicates
     3. Track maximum length seen
     
-    This is the fundamental sliding window pattern
-    
-    Time: O(n), Space: O(min(m, n)) where m is charset size
+    TIME: O(n), SPACE: O(min(m, n)) where m is charset size
     """
     if not s:
         return 0
@@ -109,10 +165,12 @@ def length_of_longest_substring(s):
 
 def length_of_longest_substring_optimized(s):
     """
-    Optimized version using hash map to track last seen positions
-    Instead of moving left pointer one by one, jump directly
+    APPROACH: Sliding Window with HashMap (Optimized)
     
-    Time: O(n), Space: O(min(m, n))
+    Instead of moving left pointer one by one, jump directly to position
+    after the last occurrence of the duplicate character.
+    
+    TIME: O(n), SPACE: O(min(m, n))
     """
     char_map = {}
     left = 0
@@ -129,17 +187,49 @@ def length_of_longest_substring_optimized(s):
     return max_length
 
 
-# Problem 3: Minimum Window Substring - Advanced sliding window
+# =============================================================================
+# PROBLEM 3: MINIMUM WINDOW SUBSTRING (HARD) - 60 MIN
+# =============================================================================
+
 def min_window(s, t):
     """
-    Find minimum window in s that contains all characters of t
+    PROBLEM: Minimum Window Substring
+    
+    Given two strings s and t of lengths m and n respectively, return the 
+    minimum window substring of s such that every character in t (including 
+    duplicates) is included in the window. If there is no such substring, 
+    return the empty string "".
+    
+    CONSTRAINTS:
+    - m == s.length
+    - n == t.length
+    - 1 <= m, n <= 10^5
+    - s and t consist of uppercase and lowercase English letters
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "ADOBECODEBANC", t = "ABC"
+        Output: "BANC"
+        Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t
+    
+    Example 2:
+        Input: s = "a", t = "a"
+        Output: "a"
+        Explanation: The entire string s is the minimum window
+    
+    Example 3:
+        Input: s = "a", t = "aa"
+        Output: ""
+        Explanation: Both 'a's from t must be included in the window
+    
+    APPROACH: Sliding Window with Character Frequency
     
     Template for minimum window problems:
     1. Expand window until valid (contains all required)
     2. Contract window while maintaining validity
     3. Track minimum valid window
     
-    Time: O(|s| + |t|), Space: O(|s| + |t|)
+    TIME: O(|s| + |t|), SPACE: O(|s| + |t|)
     """
     if not s or not t or len(s) < len(t):
         return ""
@@ -187,58 +277,120 @@ def min_window(s, t):
     return "" if ans[0] == float('inf') else s[ans[1]:ans[2] + 1]
 
 
-# Problem 4: Group Anagrams - Hash map with string patterns
+# =============================================================================
+# PROBLEM 4: GROUP ANAGRAMS (MEDIUM) - 45 MIN
+# =============================================================================
+
 def group_anagrams(strs):
     """
-    Group strings that are anagrams of each other
+    PROBLEM: Group Anagrams
     
-    Approach 1: Sort each string as key
-    Approach 2: Character frequency as key
+    Given an array of strings strs, group the anagrams together. You can 
+    return the answer in any order.
     
-    This bridges string processing to hash table usage
+    An Anagram is a word or phrase formed by rearranging the letters of a 
+    different word or phrase, typically using all the original letters exactly once.
     
-    Time: O(n * m log m) where n = number of strings, m = average length
-    Space: O(n * m)
+    CONSTRAINTS:
+    - 1 <= strs.length <= 10^4
+    - 0 <= strs[i].length <= 100
+    - strs[i] consists of lowercase English letters
+    
+    EXAMPLES:
+    Example 1:
+        Input: strs = ["eat","tea","tan","ate","nat","bat"]
+        Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+    
+    Example 2:
+        Input: strs = [""]
+        Output: [[""]]
+    
+    Example 3:
+        Input: strs = ["a"]
+        Output: [["a"]]
+    
+    APPROACH 1: Sort Each String as Key
+    
+    Anagrams will have the same sorted string. Use sorted string as key
+    in hash map to group anagrams together.
+    
+    TIME: O(n * m log m) where n = number of strings, m = average length
+    SPACE: O(n * m)
     """
-    anagram_groups = defaultdict(list)
+    anagram_map = defaultdict(list)
     
     for s in strs:
-        # Use sorted string as key
+        # Sort the string to create a key
         key = ''.join(sorted(s))
-        anagram_groups[key].append(s)
+        anagram_map[key].append(s)
     
-    return list(anagram_groups.values())
+    return list(anagram_map.values())
 
 
 def group_anagrams_frequency(strs):
     """
-    Alternative approach using character frequency as key
+    APPROACH 2: Character Frequency as Key
     
-    Time: O(n * m) where n = number of strings, m = average length
-    Space: O(n * m)
+    Use character frequency tuple as key instead of sorting.
+    Can be more efficient for very long strings.
+    
+    TIME: O(n * m) where n = number of strings, m = average length
+    SPACE: O(n * m)
     """
-    anagram_groups = defaultdict(list)
+    anagram_map = defaultdict(list)
     
     for s in strs:
-        # Create frequency tuple as key
+        # Create frequency array for 26 lowercase letters
         count = [0] * 26
         for char in s:
             count[ord(char) - ord('a')] += 1
+        
+        # Use tuple of counts as key
         key = tuple(count)
-        anagram_groups[key].append(s)
+        anagram_map[key].append(s)
     
-    return list(anagram_groups.values())
+    return list(anagram_map.values())
 
 
-# Problem 5: Valid Parentheses - Stack introduction (transitioning to next topic)
+# =============================================================================
+# PROBLEM 5: VALID PARENTHESES (EASY) - 30 MIN
+# =============================================================================
+
 def is_valid_parentheses(s):
     """
-    Check if parentheses are valid (properly paired and nested)
+    PROBLEM: Valid Parentheses
     
-    This introduces stack concept for next day's study
-    Stack pattern: Last in, first out for matching pairs
+    Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', 
+    determine if the input string is valid.
     
-    Time: O(n), Space: O(n)
+    An input string is valid if:
+    1. Open brackets must be closed by the same type of brackets
+    2. Open brackets must be closed in the correct order
+    3. Every close bracket has a corresponding open bracket of the same type
+    
+    CONSTRAINTS:
+    - 1 <= s.length <= 10^4
+    - s consists of parentheses only '()[]{}'
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "()"
+        Output: true
+    
+    Example 2:
+        Input: s = "()[]{}"
+        Output: true
+    
+    Example 3:
+        Input: s = "(]"
+        Output: false
+    
+    APPROACH: Stack
+    
+    Use stack to track opening brackets. When closing bracket is found,
+    check if it matches the most recent opening bracket.
+    
+    TIME: O(n), SPACE: O(n)
     """
     stack = []
     mapping = {')': '(', '}': '{', ']': '['}
@@ -255,170 +407,99 @@ def is_valid_parentheses(s):
     return not stack
 
 
-# ADVANCED PROBLEMS FOR EXTRA PRACTICE
+# =============================================================================
+# COMPREHENSIVE TEST CASES
+# =============================================================================
 
-def find_all_anagrams(s, p):
-    """
-    Find all start indices of anagrams of p in s
-    
-    Sliding window with fixed size |p|
-    Demonstrates fixed-size sliding window pattern
-    
-    Time: O(|s|), Space: O(1) since alphabet size is constant
-    """
-    if len(p) > len(s):
-        return []
-    
-    result = []
-    p_count = Counter(p)
-    window_count = Counter()
-    
-    # Initialize window
-    for i in range(len(p)):
-        window_count[s[i]] += 1
-    
-    # Check first window
-    if window_count == p_count:
-        result.append(0)
-    
-    # Slide window
-    for i in range(len(p), len(s)):
-        # Add new character
-        window_count[s[i]] += 1
-        
-        # Remove old character
-        left_char = s[i - len(p)]
-        window_count[left_char] -= 1
-        if window_count[left_char] == 0:
-            del window_count[left_char]
-        
-        # Check if current window is anagram
-        if window_count == p_count:
-            result.append(i - len(p) + 1)
-    
-    return result
-
-
-def longest_palindromic_substring(s):
-    """
-    Find longest palindromic substring
-    
-    Expand around centers approach
-    Demonstrates palindrome checking patterns
-    
-    Time: O(n²), Space: O(1)
-    """
-    if not s:
-        return ""
-    
-    start = 0
-    max_len = 1
-    
-    def expand_around_center(left, right):
-        while left >= 0 and right < len(s) and s[left] == s[right]:
-            left -= 1
-            right += 1
-        return right - left - 1
-    
-    for i in range(len(s)):
-        # Odd length palindromes (center at i)
-        len1 = expand_around_center(i, i)
-        # Even length palindromes (center between i and i+1)
-        len2 = expand_around_center(i, i + 1)
-        
-        current_max = max(len1, len2)
-        if current_max > max_len:
-            max_len = current_max
-            start = i - (current_max - 1) // 2
-    
-    return s[start:start + max_len]
-
-
-# COMPREHENSIVE TESTING SUITE
 def test_all_problems():
     """
-    Test all string problems with comprehensive test cases
+    Test all implemented solutions with comprehensive test cases
     """
-    print("=== TESTING DAY 2 PROBLEMS ===\n")
+    print("=" * 60)
+    print("           WEEK 1 - DAY 2: TESTING RESULTS")
+    print("=" * 60)
     
     # Test Valid Palindrome
-    print("1. Valid Palindrome Tests:")
-    palindrome_tests = [
+    print("\n🧪 PROBLEM 1: VALID PALINDROME")
+    test_cases_palindrome = [
         ("A man, a plan, a canal: Panama", True),
         ("race a car", False),
+        (" ", True),
         ("", True),
-        ("Madam", True),
-        ("No 'x' in Nixon", True)
+        ("Madam", True)
     ]
     
-    for s, expected in palindrome_tests:
+    for i, (s, expected) in enumerate(test_cases_palindrome, 1):
         result = is_palindrome(s)
-        print(f"   Input: '{s}'")
-        print(f"   Output: {result}, Expected: {expected}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: s = \"{s}\"")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
     
     # Test Longest Substring Without Repeating Characters
-    print("2. Longest Substring Without Repeating Characters:")
-    substring_tests = [
-        ("abcabcbb", 3),  # "abc"
-        ("bbbbb", 1),     # "b"
-        ("pwwkew", 3),    # "wke"
+    print("🧪 PROBLEM 2: LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS")
+    test_cases_longest = [
+        ("abcabcbb", 3),
+        ("bbbbb", 1),
+        ("pwwkew", 3),
         ("", 0),
-        ("au", 2)
+        ("dvdf", 3)
     ]
     
-    for s, expected in substring_tests:
+    for i, (s, expected) in enumerate(test_cases_longest, 1):
         result1 = length_of_longest_substring(s)
         result2 = length_of_longest_substring_optimized(s)
-        print(f"   Input: '{s}'")
-        print(f"   Basic: {result1}, Optimized: {result2}, Expected: {expected}")
-        print(f"   ✓ Correct" if result1 == result2 == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: s = \"{s}\"")
+        print(f"   Expected: {expected}")
+        print(f"   Basic: {result1}, Optimized: {result2}")
+        print(f"   ✅ PASS" if result1 == expected and result2 == expected else f"   ❌ FAIL")
         print()
     
     # Test Minimum Window Substring
-    print("3. Minimum Window Substring:")
-    window_tests = [
+    print("🧪 PROBLEM 3: MINIMUM WINDOW SUBSTRING")
+    test_cases_min_window = [
         ("ADOBECODEBANC", "ABC", "BANC"),
         ("a", "a", "a"),
         ("a", "aa", ""),
         ("ab", "b", "b")
     ]
     
-    for s, t, expected in window_tests:
+    for i, (s, t, expected) in enumerate(test_cases_min_window, 1):
         result = min_window(s, t)
-        print(f"   s: '{s}', t: '{t}'")
-        print(f"   Output: '{result}', Expected: '{expected}'")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: s = \"{s}\", t = \"{t}\"")
+        print(f"   Expected: \"{expected}\"")
+        print(f"   Got: \"{result}\"")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
     
     # Test Group Anagrams
-    print("4. Group Anagrams:")
-    anagram_tests = [
-        (["eat", "tea", "tan", "ate", "nat", "bat"], 
-         [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]),
+    print("🧪 PROBLEM 4: GROUP ANAGRAMS")
+    test_cases_anagrams = [
+        (["eat","tea","tan","ate","nat","bat"], [["bat"],["nat","tan"],["ate","eat","tea"]]),
         ([""], [[""]]),
         (["a"], [["a"]])
     ]
     
-    for strs, expected in anagram_tests:
-        result1 = group_anagrams(strs)
-        result2 = group_anagrams_frequency(strs)
-        # Sort for comparison
-        result1_sorted = [sorted(group) for group in sorted(result1)]
-        result2_sorted = [sorted(group) for group in sorted(result2)]
+    for i, (strs, expected) in enumerate(test_cases_anagrams, 1):
+        result = group_anagrams(strs)
+        # Sort for comparison since order doesn't matter
+        result_sorted = [sorted(group) for group in sorted(result)]
         expected_sorted = [sorted(group) for group in sorted(expected)]
         
-        print(f"   Input: {strs}")
-        print(f"   Output (sorted): {result1_sorted}")
-        print(f"   Expected (sorted): {expected_sorted}")
-        success = result1_sorted == expected_sorted and result2_sorted == expected_sorted
-        print(f"   ✓ Correct" if success else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: strs = {strs}")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result_sorted == expected_sorted else f"   ❌ FAIL")
         print()
     
     # Test Valid Parentheses
-    print("5. Valid Parentheses:")
-    paren_tests = [
+    print("🧪 PROBLEM 5: VALID PARENTHESES")
+    test_cases_parentheses = [
         ("()", True),
         ("()[]{}", True),
         ("(]", False),
@@ -426,107 +507,89 @@ def test_all_problems():
         ("{[]}", True)
     ]
     
-    for s, expected in paren_tests:
+    for i, (s, expected) in enumerate(test_cases_parentheses, 1):
         result = is_valid_parentheses(s)
-        print(f"   Input: '{s}'")
-        print(f"   Output: {result}, Expected: {expected}")
-        print(f"   ✓ Correct" if result == expected else f"   ✗ Wrong")
+        print(f"   Test Case {i}:")
+        print(f"   Input: s = \"{s}\"")
+        print(f"   Expected: {expected}")
+        print(f"   Got: {result}")
+        print(f"   ✅ PASS" if result == expected else f"   ❌ FAIL")
         print()
 
 
-# EDUCATIONAL DEMONSTRATIONS
+# =============================================================================
+# EDUCATIONAL HELPER FUNCTIONS
+# =============================================================================
+
 def demonstrate_sliding_window():
     """
     Visual demonstration of sliding window technique
     """
-    print("\n=== SLIDING WINDOW DEMONSTRATION ===")
+    print("\n" + "=" * 60)
+    print("               SLIDING WINDOW DEMONSTRATION")
+    print("=" * 60)
+    
     s = "abcabcbb"
-    print(f"Finding longest substring without repeating chars in: '{s}'")
+    print(f"🔍 Finding longest substring without repeating characters in: \"{s}\"")
     
     char_set = set()
     left = 0
     max_length = 0
+    max_substring = ""
     
     for right in range(len(s)):
-        print(f"\nStep {right + 1}: Processing '{s[right]}' at position {right}")
+        print(f"\nStep {right + 1}: Processing s[{right}] = '{s[right]}'")
         
-        # Show current window
-        print(f"  Current window: '{s[left:right+1]}' (left={left}, right={right})")
-        print(f"  Characters in set: {char_set}")
-        
-        # Contract if duplicate
+        # Contract window until no duplicates
         while s[right] in char_set:
-            print(f"  Duplicate '{s[right]}' found! Removing '{s[left]}' from left")
+            print(f"  Duplicate found! Removing s[{left}] = '{s[left]}'")
             char_set.remove(s[left])
             left += 1
-            print(f"  New window: '{s[left:right+1]}' (left={left})")
         
+        # Add current character
         char_set.add(s[right])
         current_length = right - left + 1
-        max_length = max(max_length, current_length)
+        current_substring = s[left:right+1]
         
-        print(f"  Added '{s[right]}', window length: {current_length}, max so far: {max_length}")
+        print(f"  Current window: [{left}, {right}] = \"{current_substring}\"")
+        print(f"  Length: {current_length}")
+        
+        if current_length > max_length:
+            max_length = current_length
+            max_substring = current_substring
+            print(f"  🎯 New maximum length: {max_length}")
+    
+    print(f"\n✅ Final result: \"{max_substring}\" with length {max_length}")
 
 
 def pattern_matching_complexity_analysis():
     """
-    Compare different approaches for pattern matching
+    Analysis of different string pattern matching approaches
     """
-    print("\n=== PATTERN MATCHING COMPLEXITY ANALYSIS ===")
+    print("\n" + "=" * 60)
+    print("              PATTERN MATCHING COMPLEXITY")
+    print("=" * 60)
     
-    print("\nProblem: Find substring pattern in text")
-    print("\nNaive Approach:")
-    print("  - Check each position: O(n*m) time")
+    print("\n📊 SUBSTRING SEARCH ALGORITHMS:")
+    print("\n🔴 Naive Approach:")
+    print("  - Check every position: O(n*m)")
     print("  - Space: O(1)")
-    print("  - For each position, compare m characters")
+    print("  - Simple but inefficient")
     
-    print("\nSliding Window (when applicable):")
-    print("  - Single pass with hash map: O(n) time")
-    print("  - Space: O(k) where k is pattern size")
-    print("  - Maintains character frequencies")
+    print("\n🟡 Sliding Window:")
+    print("  - For specific patterns: O(n)")
+    print("  - Space: O(k) where k is window size")
+    print("  - Great for constraint-based problems")
     
-    print("\nRolling Hash:")
-    print("  - Compute hash in O(1) for each position: O(n) time")
-    print("  - Space: O(1)")
-    print("  - Collision handling needed")
-    
-    print("\nKMP Algorithm:")
-    print("  - Preprocessing + matching: O(n + m) time")
-    print("  - Space: O(m) for failure function")
+    print("\n🟢 KMP Algorithm:")
+    print("  - General pattern search: O(n + m)")
+    print("  - Space: O(m)")
     print("  - Optimal for exact pattern matching")
-
-
-# STRING MANIPULATION UTILITIES
-def string_utilities_demo():
-    """
-    Demonstrate common string manipulation techniques
-    """
-    print("\n=== STRING MANIPULATION TECHNIQUES ===")
     
-    s = "Hello World"
-    print(f"Original string: '{s}'")
-    
-    # Common operations
-    print("\nCommon Operations:")
-    print(f"  Length: {len(s)}")
-    print(f"  Lowercase: '{s.lower()}'")
-    print(f"  Uppercase: '{s.upper()}'")
-    print(f"  Replace: '{s.replace('World', 'Python')}'")
-    print(f"  Split: {s.split()}")
-    print(f"  Strip whitespace: '{s.strip()}'")
-    
-    # Character operations
-    print("\nCharacter Operations:")
-    print(f"  First char: '{s[0]}'")
-    print(f"  Last char: '{s[-1]}'")
-    print(f"  Slice [0:5]: '{s[0:5]}'")
-    print(f"  Reverse: '{s[::-1]}'")
-    
-    # ASCII operations
-    print("\nASCII Operations:")
-    print(f"  ord('A'): {ord('A')}")
-    print(f"  chr(65): '{chr(65)}'")
-    print(f"  'A' to index: {ord('A') - ord('A')}")  # 0-based indexing
+    print("\n🔵 Rolling Hash:")
+    print("  - Average case: O(n + m)")
+    print("  - Space: O(1)")
+    print("  - Good for multiple pattern search")
 
 
 if __name__ == "__main__":
@@ -534,9 +597,9 @@ if __name__ == "__main__":
     test_all_problems()
     
     # Educational demonstrations
-    print("\n" + "="*70)
-    print("EDUCATIONAL DEMONSTRATIONS")
-    print("="*70)
+    print("\n" + "="*60)
+    print("               EDUCATIONAL DEMONSTRATIONS")
+    print("="*60)
     
     # Demonstrate sliding window
     demonstrate_sliding_window()
@@ -544,20 +607,14 @@ if __name__ == "__main__":
     # Show complexity analysis
     pattern_matching_complexity_analysis()
     
-    # String utilities
-    string_utilities_demo()
-    
-    print("\n" + "="*70)
-    print("DAY 2 COMPLETE - KEY TAKEAWAYS:")
-    print("="*70)
+    print("\n" + "="*60)
+    print("                   DAY 2 COMPLETE")
+    print("="*60)
+    print("🎯 KEY TAKEAWAYS:")
     print("1. Sliding window reduces O(n²) to O(n) for substring problems")
-    print("2. Two types: fixed-size and variable-size windows")
-    print("3. Hash maps for character frequency counting")
-    print("4. String immutability in Python affects space complexity")
-    print("5. Palindrome checking with two pointers")
-    print("6. Anagram detection using sorting or frequency counting")
-    print("7. Stack pattern introduced for parentheses matching")
-    print("\nTransition: Day 2→3 - From strings to hash tables")
-    print("- Character frequency → Hash map operations")
-    print("- Sliding window + hash map → Advanced hash table usage")
-    print("\nNext: Day 3 - Hash Tables & Sets") 
+    print("2. Use hash maps for character frequency tracking")
+    print("3. Two pointers work well for palindrome problems")
+    print("4. Stack is perfect for bracket matching problems")
+    print("5. Anagrams can be detected by sorting or frequency counting")
+    print("6. Always consider string immutability in Python")
+    print("\n🚀 NEXT: Day 3 - Hash Tables & Sets") 

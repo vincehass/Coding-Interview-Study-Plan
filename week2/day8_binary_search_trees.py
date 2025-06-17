@@ -63,10 +63,13 @@ class TreeNode:
         return f"TreeNode({self.val})"
 
 
-# Problem 1: Validate Binary Search Tree - Core BST concept
+# =============================================================================
+# PROBLEM 1: VALIDATE BINARY SEARCH TREE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def is_valid_bst_wrong(root):
     """
-    INCORRECT approach: Only checks immediate children
+    EDUCATIONAL: INCORRECT approach - Only checks immediate children
     
     This fails for cases like [5, 1, 4, null, null, 3, 6]
     where 3 < 5 but is in right subtree
@@ -88,11 +91,34 @@ def is_valid_bst_wrong(root):
 
 def is_valid_bst_correct(root):
     """
-    CORRECT approach: Maintain valid range for each node
+    PROBLEM: Validate Binary Search Tree
+    
+    Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+    
+    A valid BST is defined as follows:
+    - The left subtree of a node contains only nodes with keys less than the node's key
+    - The right subtree of a node contains only nodes with keys greater than the node's key
+    - Both the left and right subtrees must also be binary search trees
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 10^4]
+    - -2^31 <= Node.val <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [2,1,3]
+        Output: true
+    
+    Example 2:
+        Input: root = [5,1,4,null,null,3,6]
+        Output: false
+        Explanation: The root node's value is 5 but its right child's value is 4
+    
+    APPROACH: Range Validation (Correct)
     
     Each node must be within (min_val, max_val) range
     
-    Time: O(n), Space: O(h)
+    TIME: O(n), SPACE: O(h)
     """
     def validate(node, min_val, max_val):
         if not node:
@@ -111,9 +137,9 @@ def is_valid_bst_correct(root):
 
 def is_valid_bst_inorder(root):
     """
-    Alternative approach: In-order traversal should be sorted
+    APPROACH: In-order Traversal Should Be Sorted
     
-    Time: O(n), Space: O(h)
+    TIME: O(n), SPACE: O(h)
     """
     def inorder(node):
         if not node:
@@ -133,9 +159,11 @@ def is_valid_bst_inorder(root):
 
 def is_valid_bst_inorder_optimized(root):
     """
-    Optimized in-order: Track previous value without storing all values
+    APPROACH: Optimized In-order (Track Previous Value)
     
-    Time: O(n), Space: O(h)
+    Track previous value without storing all values
+    
+    TIME: O(n), SPACE: O(h)
     """
     def inorder(node):
         nonlocal prev
@@ -158,14 +186,39 @@ def is_valid_bst_inorder_optimized(root):
     return inorder(root)
 
 
-# Problem 2: Search in BST - Basic BST operation
+# =============================================================================
+# PROBLEM 2: SEARCH IN A BINARY SEARCH TREE (EASY) - 30 MIN
+# =============================================================================
+
 def search_bst_recursive(root, val):
     """
-    Search for value in BST using recursion
+    PROBLEM: Search in a Binary Search Tree
+    
+    You are given the root of a binary search tree (BST) and an integer val.
+    
+    Find the node in the BST that the node's value equals val and return the subtree 
+    rooted with that node. If such a node does not exist, return null.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 5000]
+    - 1 <= Node.val <= 10^7
+    - root is a binary search tree
+    - 1 <= val <= 10^7
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [4,2,7,1,3], val = 2
+        Output: [2,1,3]
+    
+    Example 2:
+        Input: root = [4,2,7,1,3], val = 5
+        Output: []
+    
+    APPROACH: Recursive Search
     
     Navigate left/right based on comparison
     
-    Time: O(h), Space: O(h)
+    TIME: O(h), SPACE: O(h)
     """
     if not root or root.val == val:
         return root
@@ -178,11 +231,11 @@ def search_bst_recursive(root, val):
 
 def search_bst_iterative(root, val):
     """
-    Search for value in BST iteratively
+    APPROACH: Iterative Search
     
     More memory efficient than recursive
     
-    Time: O(h), Space: O(1)
+    TIME: O(h), SPACE: O(1)
     """
     current = root
     
@@ -197,14 +250,46 @@ def search_bst_iterative(root, val):
     return None
 
 
-# Problem 3: Insert into BST - BST modification
+# =============================================================================
+# PROBLEM 3: INSERT INTO A BINARY SEARCH TREE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def insert_into_bst_recursive(root, val):
     """
-    Insert value into BST maintaining BST property
+    PROBLEM: Insert into a Binary Search Tree
+    
+    You are given the root node of a binary search tree (BST) and a value to insert into the tree. 
+    Return the root node of the BST after the insertion. It is guaranteed that the new value does 
+    not exist in the original BST.
+    
+    Notice that there may exist multiple valid ways for the insertion, as long as the tree remains 
+    a BST after insertion. You can return any of them.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^4]
+    - -10^8 <= Node.val <= 10^8
+    - All the values Node.val are unique
+    - -10^8 <= val <= 10^8
+    - It's guaranteed that val does not exist in the original BST
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [4,2,7,1,3], val = 5
+        Output: [4,2,7,1,3,5]
+    
+    Example 2:
+        Input: root = [40,20,60,10,30,50,70], val = 25
+        Output: [40,20,60,10,30,50,70,null,null,25]
+    
+    Example 3:
+        Input: root = [4,2,7,1,3,null,null,null,null,null,null], val = 5
+        Output: [4,2,7,1,3,5]
+    
+    APPROACH: Recursive Insertion
     
     Find correct position and insert as leaf
     
-    Time: O(h), Space: O(h)
+    TIME: O(h), SPACE: O(h)
     """
     if not root:
         return TreeNode(val)
@@ -219,121 +304,174 @@ def insert_into_bst_recursive(root, val):
 
 def insert_into_bst_iterative(root, val):
     """
-    Insert value into BST iteratively
+    APPROACH: Iterative Insertion
     
-    Time: O(h), Space: O(1)
+    Find parent and insert as appropriate child
+    
+    TIME: O(h), SPACE: O(1)
     """
+    new_node = TreeNode(val)
+    
     if not root:
-        return TreeNode(val)
+        return new_node
     
     current = root
-    
     while True:
         if val < current.val:
             if not current.left:
-                current.left = TreeNode(val)
+                current.left = new_node
                 break
             current = current.left
         else:
             if not current.right:
-                current.right = TreeNode(val)
+                current.right = new_node
                 break
             current = current.right
     
     return root
 
 
-# Problem 4: Delete Node in BST - Complex BST operation
+# =============================================================================
+# PROBLEM 4: DELETE NODE IN A BST (MEDIUM) - 45 MIN
+# =============================================================================
+
 def delete_node_bst(root, key):
     """
-    Delete node from BST maintaining BST property
+    PROBLEM: Delete Node in a BST
     
-    Three cases:
-    1. Leaf node: Simply remove
-    2. One child: Replace with child
-    3. Two children: Replace with successor (or predecessor)
+    Given a root node reference of a BST and a key, delete the node with the given key in the BST. 
+    Return the root node reference (possibly updated) of the BST.
     
-    Time: O(h), Space: O(h)
+    Basically, the deletion can be divided into two stages:
+    1. Search for a node to remove
+    2. If the node is found, delete the node
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^4]
+    - -10^5 <= Node.val <= 10^5
+    - Each node has a unique value
+    - root is a valid binary search tree
+    - -10^5 <= key <= 10^5
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [5,3,6,2,4,null,7], key = 3
+        Output: [5,4,6,2,null,null,7]
+        Explanation: Given key to delete is 3. So we find the node with value 3 and delete it.
+    
+    Example 2:
+        Input: root = [5,3,6,2,4,null,7], key = 0
+        Output: [5,3,6,2,4,null,7]
+        Explanation: The tree does not contain a node with value = 0.
+    
+    Example 3:
+        Input: root = [], key = 0
+        Output: []
+    
+    APPROACH: Three Cases for Deletion
+    
+    1. Leaf node: simply remove
+    2. One child: replace with child
+    3. Two children: replace with inorder successor
+    
+    TIME: O(h), SPACE: O(h)
     """
     if not root:
-        return root
+        return None
     
     if key < root.val:
         root.left = delete_node_bst(root.left, key)
     elif key > root.val:
         root.right = delete_node_bst(root.right, key)
     else:
-        # Found node to delete
-        
-        # Case 1: Leaf node or one child
+        # Node to delete found
         if not root.left:
             return root.right
         elif not root.right:
             return root.left
-        
-        # Case 2: Two children
-        # Find successor (minimum in right subtree)
-        successor = find_min(root.right)
-        root.val = successor.val
-        root.right = delete_node_bst(root.right, successor.val)
+        else:
+            # Node has two children: find inorder successor
+            min_larger = find_min(root.right)
+            root.val = min_larger.val
+            root.right = delete_node_bst(root.right, min_larger.val)
     
     return root
 
 
 def find_min(root):
-    """Find minimum value node in BST (leftmost)"""
+    """Helper: Find minimum value node in BST"""
     while root.left:
         root = root.left
     return root
 
 
 def find_max(root):
-    """Find maximum value node in BST (rightmost)"""
+    """Helper: Find maximum value node in BST"""
     while root.right:
         root = root.right
     return root
 
 
-# Problem 5: Kth Smallest Element in BST - In-order traversal application
+# =============================================================================
+# PROBLEM 5: KTH SMALLEST ELEMENT IN A BST (MEDIUM) - 45 MIN
+# =============================================================================
+
 def kth_smallest_recursive(root, k):
     """
-    Find kth smallest element using in-order traversal
+    PROBLEM: Kth Smallest Element in a BST
     
-    In-order gives sorted sequence, so kth element is answer
+    Given the root of a binary search tree, and an integer k, return the kth smallest 
+    value (1-indexed) of all the values of the nodes in the tree.
     
-    Time: O(n), Space: O(h)
+    CONSTRAINTS:
+    - The number of nodes in the tree is n
+    - 1 <= k <= n <= 10^4
+    - 0 <= Node.val <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [3,1,4,null,2], k = 1
+        Output: 1
+    
+    Example 2:
+        Input: root = [5,3,6,2,4,null,null,1], k = 3
+        Output: 3
+    
+    APPROACH 1: Inorder Traversal (Recursive)
+    
+    Inorder traversal of BST gives sorted order
+    
+    TIME: O(n), SPACE: O(n)
     """
     def inorder(node):
         if not node:
             return []
-        
         return inorder(node.left) + [node.val] + inorder(node.right)
     
-    values = inorder(root)
-    return values[k-1] if k <= len(values) else None
+    sorted_vals = inorder(root)
+    return sorted_vals[k - 1]
 
 
 def kth_smallest_optimized(root, k):
     """
-    Optimized: Stop as soon as we find kth element
+    APPROACH 2: Early Termination Inorder
     
-    Time: O(h + k), Space: O(h)
+    Stop as soon as we find the kth element
+    
+    TIME: O(h + k), SPACE: O(h)
     """
     def inorder(node):
         nonlocal count, result
-        if not node or count >= k:
+        if not node or result is not None:
             return
         
-        # Traverse left
         inorder(node.left)
         
-        # Process current node
         count += 1
         if count == k:
             result = node.val
             return
         
-        # Traverse right
         inorder(node.right)
     
     count = 0
@@ -344,9 +482,11 @@ def kth_smallest_optimized(root, k):
 
 def kth_smallest_iterative(root, k):
     """
-    Iterative in-order traversal with early termination
+    APPROACH 3: Iterative Inorder with Stack
     
-    Time: O(h + k), Space: O(h)
+    Most space-efficient approach
+    
+    TIME: O(h + k), SPACE: O(h)
     """
     stack = []
     current = root
@@ -371,64 +511,121 @@ def kth_smallest_iterative(root, k):
     return None
 
 
-# Problem 6: Lowest Common Ancestor in BST - BST-specific optimization
+# =============================================================================
+# PROBLEM 6: LOWEST COMMON ANCESTOR OF A BST (EASY) - 30 MIN
+# =============================================================================
+
 def lowest_common_ancestor_bst(root, p, q):
     """
-    Find LCA in BST using BST property
+    PROBLEM: Lowest Common Ancestor of a Binary Search Tree
     
-    More efficient than general tree LCA due to ordering
+    Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
     
-    Time: O(h), Space: O(1) iterative, O(h) recursive
+    According to the definition of LCA on Wikipedia: "The lowest common ancestor is defined between 
+    two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow 
+    a node to be a descendant of itself)."
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [2, 10^5]
+    - -10^9 <= Node.val <= 10^9
+    - All Node.val are unique
+    - p != q
+    - p and q will exist in the BST
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+        Output: 6
+        Explanation: The LCA of nodes 2 and 8 is 6
+    
+    Example 2:
+        Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+        Output: 2
+        Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself
+    
+    APPROACH: Iterative Using BST Property
+    
+    Use BST property to navigate towards LCA
+    
+    TIME: O(h), SPACE: O(1)
     """
-    # Ensure p.val <= q.val for simplicity
-    if p.val > q.val:
-        p, q = q, p
+    current = root
     
-    while root:
-        if q.val < root.val:
-            # Both in left subtree
-            root = root.left
-        elif p.val > root.val:
-            # Both in right subtree
-            root = root.right
+    while current:
+        # If both nodes are in left subtree
+        if p.val < current.val and q.val < current.val:
+            current = current.left
+        # If both nodes are in right subtree
+        elif p.val > current.val and q.val > current.val:
+            current = current.right
         else:
-            # Found LCA (split point)
-            return root
+            # Found LCA (one node on each side or current is one of the nodes)
+            return current
     
     return None
 
 
 def lowest_common_ancestor_bst_recursive(root, p, q):
     """
-    Recursive version of BST LCA
+    APPROACH: Recursive Using BST Property
     
-    Time: O(h), Space: O(h)
+    TIME: O(h), SPACE: O(h)
     """
     if not root:
         return None
     
+    # If both nodes are in left subtree
     if p.val < root.val and q.val < root.val:
         return lowest_common_ancestor_bst_recursive(root.left, p, q)
-    elif p.val > root.val and q.val > root.val:
+    
+    # If both nodes are in right subtree
+    if p.val > root.val and q.val > root.val:
         return lowest_common_ancestor_bst_recursive(root.right, p, q)
-    else:
-        return root
+    
+    # Found LCA
+    return root
 
 
-# Problem 7: Convert Sorted Array to BST - BST construction
+# =============================================================================
+# PROBLEM 7: CONVERT SORTED ARRAY TO BST (EASY) - 30 MIN
+# =============================================================================
+
 def sorted_array_to_bst(nums):
     """
-    Convert sorted array to height-balanced BST
+    PROBLEM: Convert Sorted Array to Binary Search Tree
     
-    Use middle element as root to maintain balance
+    Given an integer array nums where the elements are sorted in ascending order, 
+    convert it to a height-balanced binary search tree.
     
-    Time: O(n), Space: O(log n)
+    A height-balanced binary tree is a binary tree in which the depth of the two 
+    subtrees of every node never differs by more than one.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 10^4
+    - -10^4 <= nums[i] <= 10^4
+    - nums is sorted in a strictly increasing order
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [-10,-3,0,5,9]
+        Output: [0,-3,9,-10,null,5]
+        Explanation: [0,-10,5,null,-3,null,9] is also accepted
+    
+    Example 2:
+        Input: nums = [1,3]
+        Output: [3,1] or [1,null,3]
+    
+    APPROACH: Recursive Middle Element as Root
+    
+    Choose middle element as root to ensure balance
+    
+    TIME: O(n), SPACE: O(log n)
     """
     def build_bst(left, right):
         if left > right:
             return None
         
-        # Choose middle as root
+        # Choose middle element as root
         mid = (left + right) // 2
         root = TreeNode(nums[mid])
         
@@ -441,28 +638,52 @@ def sorted_array_to_bst(nums):
     return build_bst(0, len(nums) - 1)
 
 
-# ADVANCED PROBLEMS FOR EXTRA PRACTICE
+# =============================================================================
+# PROBLEM 8: RECOVER BINARY SEARCH TREE (HARD) - 60 MIN
+# =============================================================================
 
 def recover_bst(root):
     """
-    Recover BST where exactly two nodes are swapped
+    PROBLEM: Recover Binary Search Tree
     
-    Find the two swapped nodes and fix them
+    You are given the root of a binary search tree (BST), where the values of exactly 
+    two nodes of the tree were swapped by mistake. Recover the tree without changing its structure.
     
-    Time: O(n), Space: O(h)
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [2, 1000]
+    - -2^31 <= Node.val <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,3,null,null,2]
+        Output: [3,1,null,null,2]
+        Explanation: 3 cannot be a left child of 1 because 3 > 1. Swapping 1 and 3 makes the BST valid.
+    
+    Example 2:
+        Input: root = [3,1,4,null,null,2]
+        Output: [2,1,4,null,null,3]
+        Explanation: 2 cannot be in the right subtree of 3 because 2 < 3. Swapping 2 and 3 makes the BST valid.
+    
+    APPROACH: Inorder Traversal to Find Violations
+    
+    In correct BST, inorder traversal is sorted.
+    Find the two nodes that violate this property.
+    
+    TIME: O(n), SPACE: O(h)
     """
     def inorder(node):
         nonlocal first, second, prev
+        
         if not node:
             return
         
         inorder(node.left)
         
-        # Find anomaly
+        # Check for violation
         if prev and prev.val > node.val:
             if not first:
-                first = prev
-            second = node
+                first = prev  # First violation
+            second = node  # Second violation (or update)
         
         prev = node
         inorder(node.right)
@@ -475,78 +696,169 @@ def recover_bst(root):
         first.val, second.val = second.val, first.val
 
 
+# =============================================================================
+# PROBLEM 9: BINARY SEARCH TREE TO GREATER SUM TREE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def bst_to_greater_tree(root):
     """
-    Convert BST to Greater Sum Tree
+    PROBLEM: Binary Search Tree to Greater Sum Tree
     
-    Each node's value = original value + sum of all greater values
+    Given the root of a Binary Search Tree (BST), convert it to a Greater Tree such that 
+    every key of the original BST is changed to the original key plus the sum of all keys 
+    greater than the original key in BST.
     
-    Time: O(n), Space: O(h)
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^4]
+    - -10^4 <= Node.val <= 10^4
+    - All the values in the tree are unique
+    - root is guaranteed to be a valid binary search tree
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
+        Output: [30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]
+    
+    Example 2:
+        Input: root = [0,null,1]
+        Output: [1,null,1]
+    
+    APPROACH: Reverse Inorder Traversal
+    
+    Traverse right → root → left to process larger values first
+    
+    TIME: O(n), SPACE: O(h)
     """
     def reverse_inorder(node):
-        nonlocal total
+        nonlocal running_sum
+        
         if not node:
             return
         
-        # Traverse right first (larger values)
+        # Traverse right subtree first (larger values)
         reverse_inorder(node.right)
         
         # Update current node
-        total += node.val
-        node.val = total
+        running_sum += node.val
+        node.val = running_sum
         
-        # Traverse left
+        # Traverse left subtree
         reverse_inorder(node.left)
     
-    total = 0
+    running_sum = 0
     reverse_inorder(root)
     return root
 
 
+# =============================================================================
+# PROBLEM 10: RANGE SUM OF BST (EASY) - 30 MIN
+# =============================================================================
+
 def range_sum_bst(root, low, high):
     """
-    Calculate sum of all node values in given range [low, high]
+    PROBLEM: Range Sum of BST
     
-    Use BST property to prune unnecessary branches
+    Given the root node of a binary search tree and two integers low and high, 
+    return the sum of values of all nodes with a value in the inclusive range [low, high].
     
-    Time: O(n), Space: O(h)
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 2 * 10^4]
+    - 1 <= Node.val <= 10^5
+    - 1 <= low <= high <= 10^5
+    - All Node.val are unique
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [10,5,15,3,7,null,18], low = 7, high = 15
+        Output: 32
+        Explanation: Nodes 7, 10, and 15 are in the range [7, 15]. 7 + 10 + 15 = 32.
+    
+    Example 2:
+        Input: root = [10,5,15,3,7,13,18,1,null,6], low = 6, high = 10
+        Output: 23
+        Explanation: Nodes 6, 7, and 10 are in the range [6, 10]. 6 + 7 + 10 = 23.
+    
+    APPROACH: Optimized DFS Using BST Property
+    
+    Prune search space using BST property
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return 0
     
-    if root.val < low:
-        # Current and left subtree too small
-        return range_sum_bst(root.right, low, high)
-    elif root.val > high:
-        # Current and right subtree too large
-        return range_sum_bst(root.left, low, high)
-    else:
-        # Current node in range
-        return (root.val + 
-                range_sum_bst(root.left, low, high) +
-                range_sum_bst(root.right, low, high))
+    total = 0
+    
+    # If current node is in range, add its value
+    if low <= root.val <= high:
+        total += root.val
+    
+    # Recursively search left subtree if current value > low
+    if root.val > low:
+        total += range_sum_bst(root.left, low, high)
+    
+    # Recursively search right subtree if current value < high
+    if root.val < high:
+        total += range_sum_bst(root.right, low, high)
+    
+    return total
 
+
+# =============================================================================
+# PROBLEM 11: TRIM A BINARY SEARCH TREE (MEDIUM) - 45 MIN
+# =============================================================================
 
 def trim_bst(root, low, high):
     """
-    Trim BST to contain only nodes in range [low, high]
+    PROBLEM: Trim a Binary Search Tree
     
-    Time: O(n), Space: O(h)
+    Given the root of a binary search tree and the lowest and highest boundaries as low and high, 
+    trim the tree so that all its elements lies in [low, high]. Trimming the tree should not 
+    change the relative structure of the elements that will remain in the tree.
+    
+    It can be proven that there is a unique answer.
+    
+    Return the root of the trimmed binary search tree. Note that the root may change depending 
+    on the given bounds.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 10^4]
+    - 0 <= Node.val <= 10^4
+    - The value of each node in the tree is unique
+    - root is guaranteed to be a valid binary search tree
+    - 0 <= low <= high <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,0,2], low = 1, high = 2
+        Output: [1,null,2]
+    
+    Example 2:
+        Input: root = [3,0,4,null,2,null,null,1], low = 1, high = 3
+        Output: [3,2,null,1]
+    
+    APPROACH: Recursive Trimming
+    
+    Remove nodes outside range, reconnect valid subtrees
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return None
     
+    # If current node is less than low, trim left subtree and return right
     if root.val < low:
-        # Root too small, trim left subtree
         return trim_bst(root.right, low, high)
-    elif root.val > high:
-        # Root too large, trim right subtree
+    
+    # If current node is greater than high, trim right subtree and return left
+    if root.val > high:
         return trim_bst(root.left, low, high)
-    else:
-        # Root in range, trim both subtrees
-        root.left = trim_bst(root.left, low, high)
-        root.right = trim_bst(root.right, low, high)
-        return root
+    
+    # Current node is in range, trim both subtrees
+    root.left = trim_bst(root.left, low, high)
+    root.right = trim_bst(root.right, low, high)
+    
+    return root
 
 
 # UTILITY FUNCTIONS FOR TESTING

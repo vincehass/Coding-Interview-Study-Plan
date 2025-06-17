@@ -1,6 +1,6 @@
 # Coding-Interview-Study-Plan
 
-This 4-week intensive preparation plan is specifically tailored for Meta technical interviews, focusing on data structures and algorithms without dynamic programming. The plan allocates 4 hours daily across 6 days per week (24 hours/week, 96 hours total).
+This 4-week intensive preparation plan is specifically tailored for Meta technical interviews, focusing on data structures and algorithms with comprehensive dynamic programming coverage. The plan allocates 4 hours daily across 6 days per week (24 hours/week, 96 hours total).
 
 # Meta Technical Interview Preparation - 4 Week Study Plan
 
@@ -18,7 +18,19 @@ meta-interview-prep/
 │   └── day6/
 ├── week2/
 ├── week3/
+│   ├── day13_graph_representation_bfs.py
+│   ├── day14_graph_dfs_backtracking.py
+│   ├── day15_graph_algorithms.py
+│   ├── day16_union_find_advanced.py
+│   ├── day17_tries_string_algorithms.py
+│   └── day18_week3_review_complex.py
 ├── week4/
+│   ├── day19_1d_dynamic_programming.py
+│   ├── day20_2d_dynamic_programming.py
+│   ├── day21_advanced_dp_patterns.py
+│   ├── day22_dp_optimization_techniques.py
+│   ├── day23_dp_trees_graphs.py
+│   └── day24_final_review_mock_interviews.py
 ├── practice/
 │   ├── week1/
 │   │   ├── solution.py        # Complete Week 1 solutions with variants
@@ -40,7 +52,7 @@ meta-interview-prep/
 
 ## Overview
 
-This 4-week intensive preparation plan is specifically tailored for Meta technical interviews, focusing on data structures and algorithms without dynamic programming. The plan allocates 4 hours daily across 6 days per week (24 hours/week, 96 hours total).
+This 4-week intensive preparation plan is specifically tailored for Meta technical interviews, focusing on data structures and algorithms with comprehensive dynamic programming coverage. The plan allocates 4 hours daily across 6 days per week (24 hours/week, 96 hours total).
 
 ## 🎯 Complete Solution Files Available
 
@@ -155,6 +167,88 @@ This 4-week intensive preparation plan is specifically tailored for Meta technic
 
 **Verification**: ✅ All 30+ test cases passed successfully
 
+## 🎯 NEW: Complete Daily Practice Files
+
+### ✅ Week 3 Daily Practice Files
+
+**Complete 6-day structured practice with comprehensive problem sets:**
+
+#### **Day 13: Graph Representation & BFS** (`week3/day13_graph_representation_bfs.py`)
+
+- **Theory**: Graph basics, BFS algorithm implementation
+- **Problems**: Number of Islands, Binary Tree Level Order Traversal, Word Ladder, Rotting Oranges, Clone Graph
+- **Features**: Complete BFS implementations, graph utilities, comprehensive test cases
+
+#### **Day 14: Graph DFS & Backtracking** (`week3/day14_graph_dfs_backtracking.py`)
+
+- **Theory**: DFS algorithms, backtracking patterns
+- **Problems**: Path Sum II, Generate Parentheses, Letter Combinations, Word Search, N-Queens
+- **Features**: Recursive DFS, backtracking templates, state management
+
+#### **Day 15: Graph Algorithms** (`week3/day15_graph_algorithms.py`)
+
+- **Theory**: Cycle detection, topological sorting
+- **Problems**: Course Schedule I & II, Bipartite Graph Detection, Alien Dictionary
+- **Features**: Advanced graph algorithms, cycle detection, topological sort
+
+#### **Day 16: Union-Find & Advanced Graph** (`week3/day16_union_find_advanced.py`)
+
+- **Theory**: Union-Find with path compression and union by rank
+- **Problems**: Connected Components, Accounts Merge, Redundant Connection, Most Stones Removed
+- **Features**: Optimized Union-Find implementation, connectivity problems
+
+#### **Day 17: Tries & String Algorithms** (`week3/day17_tries_string_algorithms.py`)
+
+- **Theory**: Trie implementation and operations
+- **Problems**: Word Search II, Add and Search Word, Longest Common Prefix, Replace Words
+- **Features**: Complete Trie implementation, prefix matching, string algorithms
+
+#### **Day 18: Week 3 Review & Complex Problems** (`week3/day18_week3_review_complex.py`)
+
+- **Integration**: Multi-concept problems combining graphs, tries, and advanced algorithms
+- **Problems**: Critical Connections (Tarjan's), Minimum Height Trees, Word Ladder II, Graph Valid Tree
+- **Features**: Advanced algorithms, comprehensive review, mock interview preparation
+
+### ✅ Week 4 Daily Practice Files
+
+**Complete 6-day Dynamic Programming mastery with advanced techniques:**
+
+#### **Day 19: 1D Dynamic Programming** (`week4/day19_1d_dynamic_programming.py`)
+
+- **Theory**: DP fundamentals, memoization vs tabulation
+- **Problems**: Climbing Stairs, House Robber (I & II), Maximum Subarray, Coin Change, Longest Increasing Subsequence
+- **Features**: Multiple DP approaches, space optimization, classic 1D patterns
+
+#### **Day 20: 2D Dynamic Programming** (`week4/day20_2d_dynamic_programming.py`)
+
+- **Theory**: Grid-based DP, string matching algorithms
+- **Problems**: Unique Paths, Minimum Path Sum, Longest Common Subsequence, Edit Distance, Maximal Square
+- **Features**: Grid traversal DP, string matching patterns, space optimization techniques
+
+#### **Day 21: Advanced DP Patterns** (`week4/day21_advanced_dp_patterns.py`)
+
+- **Theory**: Interval DP, state machine DP, complex patterns
+- **Problems**: Palindromic Substrings, Decode Ways, Stock with Cooldown, Burst Balloons, Regular Expression Matching
+- **Features**: Advanced DP techniques, interval DP, pattern matching algorithms
+
+#### **Day 22: DP Optimization Techniques** (`week4/day22_dp_optimization_techniques.py`)
+
+- **Theory**: Space/time optimization, matrix exponentiation, monotonic deque
+- **Problems**: Perfect Squares, Maximal Rectangle, Sliding Window Maximum, Fibonacci Matrix, Largest Divisible Subset
+- **Features**: Mathematical optimizations, advanced data structures, complexity reduction
+
+#### **Day 23: DP on Trees and Graphs** (`week4/day23_dp_trees_graphs.py`)
+
+- **Theory**: Tree DP patterns, graph state management
+- **Problems**: Binary Tree Maximum Path Sum, House Robber III, Diameter of Binary Tree, Longest Univalue Path
+- **Features**: Tree traversal DP, subtree optimization, path problems on trees
+
+#### **Day 24: Final Review & Mock Interviews** (`week4/day24_final_review_mock_interviews.py`)
+
+- **Integration**: Comprehensive 4-week review, mock interview simulation
+- **Problems**: LRU Cache, Time Based Key-Value Store, Sliding Window Maximum, Word Break II
+- **Features**: System design components, interview simulation, complete preparation summary
+
 ## 🚀 How to Use the Solution Files
 
 ### Running Individual Week Solutions
@@ -175,6 +269,26 @@ python solution.py
 # Week 4 - Dynamic Programming
 cd practice/week4
 python solution.py
+```
+
+### Running Daily Practice Files
+
+```bash
+# Week 3 Daily Practice
+python week3/day13_graph_representation_bfs.py
+python week3/day14_graph_dfs_backtracking.py
+python week3/day15_graph_algorithms.py
+python week3/day16_union_find_advanced.py
+python week3/day17_tries_string_algorithms.py
+python week3/day18_week3_review_complex.py
+
+# Week 4 Daily Practice
+python week4/day19_1d_dynamic_programming.py
+python week4/day20_2d_dynamic_programming.py
+python week4/day21_advanced_dp_patterns.py
+python week4/day22_dp_optimization_techniques.py
+python week4/day23_dp_trees_graphs.py
+python week4/day24_final_review_mock_interviews.py
 ```
 
 ### Features of Solution Files
@@ -202,11 +316,11 @@ Based on Meta's technical interview patterns:
 1. **Arrays & Strings** - High frequency
 2. **Hash Tables** - Very common
 3. **Trees & Graphs** - Core focus area
-4. **Linked Lists** - Regular appearance
-5. **Stacks & Queues** - Supporting data structures
-6. **Sorting & Searching** - Fundamental algorithms
-7. **Two Pointers & Sliding Window** - Common patterns
-8. **Backtracking** - Medium frequency
+4. **Dynamic Programming** - Essential for senior roles
+5. **Linked Lists** - Regular appearance
+6. **Stacks & Queues** - Supporting data structures
+7. **Sorting & Searching** - Fundamental algorithms
+8. **Two Pointers & Sliding Window** - Common patterns
 9. **System Design Concepts** - For senior roles
 
 ## Daily Schedule (4 hours)
@@ -435,7 +549,7 @@ Based on Meta's technical interview patterns:
 
 ## Week 3: Graphs & Advanced Data Structures
 
-### Day 13: Graph Representation & BFS
+### Day 13: Graph Representation & BFS (`week3/day13_graph_representation_bfs.py`)
 
 **Focus**: Graph basics, breadth-first search
 **Time Allocation**: 4 hours
@@ -454,7 +568,7 @@ Based on Meta's technical interview patterns:
 4. **Rotting Oranges** (Medium) - 45 min
 5. **Clone Graph** (Medium) - 45 min
 
-### Day 14: Graph DFS & Backtracking
+### Day 14: Graph DFS & Backtracking (`week3/day14_graph_dfs_backtracking.py`)
 
 **Focus**: Depth-first search, path exploration
 **Time Allocation**: 4 hours
@@ -473,7 +587,7 @@ Based on Meta's technical interview patterns:
 4. **Word Search** (Medium) - 60 min
 5. **N-Queens** (Hard) - 75 min
 
-### Day 15: Graph Algorithms
+### Day 15: Graph Algorithms (`week3/day15_graph_algorithms.py`)
 
 **Focus**: Cycle detection, topological sort
 **Time Allocation**: 4 hours
@@ -492,7 +606,7 @@ Based on Meta's technical interview patterns:
 4. **Is Graph Bipartite?** (Medium) - 45 min
 5. **Alien Dictionary** (Hard) - 60 min
 
-### Day 16: Union-Find & Advanced Graph
+### Day 16: Union-Find & Advanced Graph (`week3/day16_union_find_advanced.py`)
 
 **Focus**: Disjoint sets, connectivity problems
 **Time Allocation**: 4 hours
@@ -509,8 +623,9 @@ Based on Meta's technical interview patterns:
 2. **Accounts Merge** (Medium) - 60 min
 3. **Redundant Connection** (Medium) - 45 min
 4. **Most Stones Removed** (Medium) - 60 min
+5. **Satisfiability of Equality Equations** (Medium) - 45 min
 
-### Day 17: Tries & String Algorithms
+### Day 17: Tries & String Algorithms (`week3/day17_tries_string_algorithms.py`)
 
 **Focus**: Prefix trees, string matching
 **Time Allocation**: 4 hours
@@ -529,117 +644,135 @@ Based on Meta's technical interview patterns:
 4. **Longest Common Prefix** (Easy) - 30 min
 5. **Replace Words** (Medium) - 45 min
 
-### Day 18: Week 3 Review & Complex Problems
+### Day 18: Week 3 Review & Complex Problems (`week3/day18_week3_review_complex.py`)
 
 **Focus**: Integration of multiple concepts
 **Time Allocation**: 4 hours
 
-#### Activities
+#### Problems (4 hours)
 
-- Multi-concept problems (2 hours)
-- Graph algorithm review (1 hour)
-- Advanced mock interview (1 hour)
+1. **Critical Connections in a Network** (Hard) - 90 min
+2. **Minimum Height Trees** (Medium) - 60 min
+3. **Word Ladder II** (Hard) - 90 min
+4. **Alien Dictionary Advanced** (Hard) - 60 min
+5. **Graph Valid Tree** (Medium) - 45 min
 
-## Week 4: Integration & Meta-Specific Preparation
+## Week 4: Dynamic Programming Mastery
 
-### Day 19: Sorting & Advanced Arrays
+### Day 19: 1D Dynamic Programming (`week4/day19_1d_dynamic_programming.py`)
 
-**Focus**: Sorting algorithms, array manipulations
+**Focus**: DP fundamentals, memoization vs tabulation
 **Time Allocation**: 4 hours
 
 #### Theory (1 hour)
 
-- Comparison-based vs non-comparison sorting
-- Stability and in-place properties
-- Custom sorting criteria
+- DP fundamentals and recurrence relations
+- Memoization vs tabulation approaches
+- Space optimization techniques
 
 #### Problems (3 hours)
 
-1. **Merge Intervals** (Medium) - 45 min
-2. **Insert Interval** (Medium) - 45 min
-3. **Non-overlapping Intervals** (Medium) - 45 min
-4. **Sort Colors** (Medium) - 30 min
-5. **Largest Number** (Medium) - 45 min
-6. **Meeting Rooms** (Easy) - 30 min
+1. **Climbing Stairs** (Easy) - 30 min
+2. **House Robber** (Medium) - 45 min
+3. **House Robber II** (Medium) - 45 min
+4. **Maximum Subarray** (Easy) - 30 min
+5. **Coin Change** (Medium) - 60 min
+6. **Longest Increasing Subsequence** (Medium) - 60 min
 
-### Day 20: Greedy Algorithms
+### Day 20: 2D Dynamic Programming (`week4/day20_2d_dynamic_programming.py`)
 
-**Focus**: Greedy choice property, optimization
+**Focus**: Grid-based DP, string matching
 **Time Allocation**: 4 hours
 
 #### Theory (1 hour)
 
-- Greedy algorithm paradigm
-- Proof of correctness
-- When greedy works vs doesn't work
+- 2D DP patterns and state transitions
+- Grid traversal problems
+- String matching algorithms
 
 #### Problems (3 hours)
 
-1. **Best Time to Buy and Sell Stock** (Easy) - 30 min
-2. **Best Time to Buy and Sell Stock II** (Medium) - 30 min
-3. **Jump Game** (Medium) - 45 min
-4. **Jump Game II** (Medium) - 45 min
-5. **Gas Station** (Medium) - 60 min
-6. **Task Scheduler** (Medium) - 60 min
+1. **Unique Paths** (Medium) - 30 min
+2. **Minimum Path Sum** (Medium) - 45 min
+3. **Longest Common Subsequence** (Medium) - 60 min
+4. **Edit Distance** (Hard) - 75 min
+5. **Maximal Square** (Medium) - 60 min
 
-### Day 21: Meta-Specific Problems
+### Day 21: Advanced DP Patterns (`week4/day21_advanced_dp_patterns.py`)
 
-**Focus**: Problems commonly asked at Meta
+**Focus**: Complex DP patterns, optimization
 **Time Allocation**: 4 hours
 
-#### Meta Favorites (4 hours)
+#### Theory (1 hour)
 
-1. **Add Binary** (Easy) - 30 min
-2. **Valid Palindrome II** (Easy) - 30 min
-3. **Move Zeroes** (Easy) - 30 min
-4. **Binary Tree Vertical Order Traversal** (Medium) - 60 min
-5. **Random Pick with Weight** (Medium) - 45 min
-6. **Subarray Sum Equals K** (revisit) - 30 min
-7. **Exclusive Time of Functions** (Medium) - 60 min
-8. **Expression Add Operators** (Hard) - 75 min
+- Interval DP and range problems
+- State machine DP patterns
+- Multi-dimensional state spaces
 
-### Day 22: System Design Fundamentals
+#### Problems (3 hours)
 
-**Focus**: Basic system design concepts
+1. **Palindromic Substrings** (Medium) - 45 min
+2. **Decode Ways** (Medium) - 60 min
+3. **Best Time to Buy and Sell Stock with Cooldown** (Medium) - 75 min
+4. **Burst Balloons** (Hard) - 90 min
+5. **Regular Expression Matching** (Hard) - 90 min
+
+### Day 22: DP Optimization Techniques (`week4/day22_dp_optimization_techniques.py`)
+
+**Focus**: Space/time optimization, advanced techniques
 **Time Allocation**: 4 hours
 
-#### Theory (2 hours)
+#### Theory (1 hour)
 
-- Scalability principles
-- Load balancing, caching, databases
-- Microservices vs monoliths
-- Basic distributed systems concepts
+- Space optimization strategies
+- Matrix exponentiation for DP
+- Monotonic deque optimization
 
-#### Practice (2 hours)
+#### Problems (3 hours)
 
-- Design a URL shortener
-- Design a chat application
-- Design a newsfeed system
-- Practice explaining trade-offs
+1. **Perfect Squares** (Medium) - 45 min
+2. **Maximal Rectangle** (Hard) - 75 min
+3. **Sliding Window Maximum** (Hard) - 60 min
+4. **Fibonacci with Matrix Exponentiation** (Medium) - 60 min
+5. **Largest Divisible Subset** (Medium) - 75 min
 
-### Day 23: Mock Interviews & Optimization
+### Day 23: DP on Trees and Graphs (`week4/day23_dp_trees_graphs.py`)
 
-**Focus**: Interview simulation and code optimization
+**Focus**: Tree DP, graph DP patterns
 **Time Allocation**: 4 hours
 
-#### Activities
+#### Theory (1 hour)
 
-- Full mock interview #1 (1 hour)
-- Code review and optimization (1 hour)
-- Full mock interview #2 (1 hour)
-- Behavioral question preparation (1 hour)
+- Tree DP with subtree states
+- Path problems on trees
+- Graph DP with memoization
 
-### Day 24: Final Review & Confidence Building
+#### Problems (3 hours)
 
-**Focus**: Last-minute preparation
+1. **Binary Tree Maximum Path Sum** (Hard) - 60 min
+2. **House Robber III** (Medium) - 45 min
+3. **Diameter of Binary Tree** (Easy) - 30 min
+4. **Longest Univalue Path** (Medium) - 60 min
+5. **Minimum Cost to Make Array Non-decreasing** (Hard) - 90 min
+
+### Day 24: Final Review & Mock Interviews (`week4/day24_final_review_mock_interviews.py`)
+
+**Focus**: Comprehensive review and interview simulation
 **Time Allocation**: 4 hours
 
-#### Activities
+#### Activities (4 hours)
 
-- Review weak areas (1 hour)
-- Speed coding practice (1 hour)
-- Meta-specific problem marathon (1.5 hours)
-- Mental preparation and strategy (30 min)
+1. **Complete 4-Week Review** - 60 min
+2. **Mock Interview Simulation** - 90 min
+3. **System Design Components** - 60 min
+4. **Interview Strategy & Preparation** - 30 min
+
+#### Featured Problems
+
+1. **LRU Cache** (Medium) - System design component
+2. **Time Based Key-Value Store** (Medium) - Advanced data structure
+3. **Sliding Window Maximum** (Hard) - Algorithm optimization
+4. **Word Break II** (Hard) - Complex DP with backtracking
 
 ## Problem Solutions Structure
 
@@ -661,6 +794,7 @@ Each problem includes:
 - Sliding window template
 - Two pointers template
 - Backtracking template
+- Dynamic programming templates
 
 ### Complexity Analysis Guide
 
@@ -723,10 +857,11 @@ Track your progress daily:
 3. **Run the comprehensive solution files to verify your setup**
 4. Start with Week 1, Day 1
 5. **Use the solution files as reference and practice**
-6. Track your progress daily
-7. Adjust the schedule based on your learning pace
-8. Schedule mock interviews for weeks 2-4
+6. **Follow the daily practice files for structured learning**
+7. Track your progress daily
+8. Adjust the schedule based on your learning pace
+9. Schedule mock interviews for weeks 2-4
 
 ---
 
-_This study plan is designed specifically for Meta technical interviews based on current interview patterns and feedback from successful candidates. The comprehensive solution files provide 155+ tested solutions with variants across all essential topics. Adjust the pace according to your background and comfort level._
+_This study plan is designed specifically for Meta technical interviews based on current interview patterns and feedback from successful candidates. The comprehensive solution files provide 155+ tested solutions with variants across all essential topics, and the daily practice files offer structured 4-hour learning sessions. Adjust the pace according to your background and comfort level._

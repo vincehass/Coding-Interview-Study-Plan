@@ -52,19 +52,47 @@ THEORY SECTION (1 Hour)
 from typing import List
 
 
-# Problem 1: Classic Binary Search - Foundation template
-def binary_search_iterative(nums, target):
+# =============================================================================
+# PROBLEM 1: BINARY SEARCH (EASY) - 30 MIN
+# =============================================================================
+
+def binary_search_basic(nums, target):
     """
-    Standard binary search for exact target
+    PROBLEM: Binary Search
     
-    Template that prevents common errors
+    Given an array of integers nums which is sorted in ascending order, and an integer target, 
+    write a function to search target in nums. If target exists, then return its index. 
+    Otherwise, return -1.
     
-    Time: O(log n), Space: O(1)
+    You must write an algorithm with O(log n) runtime complexity.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 10^4
+    - -10^4 < nums[i], target < 10^4
+    - All the integers in nums are unique
+    - nums is sorted in ascending order
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [-1,0,3,5,9,12], target = 9
+        Output: 4
+        Explanation: 9 exists in nums and its index is 4
+    
+    Example 2:
+        Input: nums = [-1,0,3,5,9,12], target = 2
+        Output: -1
+        Explanation: 2 does not exist in nums so return -1
+    
+    APPROACH: Classic Binary Search
+    
+    Divide search space in half at each step
+    
+    TIME: O(log n), SPACE: O(1)
     """
     left, right = 0, len(nums) - 1
     
     while left <= right:
-        mid = left + (right - left) // 2  # Prevent overflow
+        mid = (left + right) // 2
         
         if nums[mid] == target:
             return mid
@@ -73,98 +101,223 @@ def binary_search_iterative(nums, target):
         else:
             right = mid - 1
     
-    return -1  # Target not found
+    return -1
 
 
-def binary_search_recursive(nums, target):
+# =============================================================================
+# PROBLEM 2: FIRST BAD VERSION (EASY) - 30 MIN
+# =============================================================================
+
+def first_bad_version(n):
     """
-    Recursive binary search implementation
+    PROBLEM: First Bad Version
     
-    More intuitive but uses O(log n) space
+    You are a product manager and currently leading a team to develop a new product. 
+    Unfortunately, the latest version of your product fails the quality check. Since each 
+    version is developed based on the previous version, all the versions after a bad version are also bad.
     
-    Time: O(log n), Space: O(log n)
+    Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, 
+    which causes all the following ones to be bad.
+    
+    You are given an API bool isBadVersion(version) which returns whether version is bad. 
+    Implement a function to find the first bad version. You should minimize the number of calls to the API.
+    
+    CONSTRAINTS:
+    - 1 <= bad <= n <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: n = 5, bad = 4
+        Output: 4
+        Explanation:
+        call isBadVersion(3) -> false
+        call isBadVersion(5) -> true
+        call isBadVersion(4) -> true
+        Then 4 is the first bad version.
+    
+    Example 2:
+        Input: n = 1, bad = 1
+        Output: 1
+    
+    APPROACH: Binary Search for First Occurrence
+    
+    Find the leftmost position where condition becomes true
+    
+    TIME: O(log n), SPACE: O(1)
     """
-    def search(left, right):
-        if left > right:
-            return -1
+    def isBadVersion(version):
+        # This is a mock function - in real problem it's provided
+        return version >= 4  # Assuming bad version starts at 4
+    
+    left, right = 1, n
+    
+    while left < right:
+        mid = (left + right) // 2
         
-        mid = left + (right - left) // 2
-        
-        if nums[mid] == target:
-            return mid
-        elif nums[mid] < target:
-            return search(mid + 1, right)
+        if isBadVersion(mid):
+            right = mid  # Could be the first bad, search left
         else:
-            return search(left, mid - 1)
+            left = mid + 1  # Not bad, search right
     
-    return search(0, len(nums) - 1)
+    return left
 
 
-# Problem 2: Find First and Last Position - Boundary search
-def search_range(nums, target):
+# =============================================================================
+# PROBLEM 3: SEARCH INSERT POSITION (EASY) - 30 MIN
+# =============================================================================
+
+def search_insert(nums, target):
     """
-    Find first and last position of target in sorted array
+    PROBLEM: Search Insert Position
     
-    Use modified binary search to find boundaries
+    Given a sorted array of distinct integers and a target value, return the index if the 
+    target is found. If not, return the index where it would be if it were inserted in order.
     
-    Time: O(log n), Space: O(1)
+    You must write an algorithm with O(log n) runtime complexity.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 10^4
+    - -10^4 <= nums[i] <= 10^4
+    - nums contains distinct values sorted in ascending order
+    - -10^4 <= target <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,3,5,6], target = 5
+        Output: 2
+    
+    Example 2:
+        Input: nums = [1,3,5,6], target = 2
+        Output: 1
+    
+    Example 3:
+        Input: nums = [1,3,5,6], target = 7
+        Output: 4
+    
+    APPROACH: Binary Search for Insertion Point
+    
+    Find the leftmost position where target can be inserted
+    
+    TIME: O(log n), SPACE: O(1)
     """
-    def find_first(nums, target):
-        left, right = 0, len(nums) - 1
-        first_pos = -1
-        
-        while left <= right:
-            mid = left + (right - left) // 2
-            
-            if nums[mid] == target:
-                first_pos = mid
-                right = mid - 1  # Continue searching left
-            elif nums[mid] < target:
-                left = mid + 1
-            else:
-                right = mid - 1
-        
-        return first_pos
+    left, right = 0, len(nums)
     
-    def find_last(nums, target):
-        left, right = 0, len(nums) - 1
-        last_pos = -1
+    while left < right:
+        mid = (left + right) // 2
         
-        while left <= right:
-            mid = left + (right - left) // 2
-            
-            if nums[mid] == target:
-                last_pos = mid
-                left = mid + 1  # Continue searching right
-            elif nums[mid] < target:
-                left = mid + 1
-            else:
-                right = mid - 1
-        
-        return last_pos
+        if nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid
     
-    first = find_first(nums, target)
-    if first == -1:
-        return [-1, -1]
-    
-    last = find_last(nums, target)
-    return [first, last]
+    return left
 
 
-# Problem 3: Search in Rotated Sorted Array - Modified binary search
+# =============================================================================
+# PROBLEM 4: FIND PEAK ELEMENT (MEDIUM) - 45 MIN
+# =============================================================================
+
+def find_peak_element(nums):
+    """
+    PROBLEM: Find Peak Element
+    
+    A peak element is an element that is strictly greater than its neighbors.
+    
+    Given a 0-indexed integer array nums, find a peak element, and return its index. 
+    If the array contains multiple peaks, return the index to any of the peaks.
+    
+    You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always 
+    considered to be strictly greater than a neighbor that is outside the array.
+    
+    You must write an algorithm that runs in O(log n) time.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 1000
+    - -2^31 <= nums[i] <= 2^31 - 1
+    - nums[i] != nums[i + 1] for all valid i
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,2,3,1]
+        Output: 2
+        Explanation: 3 is a peak element and your function should return the index number 2
+    
+    Example 2:
+        Input: nums = [1,2,1,3,5,6,4]
+        Output: 5
+        Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6
+    
+    APPROACH: Binary Search on Slope
+    
+    Move towards the increasing slope to find a peak
+    
+    TIME: O(log n), SPACE: O(1)
+    """
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if nums[mid] < nums[mid + 1]:
+            # Slope is increasing, peak is to the right
+            left = mid + 1
+        else:
+            # Slope is decreasing, peak is to the left (or at mid)
+            right = mid
+    
+    return left
+
+
+# =============================================================================
+# PROBLEM 5: SEARCH IN ROTATED SORTED ARRAY (MEDIUM) - 45 MIN
+# =============================================================================
+
 def search_rotated_array(nums, target):
     """
-    Search in rotated sorted array
+    PROBLEM: Search in Rotated Sorted Array
     
-    Key insight: One half is always sorted
+    There is an integer array nums sorted in ascending order (with distinct values).
+    
+    Prior to being passed to your function, nums is possibly rotated at an unknown pivot 
+    index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., 
+    nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] 
+    might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+    
+    Given the array nums after the possible rotation and an integer target, return the index 
+    of target if it is in nums, or -1 if it is not in nums.
+    
+    You must write an algorithm with O(log n) runtime complexity.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 5000
+    - -10^4 <= nums[i] <= 10^4
+    - All values of nums are unique
+    - nums is an ascending array that is possibly rotated
+    - -10^4 <= target <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [4,5,6,7,0,1,2], target = 0
+        Output: 4
+    
+    Example 2:
+        Input: nums = [4,5,6,7,0,1,2], target = 3
+        Output: -1
+    
+    Example 3:
+        Input: nums = [1], target = 0
+        Output: -1
+    
+    APPROACH: Modified Binary Search
+    
     Determine which half is sorted, then decide which half to search
     
-    Time: O(log n), Space: O(1)
+    TIME: O(log n), SPACE: O(1)
     """
     left, right = 0, len(nums) - 1
     
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = (left + right) // 2
         
         if nums[mid] == target:
             return mid
@@ -186,95 +339,107 @@ def search_rotated_array(nums, target):
     return -1
 
 
-def find_minimum_rotated(nums):
+# =============================================================================
+# PROBLEM 6: FIND MINIMUM IN ROTATED SORTED ARRAY (MEDIUM) - 45 MIN
+# =============================================================================
+
+def find_min_rotated(nums):
     """
-    Find minimum element in rotated sorted array
+    PROBLEM: Find Minimum in Rotated Sorted Array
     
-    Minimum is the pivot point where rotation occurred
+    Suppose an array of length n sorted in ascending order is rotated between 1 and n times. 
+    For example, the array nums = [0,1,2,4,5,6,7] might become:
+    - [4,5,6,7,0,1,2] if it was rotated 4 times
+    - [0,1,2,4,5,6,7] if it was rotated 7 times
     
-    Time: O(log n), Space: O(1)
+    Notice that rotating an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array 
+    [a[n-1], a[0], a[1], a[2], ..., a[n-2]].
+    
+    Given the sorted rotated array nums of unique elements, return the minimum element of this array.
+    
+    You must write an algorithm that runs in O(log n) time.
+    
+    CONSTRAINTS:
+    - n == nums.length
+    - 1 <= n <= 5000
+    - -5000 <= nums[i] <= 5000
+    - All the integers of nums are unique
+    - nums is sorted and rotated between 1 and n times
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [3,4,5,1,2]
+        Output: 1
+        Explanation: The original array was [1,2,3,4,5] rotated 3 times
+    
+    Example 2:
+        Input: nums = [4,5,6,7,0,1,2]
+        Output: 0
+        Explanation: The original array was [0,1,2,4,5,6,7] and it was rotated 4 times
+    
+    Example 3:
+        Input: nums = [11,13,15,17]
+        Output: 11
+        Explanation: The original array was [11,13,15,17] and it was rotated 4 times
+    
+    APPROACH: Binary Search for Rotation Point
+    
+    The minimum element is at the rotation point
+    
+    TIME: O(log n), SPACE: O(1)
     """
     left, right = 0, len(nums) - 1
     
-    # Array not rotated
+    # Array is not rotated
     if nums[left] <= nums[right]:
         return nums[left]
     
-    while left <= right:
-        mid = left + (right - left) // 2
+    while left < right:
+        mid = (left + right) // 2
         
-        # Check if mid is the minimum
-        if mid > 0 and nums[mid] < nums[mid - 1]:
-            return nums[mid]
-        
-        # Check if mid + 1 is the minimum
-        if mid < len(nums) - 1 and nums[mid] > nums[mid + 1]:
-            return nums[mid + 1]
-        
-        # Decide which half to search
         if nums[mid] > nums[right]:
+            # Minimum is in right half
             left = mid + 1
         else:
-            right = mid - 1
-    
-    return nums[0]
-
-
-# Problem 4: Find Peak Element - Mountain array pattern
-def find_peak_element(nums):
-    """
-    Find peak element where nums[i] > nums[i-1] and nums[i] > nums[i+1]
-    
-    Key insight: Always move towards higher neighbor
-    
-    Time: O(log n), Space: O(1)
-    """
-    left, right = 0, len(nums) - 1
-    
-    while left < right:
-        mid = left + (right - left) // 2
-        
-        if nums[mid] < nums[mid + 1]:
-            # Peak is to the right
-            left = mid + 1
-        else:
-            # Peak is to the left or at mid
+            # Minimum is in left half (including mid)
             right = mid
     
-    return left
+    return nums[left]
 
 
-def find_peak_in_mountain_array(arr):
-    """
-    Find peak in mountain array (bitonic array)
-    
-    Mountain array: increases then decreases
-    
-    Time: O(log n), Space: O(1)
-    """
-    left, right = 0, len(arr) - 1
-    
-    while left < right:
-        mid = left + (right - left) // 2
-        
-        if arr[mid] < arr[mid + 1]:
-            # Still in increasing part
-            left = mid + 1
-        else:
-            # In decreasing part or at peak
-            right = mid
-    
-    return left
+# =============================================================================
+# PROBLEM 7: SEARCH A 2D MATRIX (MEDIUM) - 45 MIN
+# =============================================================================
 
-
-# Problem 5: Search 2D Matrix - Extend binary search to 2D
 def search_matrix(matrix, target):
     """
-    Search in row-wise and column-wise sorted matrix
+    PROBLEM: Search a 2D Matrix
     
-    Treat 2D matrix as 1D sorted array
+    Write an efficient algorithm that searches for a value target in an m x n integer matrix. 
+    This matrix has the following properties:
+    - Integers in each row are sorted from left to right
+    - The first integer of each row is greater than the last integer of the previous row
     
-    Time: O(log(m*n)), Space: O(1)
+    CONSTRAINTS:
+    - m == matrix.length
+    - n == matrix[i].length
+    - 1 <= m, n <= 100
+    - -10^4 <= matrix[i][j], target <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+        Output: true
+    
+    Example 2:
+        Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+        Output: false
+    
+    APPROACH: Treat as Sorted 1D Array
+    
+    Use binary search on conceptual 1D array
+    
+    TIME: O(log(m*n)), SPACE: O(1)
     """
     if not matrix or not matrix[0]:
         return False
@@ -283,15 +448,12 @@ def search_matrix(matrix, target):
     left, right = 0, m * n - 1
     
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = (left + right) // 2
+        mid_value = matrix[mid // n][mid % n]
         
-        # Convert 1D index to 2D coordinates
-        row = mid // n
-        col = mid % n
-        
-        if matrix[row][col] == target:
+        if mid_value == target:
             return True
-        elif matrix[row][col] < target:
+        elif mid_value < target:
             left = mid + 1
         else:
             right = mid - 1
@@ -299,38 +461,112 @@ def search_matrix(matrix, target):
     return False
 
 
-def search_matrix_ii(matrix, target):
+# =============================================================================
+# PROBLEM 8: FIND FIRST AND LAST POSITION (MEDIUM) - 45 MIN
+# =============================================================================
+
+def search_range(nums, target):
     """
-    Search in matrix where each row and column is sorted
+    PROBLEM: Find First and Last Position of Element in Sorted Array
     
-    Start from top-right (or bottom-left) corner
+    Given an array of integers nums sorted in non-decreasing order, find the starting 
+    and ending position of a given target value.
     
-    Time: O(m + n), Space: O(1)
+    If target is not found in the array, return [-1, -1].
+    
+    You must write an algorithm with O(log n) runtime complexity.
+    
+    CONSTRAINTS:
+    - 0 <= nums.length <= 10^5
+    - -10^9 <= nums[i] <= 10^9
+    - nums is a non-decreasing array
+    - -10^9 <= target <= 10^9
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [5,7,7,8,8,10], target = 8
+        Output: [3,4]
+    
+    Example 2:
+        Input: nums = [5,7,7,8,8,10], target = 6
+        Output: [-1,-1]
+    
+    Example 3:
+        Input: nums = [], target = 0
+        Output: [-1,-1]
+    
+    APPROACH: Two Binary Searches
+    
+    Find leftmost and rightmost positions separately
+    
+    TIME: O(log n), SPACE: O(1)
     """
-    if not matrix or not matrix[0]:
-        return False
+    def find_leftmost(nums, target):
+        left, right = 0, len(nums)
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        return left
     
-    row, col = 0, len(matrix[0]) - 1
+    def find_rightmost(nums, target):
+        left, right = 0, len(nums)
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] <= target:
+                left = mid + 1
+            else:
+                right = mid
+        return left - 1
     
-    while row < len(matrix) and col >= 0:
-        if matrix[row][col] == target:
-            return True
-        elif matrix[row][col] > target:
-            col -= 1  # Move left
-        else:
-            row += 1  # Move down
+    if not nums:
+        return [-1, -1]
     
-    return False
+    left_pos = find_leftmost(nums, target)
+    
+    # Target not found
+    if left_pos == len(nums) or nums[left_pos] != target:
+        return [-1, -1]
+    
+    right_pos = find_rightmost(nums, target)
+    
+    return [left_pos, right_pos]
 
 
-# Problem 6: Square Root - Search space binary search
+# =============================================================================
+# PROBLEM 9: SQRT(X) (EASY) - 30 MIN
+# =============================================================================
+
 def my_sqrt(x):
     """
-    Find integer square root using binary search
+    PROBLEM: Sqrt(x)
     
-    Search space: [0, x], find largest k where k*k <= x
+    Given a non-negative integer x, return the square root of x rounded down to the nearest integer. 
+    The returned integer should be non-negative as well.
     
-    Time: O(log x), Space: O(1)
+    You must not use any built-in exponent function or operator.
+    
+    CONSTRAINTS:
+    - 0 <= x <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: x = 4
+        Output: 2
+        Explanation: The square root of 4 is 2, so we return 2
+    
+    Example 2:
+        Input: x = 8
+        Output: 2
+        Explanation: The square root of 8 is 2.828..., and since we round it down to the nearest integer, 2 is returned
+    
+    APPROACH: Binary Search on Answer
+    
+    Search for the largest integer whose square is ≤ x
+    
+    TIME: O(log x), SPACE: O(1)
     """
     if x < 2:
         return x
@@ -338,7 +574,7 @@ def my_sqrt(x):
     left, right = 1, x // 2
     
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = (left + right) // 2
         square = mid * mid
         
         if square == x:
@@ -348,35 +584,61 @@ def my_sqrt(x):
         else:
             right = mid - 1
     
-    return right  # Largest integer whose square <= x
+    return right  # Return the largest valid value
 
 
-def my_sqrt_precise(x, precision=1e-6):
+# =============================================================================
+# PROBLEM 10: VALID PERFECT SQUARE (EASY) - 30 MIN
+# =============================================================================
+
+def is_perfect_square(num):
     """
-    Find square root with given precision
+    PROBLEM: Valid Perfect Square
     
-    Uses floating-point binary search
+    Given a positive integer num, return true if num is a perfect square or false otherwise.
     
-    Time: O(log(x/precision)), Space: O(1)
+    A perfect square is an integer that is the square of an integer. In other words, 
+    it is the product of some integer with itself.
+    
+    You must not use any built-in library function, such as sqrt.
+    
+    CONSTRAINTS:
+    - 1 <= num <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: num = 16
+        Output: true
+        Explanation: We return true because 4 * 4 = 16 and 4 is an integer
+    
+    Example 2:
+        Input: num = 14
+        Output: false
+        Explanation: We return false because 3.742 * 3.742 = 14 and 3.742 is not an integer
+    
+    APPROACH: Binary Search
+    
+    Search for an integer whose square equals num
+    
+    TIME: O(log num), SPACE: O(1)
     """
-    if x < 0:
-        raise ValueError("Cannot compute square root of negative number")
+    if num < 2:
+        return True
     
-    if x < 1:
-        left, right = x, 1
-    else:
-        left, right = 1, x
+    left, right = 2, num // 2
     
-    while right - left > precision:
-        mid = (left + right) / 2
+    while left <= right:
+        mid = (left + right) // 2
         square = mid * mid
         
-        if square < x:
-            left = mid
+        if square == num:
+            return True
+        elif square < num:
+            left = mid + 1
         else:
-            right = mid
+            right = mid - 1
     
-    return (left + right) / 2
+    return False
 
 
 # ADVANCED PROBLEMS FOR EXTRA PRACTICE

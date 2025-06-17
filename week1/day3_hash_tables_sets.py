@@ -50,15 +50,46 @@ from collections import defaultdict, Counter
 import heapq
 
 
-# Problem 1: Two Sum Revisited - Core hash table pattern
+# =============================================================================
+# PROBLEM 1: TWO SUM (EASY) - 30 MIN
+# =============================================================================
+
 def two_sum_hash(nums, target):
     """
-    Find indices of two numbers that add up to target
+    PROBLEM: Two Sum
     
-    Hash table approach: Store complements and their indices
-    This is the fundamental hash table pattern for pair problems
+    Given an array of integers nums and an integer target, return indices of 
+    the two numbers such that they add up to target.
     
-    Time: O(n), Space: O(n)
+    You may assume that each input would have exactly one solution, and you 
+    may not use the same element twice. You can return the answer in any order.
+    
+    CONSTRAINTS:
+    - 2 <= nums.length <= 10^4
+    - -10^9 <= nums[i] <= 10^9
+    - -10^9 <= target <= 10^9
+    - Only one valid answer exists
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [2,7,11,15], target = 9
+        Output: [0,1]
+        Explanation: nums[0] + nums[1] = 2 + 7 = 9
+    
+    Example 2:
+        Input: nums = [3,2,4], target = 6
+        Output: [1,2]
+    
+    Example 3:
+        Input: nums = [3,3], target = 6
+        Output: [0,1]
+    
+    APPROACH: Hash Table (Optimized)
+    
+    Use hash table to store numbers and their indices. For each number,
+    check if its complement (target - number) exists in the hash table.
+    
+    TIME: O(n), SPACE: O(n)
     """
     num_to_index = {}
     
@@ -71,10 +102,36 @@ def two_sum_hash(nums, target):
     return []
 
 
-# Problem 2: Subarray Sum Equals K - Prefix sum with hash table
+# =============================================================================
+# PROBLEM 2: SUBARRAY SUM EQUALS K (MEDIUM) - 45 MIN
+# =============================================================================
+
 def subarray_sum(nums, k):
     """
-    Count number of continuous subarrays whose sum equals k
+    PROBLEM: Subarray Sum Equals K
+    
+    Given an array of integers nums and an integer k, return the total number 
+    of subarrays whose sum equals to k.
+    
+    A subarray is a contiguous non-empty sequence of elements within an array.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 2 * 10^4
+    - -1000 <= nums[i] <= 1000
+    - -10^7 <= k <= 10^7
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,1,1], k = 2
+        Output: 2
+        Explanation: Subarrays [1,1] and [1,1] have sum 2
+    
+    Example 2:
+        Input: nums = [1,2,3], k = 3
+        Output: 2
+        Explanation: Subarrays [1,2] and [3] have sum 3
+    
+    APPROACH: Prefix Sum with Hash Map
     
     Key insight: If prefix_sum[j] - prefix_sum[i] = k, then
     subarray from i+1 to j has sum k
@@ -84,7 +141,7 @@ def subarray_sum(nums, k):
     2. For each position, check if (prefix_sum - k) exists in hash map
     3. Count occurrences of each prefix sum
     
-    Time: O(n), Space: O(n)
+    TIME: O(n), SPACE: O(n)
     """
     count = 0
     prefix_sum = 0
@@ -104,16 +161,38 @@ def subarray_sum(nums, k):
     return count
 
 
-# Problem 3: Top K Frequent Elements - Hash table + heap
+# =============================================================================
+# PROBLEM 3: TOP K FREQUENT ELEMENTS (MEDIUM) - 45 MIN
+# =============================================================================
+
 def top_k_frequent(nums, k):
     """
-    Find k most frequent elements
+    PROBLEM: Top K Frequent Elements
     
-    Approach 1: Hash map + heap
+    Given an integer array nums and an integer k, return the k most frequent elements.
+    You may return the answer in any order.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 10^5
+    - -10^4 <= nums[i] <= 10^4
+    - k is in the range [1, the number of unique elements in the array]
+    - It's guaranteed that the answer is unique
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,1,1,2,2,3], k = 2
+        Output: [1,2]
+    
+    Example 2:
+        Input: nums = [1], k = 1
+        Output: [1]
+    
+    APPROACH 1: Hash Map + Min Heap
+    
     1. Count frequencies with hash map
-    2. Use min-heap of size k to find top k
+    2. Use min-heap of size k to find top k elements
     
-    Time: O(n log k), Space: O(n)
+    TIME: O(n log k), SPACE: O(n)
     """
     # Count frequencies
     freq_map = Counter(nums)
@@ -131,10 +210,11 @@ def top_k_frequent(nums, k):
 
 def top_k_frequent_bucket_sort(nums, k):
     """
-    Alternative approach using bucket sort
+    APPROACH 2: Bucket Sort (Optimized)
     
     Since frequency is bounded by array length, we can use bucket sort
-    Time: O(n), Space: O(n)
+    
+    TIME: O(n), SPACE: O(n)
     """
     freq_map = Counter(nums)
     
@@ -156,16 +236,43 @@ def top_k_frequent_bucket_sort(nums, k):
     return result
 
 
-# Problem 4: First Missing Positive - Hash set for O(1) lookups
+# =============================================================================
+# PROBLEM 4: FIRST MISSING POSITIVE (HARD) - 60 MIN
+# =============================================================================
+
 def first_missing_positive(nums):
     """
-    Find smallest missing positive integer
+    PROBLEM: First Missing Positive
     
-    Approach: Use hash set for O(1) lookups
-    1. Add all numbers to set
-    2. Check consecutive positive integers starting from 1
+    Given an unsorted integer array nums, return the smallest missing positive integer.
     
-    Time: O(n), Space: O(n)
+    You must implement an algorithm that runs in O(n) time and uses constant extra space.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 5 * 10^5
+    - -2^31 <= nums[i] <= 2^31 - 1
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,2,0]
+        Output: 3
+        Explanation: The numbers in the range [1,2] are all in the array
+    
+    Example 2:
+        Input: nums = [3,4,-1,1]
+        Output: 2
+        Explanation: 1 is in the array but 2 is missing
+    
+    Example 3:
+        Input: nums = [7,8,9,11,12]
+        Output: 1
+        Explanation: The smallest positive integer 1 is missing
+    
+    APPROACH 1: Hash Set (Simple)
+    
+    Use hash set for O(1) lookups
+    
+    TIME: O(n), SPACE: O(n)
     """
     num_set = set(nums)
     
@@ -178,12 +285,12 @@ def first_missing_positive(nums):
 
 def first_missing_positive_in_place(nums):
     """
-    In-place approach using array as hash table
+    APPROACH 2: In-place Array as Hash Table (Optimal)
     
     Key insight: Answer is in range [1, n+1] where n = len(nums)
     Use array indices as hash keys by placing each number at index (number-1)
     
-    Time: O(n), Space: O(1)
+    TIME: O(n), SPACE: O(1)
     """
     n = len(nums)
     
@@ -202,22 +309,51 @@ def first_missing_positive_in_place(nums):
     return n + 1
 
 
-# Problem 5: Intersection of Two Arrays - Set operations
+# =============================================================================
+# PROBLEM 5: INTERSECTION OF TWO ARRAYS (EASY) - 30 MIN
+# =============================================================================
+
 def intersection(nums1, nums2):
     """
-    Find intersection of two arrays (unique elements)
+    PROBLEM: Intersection of Two Arrays
     
-    Approach: Convert to sets and use intersection
-    Time: O(n + m), Space: O(min(n, m))
+    Given two integer arrays nums1 and nums2, return an array of their intersection.
+    Each element in the result must be unique and you may return the result in any order.
+    
+    CONSTRAINTS:
+    - 1 <= nums1.length, nums2.length <= 1000
+    - 0 <= nums1[i], nums2[i] <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums1 = [1,2,2,1], nums2 = [2,2]
+        Output: [2]
+    
+    Example 2:
+        Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+        Output: [9,4] (or [4,9])
+    
+    APPROACH 1: Two Sets
+    
+    Convert both arrays to sets and find intersection
+    
+    TIME: O(n + m), SPACE: O(n + m)
     """
     return list(set(nums1) & set(nums2))
 
 
 def intersection_hash_table(nums1, nums2):
     """
-    Manual implementation using hash table
-    Shows explicit hash table logic
+    APPROACH 2: Hash Table
+    
+    Use hash table to track elements from first array,
+    then check elements from second array
+    
+    TIME: O(n + m), SPACE: O(min(n, m))
     """
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+    
     seen = set(nums1)
     result = set()
     
@@ -228,30 +364,59 @@ def intersection_hash_table(nums1, nums2):
     return list(result)
 
 
-# ADVANCED PROBLEMS FOR DEEPER UNDERSTANDING
+# =============================================================================
+# PROBLEM 6: 4SUM (MEDIUM) - 60 MIN
+# =============================================================================
 
 def four_sum(nums, target):
     """
-    Find all unique quadruplets that sum to target
+    PROBLEM: 4Sum
     
-    Extension of two sum using hash maps
-    Time: O(n²), Space: O(n²)
+    Given an array nums of n integers, return an array of all the unique quadruplets
+    [nums[a], nums[b], nums[c], nums[d]] such that:
+    - 0 <= a, b, c, d < n
+    - a, b, c, d are distinct
+    - nums[a] + nums[b] + nums[c] + nums[d] == target
+    
+    You may return the answer in any order.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 200
+    - -10^9 <= nums[i] <= 10^9
+    - -10^9 <= target <= 10^9
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,0,-1,0,-2,2], target = 0
+        Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+    
+    Example 2:
+        Input: nums = [2,2,2,2,2], target = 8
+        Output: [[2,2,2,2]]
+    
+    APPROACH: Sort + Two Pointers (Extension of 3Sum)
+    
+    1. Sort the array
+    2. Fix first two elements with nested loops
+    3. Use two pointers for remaining two elements
+    4. Skip duplicates to avoid duplicate quadruplets
+    
+    TIME: O(n³), SPACE: O(1) excluding output
     """
     nums.sort()
-    n = len(nums)
     result = []
+    n = len(nums)
     
     for i in range(n - 3):
         # Skip duplicates for first element
         if i > 0 and nums[i] == nums[i - 1]:
             continue
-            
+        
         for j in range(i + 1, n - 2):
             # Skip duplicates for second element
             if j > i + 1 and nums[j] == nums[j - 1]:
                 continue
             
-            # Use two pointers for remaining two elements
             left, right = j + 1, n - 1
             
             while left < right:
@@ -260,9 +425,10 @@ def four_sum(nums, target):
                 if current_sum == target:
                     result.append([nums[i], nums[j], nums[left], nums[right]])
                     
-                    # Skip duplicates
+                    # Skip duplicates for third element
                     while left < right and nums[left] == nums[left + 1]:
                         left += 1
+                    # Skip duplicates for fourth element
                     while left < right and nums[right] == nums[right - 1]:
                         right -= 1
                     
@@ -276,23 +442,49 @@ def four_sum(nums, target):
     return result
 
 
+# =============================================================================
+# PROBLEM 7: LONGEST CONSECUTIVE SEQUENCE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def longest_consecutive_sequence(nums):
     """
-    Find length of longest consecutive elements sequence
+    PROBLEM: Longest Consecutive Sequence
     
-    Hash set approach: O(n) time instead of O(n log n) sorting
+    Given an unsorted array of integers nums, return the length of the longest 
+    consecutive elements sequence.
     
-    Key insight: Only start counting from beginning of sequence
-    Time: O(n), Space: O(n)
+    You must write an algorithm that runs in O(n) time.
+    
+    CONSTRAINTS:
+    - 0 <= nums.length <= 10^5
+    - -10^9 <= nums[i] <= 10^9
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [100,4,200,1,3,2]
+        Output: 4
+        Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+    
+    Example 2:
+        Input: nums = [0,3,7,2,5,8,4,6,0,1]
+        Output: 9
+    
+    APPROACH: Hash Set
+    
+    1. Put all numbers in hash set for O(1) lookup
+    2. For each number, check if it's the start of a sequence
+    3. If it is, count consecutive numbers
+    
+    TIME: O(n), SPACE: O(n)
     """
     if not nums:
         return 0
     
     num_set = set(nums)
-    max_length = 0
+    longest = 0
     
     for num in num_set:
-        # Only start counting if this is the beginning of sequence
+        # Check if this is the start of a sequence
         if num - 1 not in num_set:
             current_num = num
             current_length = 1
@@ -302,39 +494,68 @@ def longest_consecutive_sequence(nums):
                 current_num += 1
                 current_length += 1
             
-            max_length = max(max_length, current_length)
+            longest = max(longest, current_length)
     
-    return max_length
+    return longest
 
+
+# =============================================================================
+# PROBLEM 8: GROUP SHIFTED STRINGS (MEDIUM) - 45 MIN
+# =============================================================================
 
 def group_shifted_strings(strings):
     """
-    Group strings that are shifts of each other
+    PROBLEM: Group Shifted Strings
     
-    Example: "abc" and "bcd" are shifts (each character shifted by 1)
+    We can shift a string by shifting each of its letters to its successive letter.
+    For example, "abc" can be shifted to be "bcd".
     
-    Key insight: Compute shift pattern as hash key
-    Time: O(n * m) where n = number of strings, m = average length
-    Space: O(n * m)
+    We can keep shifting the string to form a sequence:
+    "abc" -> "bcd" -> ... -> "xyz"
+    
+    Given an array of strings strings, group all strings that belong to the same shifting sequence.
+    You may return the answer in any order.
+    
+    CONSTRAINTS:
+    - 1 <= strings.length <= 200
+    - 1 <= strings[i].length <= 50
+    - strings[i] consists of lowercase English letters
+    
+    EXAMPLES:
+    Example 1:
+        Input: strings = ["abc","bcd","acef","xyz","az","ba","a","z"]
+        Output: [["acef"],["a","z"],["abc","bcd","xyz"],["az","ba"]]
+    
+    Example 2:
+        Input: strings = ["a"]
+        Output: [["a"]]
+    
+    APPROACH: Hash Map with Shift Pattern
+    
+    Create a pattern for each string that represents its shift sequence.
+    Use the pattern as key to group strings.
+    
+    TIME: O(n * m) where n = number of strings, m = average length
+    SPACE: O(n * m)
     """
     def get_shift_pattern(s):
-        """Get pattern of character shifts"""
+        """Get shift pattern for string (differences between consecutive chars)"""
         if len(s) <= 1:
             return tuple()
         
         pattern = []
         for i in range(1, len(s)):
-            # Calculate shift from previous character
-            shift = (ord(s[i]) - ord(s[i-1])) % 26
-            pattern.append(shift)
+            # Calculate difference, handle wrap-around
+            diff = (ord(s[i]) - ord(s[i-1])) % 26
+            pattern.append(diff)
         
         return tuple(pattern)
     
     groups = defaultdict(list)
     
-    for s in strings:
-        pattern = get_shift_pattern(s)
-        groups[pattern].append(s)
+    for string in strings:
+        pattern = get_shift_pattern(string)
+        groups[pattern].append(string)
     
     return list(groups.values())
 

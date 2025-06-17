@@ -178,15 +178,45 @@ class ArrayQueue:
         return self.count
 
 
-# Problem 1: Valid Parentheses - Classic stack problem
+# =============================================================================
+# PROBLEM 1: VALID PARENTHESES (EASY) - 30 MIN
+# =============================================================================
+
 def is_valid_parentheses(s):
     """
-    Check if parentheses/brackets are valid and properly nested
+    PROBLEM: Valid Parentheses
     
-    Stack approach: Push opening brackets, pop and match closing brackets
-    This is the fundamental stack pattern
+    Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', 
+    determine if the input string is valid.
     
-    Time: O(n), Space: O(n)
+    An input string is valid if:
+    1. Open brackets must be closed by the same type of brackets
+    2. Open brackets must be closed in the correct order
+    3. Every close bracket has a corresponding open bracket of the same type
+    
+    CONSTRAINTS:
+    - 1 <= s.length <= 10^4
+    - s consists of parentheses only '()[]{}'
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "()"
+        Output: true
+    
+    Example 2:
+        Input: s = "()[]{}"
+        Output: true
+    
+    Example 3:
+        Input: s = "(]"
+        Output: false
+    
+    APPROACH: Stack
+    
+    Use stack to track opening brackets. When closing bracket is found,
+    check if it matches the most recent opening bracket.
+    
+    TIME: O(n), SPACE: O(n)
     """
     stack = []
     mapping = {')': '(', '}': '{', ']': '['}
@@ -203,222 +233,442 @@ def is_valid_parentheses(s):
     return not stack
 
 
-# Problem 2: Daily Temperatures - Monotonic stack pattern
+# =============================================================================
+# PROBLEM 2: DAILY TEMPERATURES (MEDIUM) - 45 MIN
+# =============================================================================
+
 def daily_temperatures(temperatures):
     """
-    Find number of days until warmer temperature for each day
+    PROBLEM: Daily Temperatures
     
-    Monotonic stack: Maintain decreasing temperature stack
-    When we find warmer temperature, pop all colder days and record distances
+    Given an array of integers temperatures represents the daily temperatures, return 
+    an array answer such that answer[i] is the number of days you have to wait after 
+    the ith day to get a warmer temperature. If there is no future day for which this 
+    is possible, keep answer[i] == 0 instead.
     
-    Time: O(n), Space: O(n)
+    CONSTRAINTS:
+    - 1 <= temperatures.length <= 10^5
+    - 30 <= temperatures[i] <= 100
+    
+    EXAMPLES:
+    Example 1:
+        Input: temperatures = [73,74,75,71,69,72,76,73]
+        Output: [1,1,4,2,1,1,0,0]
+        Explanation: 
+        - Day 0: Next warmer day is day 1 (74 > 73), so wait 1 day
+        - Day 1: Next warmer day is day 2 (75 > 74), so wait 1 day
+        - Day 2: Next warmer day is day 6 (76 > 75), so wait 4 days
+    
+    Example 2:
+        Input: temperatures = [30,40,50,60]
+        Output: [1,1,1,0]
+    
+    Example 3:
+        Input: temperatures = [30,60,90]
+        Output: [1,1,0]
+    
+    APPROACH: Monotonic Stack
+    
+    Use stack to maintain indices of temperatures in decreasing order.
+    When we find a warmer temperature, pop from stack and calculate days.
+    
+    TIME: O(n), SPACE: O(n)
     """
     result = [0] * len(temperatures)
-    stack = []  # Store indices
+    stack = []  # Stack stores indices
     
     for i, temp in enumerate(temperatures):
-        # Pop all temperatures that are colder than current
+        # Pop indices with cooler temperatures
         while stack and temperatures[stack[-1]] < temp:
             prev_index = stack.pop()
             result[prev_index] = i - prev_index
         
+        # Push current index
         stack.append(i)
     
     return result
 
 
-# Problem 3: Largest Rectangle in Histogram - Advanced monotonic stack
+# =============================================================================
+# PROBLEM 3: LARGEST RECTANGLE IN HISTOGRAM (HARD) - 60 MIN
+# =============================================================================
+
 def largest_rectangle_area(heights):
     """
-    Find area of largest rectangle in histogram
+    PROBLEM: Largest Rectangle in Histogram
     
-    Monotonic stack approach:
-    1. Maintain increasing heights in stack
-    2. When decreasing height found, calculate rectangles
-    3. Each popped height can extend back to previous smaller height
+    Given an array of integers heights representing the histogram's bar height where 
+    the width of each bar is 1, return the area of the largest rectangle in the histogram.
     
-    Time: O(n), Space: O(n)
+    CONSTRAINTS:
+    - 1 <= heights.length <= 10^5
+    - 0 <= heights[i] <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: heights = [2,1,5,6,2,3]
+        Output: 10
+        Explanation: The largest rectangle has area = 10 units (width=2, height=5)
+    
+    Example 2:
+        Input: heights = [2,4]
+        Output: 4
+    
+    APPROACH: Monotonic Stack
+    
+    Use stack to maintain indices of bars in increasing height order.
+    When we find a shorter bar, calculate area using previous bars.
+    
+    TIME: O(n), SPACE: O(n)
     """
     stack = []
     max_area = 0
-    index = 0
     
-    while index < len(heights):
-        # If current bar is higher, push to stack
-        if not stack or heights[index] >= heights[stack[-1]]:
-            stack.append(index)
-            index += 1
-        else:
-            # Pop and calculate area with popped bar as smallest
-            top = stack.pop()
-            area = (heights[top] * 
-                   ((index - stack[-1] - 1) if stack else index))
-            max_area = max(max_area, area)
+    for i, h in enumerate(heights):
+        # Process bars that are taller than current
+        while stack and heights[stack[-1]] > h:
+            height = heights[stack.pop()]
+            # Width is distance between current position and previous element in stack
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        
+        stack.append(i)
     
-    # Pop remaining bars and calculate area
+    # Process remaining bars in stack
     while stack:
-        top = stack.pop()
-        area = (heights[top] * 
-               ((index - stack[-1] - 1) if stack else index))
-        max_area = max(max_area, area)
+        height = heights[stack.pop()]
+        width = len(heights) if not stack else len(heights) - stack[-1] - 1
+        max_area = max(max_area, height * width)
     
     return max_area
 
 
-# Problem 4: Implement Queue using Stacks - Structural understanding
+# =============================================================================
+# PROBLEM 4: IMPLEMENT QUEUE USING STACKS (EASY) - 30 MIN
+# =============================================================================
+
 class MyQueue:
     """
-    Implement queue using two stacks
+    PROBLEM: Implement Queue using Stacks
     
-    Strategy: Use two stacks to reverse the order twice
-    - input_stack: for enqueue operations
-    - output_stack: for dequeue operations
+    Implement a first in first out (FIFO) queue using only two stacks. The implemented 
+    queue should support all the functions of a normal queue (push, peek, pop, and empty).
     
-    Amortized O(1) for all operations
+    Implement the MyQueue class:
+    - MyQueue() Initializes the queue object
+    - void push(int x) Pushes element x to the back of the queue
+    - int pop() Removes the element from the front of the queue and returns it
+    - int peek() Returns the element at the front of the queue
+    - boolean empty() Returns true if the queue is empty, false otherwise
+    
+    CONSTRAINTS:
+    - 1 <= x <= 9
+    - At most 100 calls will be made to push, pop, peek, and empty
+    - All the calls to pop and peek are valid
+    
+    EXAMPLES:
+    Example 1:
+        Input: ["MyQueue", "push", "push", "peek", "pop", "empty"]
+               [[], [1], [2], [], [], []]
+        Output: [null, null, null, 1, 1, false]
+        
+        Explanation:
+        MyQueue myQueue = new MyQueue();
+        myQueue.push(1); // queue is: [1]
+        myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+        myQueue.peek(); // return 1
+        myQueue.pop(); // return 1, queue is [2]
+        myQueue.empty(); // return false
+    
+    APPROACH: Two Stacks (Input and Output)
+    
+    Use two stacks: input for push operations, output for pop/peek operations.
+    Transfer elements from input to output when output is empty.
+    
+    TIME: O(1) amortized for all operations, SPACE: O(n)
     """
     
     def __init__(self):
+        """Initialize the queue with two stacks"""
         self.input_stack = []
         self.output_stack = []
-    
+
     def push(self, x):
-        """Add element to back of queue"""
+        """Push element x to the back of queue"""
         self.input_stack.append(x)
-    
+
     def pop(self):
-        """Remove element from front of queue"""
+        """Remove element from front of queue and return it"""
         self._move_to_output()
         return self.output_stack.pop()
-    
+
     def peek(self):
-        """Get front element"""
+        """Get the front element"""
         self._move_to_output()
         return self.output_stack[-1]
-    
+
     def empty(self):
-        """Check if queue is empty"""
+        """Return whether the queue is empty"""
         return not self.input_stack and not self.output_stack
-    
+
     def _move_to_output(self):
-        """Move elements from input to output stack if needed"""
+        """Move elements from input to output stack if output is empty"""
         if not self.output_stack:
             while self.input_stack:
                 self.output_stack.append(self.input_stack.pop())
 
 
-# Problem 5: Next Greater Element - Monotonic stack pattern
+# =============================================================================
+# PROBLEM 5: NEXT GREATER ELEMENT I (EASY) - 30 MIN
+# =============================================================================
+
 def next_greater_element(nums1, nums2):
     """
-    Find next greater element for each element in nums1 within nums2
+    PROBLEM: Next Greater Element I
     
-    Approach:
-    1. Use monotonic stack to find next greater for all elements in nums2
-    2. Store results in hash map
-    3. Look up results for nums1 elements
+    The next greater element of some element x in an array is the first greater element 
+    that is to the right of x in the same array.
     
-    Time: O(n + m), Space: O(n)
+    You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is 
+    a subset of nums2.
+    
+    For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and 
+    determine the next greater element of nums2[j] in nums2. If there is no next greater 
+    element, then the answer for this query is -1.
+    
+    Return an array ans of length nums1.length such that ans[i] is the next greater 
+    element as described above.
+    
+    CONSTRAINTS:
+    - 1 <= nums1.length <= nums2.length <= 1000
+    - 0 <= nums1[i], nums2[i] <= 10^4
+    - All integers in nums1 and nums2 are unique
+    - All the integers of nums1 also appear in nums2
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+        Output: [-1,3,-1]
+        Explanation: 
+        - For number 4 in the first array, there is no next greater number in the second array, so output -1
+        - For number 1 in the first array, the next greater number in the second array is 3
+        - For number 2 in the first array, there is no next greater number in the second array, so output -1
+    
+    Example 2:
+        Input: nums1 = [2,4], nums2 = [1,2,3,4]
+        Output: [3,-1]
+    
+    APPROACH: Monotonic Stack + Hash Map
+    
+    1. Use monotonic stack to find next greater element for each element in nums2
+    2. Use hash map to store the results
+    3. Build result array for nums1 using the hash map
+    
+    TIME: O(n + m), SPACE: O(n)
     """
-    # Build next greater mapping for nums2
+    # Build next greater element mapping for nums2
     next_greater = {}
     stack = []
     
     for num in nums2:
+        # Pop elements that are smaller than current
         while stack and stack[-1] < num:
             next_greater[stack.pop()] = num
         stack.append(num)
     
-    # Default to -1 for elements with no greater element
-    for num in stack:
-        next_greater[num] = -1
+    # Elements remaining in stack have no next greater element
+    while stack:
+        next_greater[stack.pop()] = -1
     
     # Build result for nums1
     return [next_greater[num] for num in nums1]
 
 
-# ADVANCED PROBLEMS
+# =============================================================================
+# PROBLEM 6: SLIDING WINDOW MAXIMUM (HARD) - 60 MIN
+# =============================================================================
 
 def sliding_window_maximum(nums, k):
     """
-    Find maximum in each sliding window of size k
+    PROBLEM: Sliding Window Maximum
     
-    Deque approach: Maintain decreasing order of elements
-    Front of deque always contains maximum of current window
+    You are given an array of integers nums, there is a sliding window of size k which 
+    is moving from the very left of the array to the very right. You can only see the k 
+    numbers in the window. Each time the sliding window moves right by one position.
     
-    Time: O(n), Space: O(k)
+    Return the max sliding window.
+    
+    CONSTRAINTS:
+    - 1 <= nums.length <= 10^5
+    - -10^4 <= nums[i] <= 10^4
+    - 1 <= k <= nums.length
+    
+    EXAMPLES:
+    Example 1:
+        Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
+        Output: [3,3,5,5,6,7]
+        Explanation: 
+        Window position                Max
+        ---------------               -----
+        [1  3  -1] -3  5  3  6  7       3
+         1 [3  -1  -3] 5  3  6  7       3
+         1  3 [-1  -3  5] 3  6  7       5
+         1  3  -1 [-3  5  3] 6  7       5
+         1  3  -1  -3 [5  3  6] 7       6
+         1  3  -1  -3  5 [3  6  7]      7
+    
+    Example 2:
+        Input: nums = [1], k = 1
+        Output: [1]
+    
+    APPROACH: Monotonic Deque
+    
+    Use deque to maintain indices of array elements in decreasing order of their values.
+    The front of deque always contains the index of maximum element in current window.
+    
+    TIME: O(n), SPACE: O(k)
     """
     if not nums or k == 0:
         return []
     
-    dq = deque()  # Store indices
     result = []
+    window = deque()  # Store indices
     
     for i in range(len(nums)):
         # Remove indices outside current window
-        while dq and dq[0] <= i - k:
-            dq.popleft()
+        while window and window[0] <= i - k:
+            window.popleft()
         
-        # Remove smaller elements from back
-        while dq and nums[dq[-1]] < nums[i]:
-            dq.pop()
+        # Remove indices with smaller values (maintain decreasing order)
+        while window and nums[window[-1]] < nums[i]:
+            window.pop()
         
-        dq.append(i)
+        # Add current index
+        window.append(i)
         
-        # Add maximum to result (window size reached)
+        # Add maximum to result (front of deque)
         if i >= k - 1:
-            result.append(nums[dq[0]])
+            result.append(nums[window[0]])
     
     return result
 
 
+# =============================================================================
+# PROBLEM 7: EVALUATE REVERSE POLISH NOTATION (MEDIUM) - 45 MIN
+# =============================================================================
+
 def evaluate_rpn(tokens):
     """
-    Evaluate Reverse Polish Notation expression
+    PROBLEM: Evaluate Reverse Polish Notation
     
-    Stack approach: Push numbers, pop operands for operations
+    Evaluate the value of an arithmetic expression in Reverse Polish Notation.
     
-    Time: O(n), Space: O(n)
+    Valid operators are +, -, *, and /. Each operand may be an integer or another expression.
+    
+    Note that division between two integers should truncate toward zero.
+    
+    It is guaranteed that the given RPN expression is always valid.
+    
+    CONSTRAINTS:
+    - 1 <= tokens.length <= 10^4
+    - tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200]
+    
+    EXAMPLES:
+    Example 1:
+        Input: tokens = ["2","1","+","3","*"]
+        Output: 9
+        Explanation: ((2 + 1) * 3) = 9
+    
+    Example 2:
+        Input: tokens = ["4","13","5","/","+"]
+        Output: 6
+        Explanation: (4 + (13 / 5)) = 6
+    
+    Example 3:
+        Input: tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+        Output: 22
+        Explanation: ((10 * (6 / ((9 + 3) * -11))) + 17) + 5 = 22
+    
+    APPROACH: Stack
+    
+    Use stack to store operands. When operator is encountered,
+    pop two operands, apply operation, and push result back.
+    
+    TIME: O(n), SPACE: O(n)
     """
     stack = []
     operators = {'+', '-', '*', '/'}
     
     for token in tokens:
         if token in operators:
-            # Pop two operands
+            # Pop two operands (order matters for - and /)
             b = stack.pop()
             a = stack.pop()
             
-            # Perform operation
             if token == '+':
                 result = a + b
             elif token == '-':
                 result = a - b
             elif token == '*':
                 result = a * b
-            else:  # division
-                # Handle negative division (truncate towards zero)
+            elif token == '/':
+                # Truncate toward zero
                 result = int(a / b)
             
             stack.append(result)
         else:
-            # Push number
+            # Operand
             stack.append(int(token))
     
     return stack[0]
 
 
+# =============================================================================
+# PROBLEM 8: DECODE STRING (MEDIUM) - 45 MIN
+# =============================================================================
+
 def decode_string(s):
     """
-    Decode string with pattern k[encoded_string]
+    PROBLEM: Decode String
     
-    Example: "3[a2[c]]" -> "accaccacc"
+    Given an encoded string, return its decoded string.
     
-    Stack approach: Use stack to handle nested brackets
+    The encoding rule is: k[encoded_string], where the encoded_string inside the square 
+    brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
     
-    Time: O(max_k * n), Space: O(max_k * n)
+    You may assume that the input string is always valid; there are no extra white spaces, 
+    square brackets are well-formed, etc. Furthermore, you may assume that the original data 
+    does not contain any digits and that digits are only for those repeat numbers, k.
+    
+    CONSTRAINTS:
+    - 1 <= s.length <= 30
+    - s consists of lowercase English letters, digits, and square brackets '[]'
+    - s is guaranteed to be a valid input
+    - All the integers in s are in the range [1, 300]
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "3[a]2[bc]"
+        Output: "aaabcbc"
+    
+    Example 2:
+        Input: s = "2[abc]3[cd]ef"
+        Output: "abcabccdcdcdef"
+    
+    Example 3:
+        Input: s = "abc3[cd]xyz"
+        Output: "abccdcdcdxyz"
+    
+    APPROACH: Stack
+    
+    Use stack to handle nested brackets. Store count and string separately.
+    When ']' is encountered, pop and repeat the string.
+    
+    TIME: O(n), SPACE: O(n)
     """
     stack = []
-    current_num = 0
     current_string = ""
+    current_num = 0
     
     for char in s:
         if char.isdigit():
@@ -429,7 +679,7 @@ def decode_string(s):
             current_string = ""
             current_num = 0
         elif char == ']':
-            # Pop and decode
+            # Pop and repeat
             prev_string, num = stack.pop()
             current_string = prev_string + current_string * num
         else:

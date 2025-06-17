@@ -71,14 +71,38 @@ class TreeNode:
         return f"TreeNode({self.val})"
 
 
-# Problem 1: Tree Traversals - Foundation patterns
+# =============================================================================
+# PROBLEM 1: BINARY TREE TRAVERSALS (EASY) - 30 MIN
+# =============================================================================
+
 def inorder_traversal_recursive(root):
     """
-    Inorder traversal: Left → Root → Right
+    PROBLEM: Binary Tree Inorder Traversal
+    
+    Given the root of a binary tree, return the inorder traversal of its nodes' values.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 100]
+    - -100 <= Node.val <= 100
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,null,2,3]
+        Output: [1,3,2]
+    
+    Example 2:
+        Input: root = []
+        Output: []
+    
+    Example 3:
+        Input: root = [1]
+        Output: [1]
+    
+    APPROACH: Recursive (Left → Root → Right)
     
     Most common traversal for BST (gives sorted order)
     
-    Time: O(n), Space: O(h) where h is height
+    TIME: O(n), SPACE: O(h) where h is height
     """
     result = []
     
@@ -96,11 +120,11 @@ def inorder_traversal_recursive(root):
 
 def inorder_traversal_iterative(root):
     """
-    Iterative inorder traversal using stack
+    APPROACH: Iterative using Stack
     
     Simulates recursive call stack explicitly
     
-    Time: O(n), Space: O(h)
+    TIME: O(n), SPACE: O(h)
     """
     result = []
     stack = []
@@ -124,11 +148,11 @@ def inorder_traversal_iterative(root):
 
 def preorder_traversal(root):
     """
-    Preorder traversal: Root → Left → Right
+    APPROACH: Preorder (Root → Left → Right)
     
     Useful for tree copying, expression trees
     
-    Time: O(n), Space: O(h)
+    TIME: O(n), SPACE: O(h)
     """
     result = []
     
@@ -146,11 +170,11 @@ def preorder_traversal(root):
 
 def postorder_traversal(root):
     """
-    Postorder traversal: Left → Right → Root
+    APPROACH: Postorder (Left → Right → Root)
     
     Useful for deletion, calculating tree properties
     
-    Time: O(n), Space: O(h)
+    TIME: O(n), SPACE: O(h)
     """
     result = []
     
@@ -168,11 +192,11 @@ def postorder_traversal(root):
 
 def level_order_traversal(root):
     """
-    Level-order traversal using BFS (queue)
+    APPROACH: Level-order using BFS (Queue)
     
     Process nodes level by level from left to right
     
-    Time: O(n), Space: O(w) where w is maximum width
+    TIME: O(n), SPACE: O(w) where w is maximum width
     """
     if not root:
         return []
@@ -195,11 +219,11 @@ def level_order_traversal(root):
 
 def level_order_by_levels(root):
     """
-    Level-order traversal grouped by levels
+    APPROACH: Level-order Grouped by Levels
     
     Returns list of lists, each containing one level
     
-    Time: O(n), Space: O(w)
+    TIME: O(n), SPACE: O(w)
     """
     if not root:
         return []
@@ -211,12 +235,10 @@ def level_order_by_levels(root):
         level_size = len(queue)
         current_level = []
         
-        # Process all nodes at current level
         for _ in range(level_size):
             node = queue.popleft()
             current_level.append(node.val)
             
-            # Add children for next level
             if node.left:
                 queue.append(node.left)
             if node.right:
@@ -227,14 +249,37 @@ def level_order_by_levels(root):
     return result
 
 
-# Problem 2: Tree Properties - Basic calculations
+# =============================================================================
+# PROBLEM 2: MAXIMUM DEPTH OF BINARY TREE (EASY) - 30 MIN
+# =============================================================================
+
 def max_depth(root):
     """
-    Calculate maximum depth (height) of binary tree
+    PROBLEM: Maximum Depth of Binary Tree
     
-    Height = longest path from root to leaf
+    Given the root of a binary tree, return its maximum depth.
     
-    Time: O(n), Space: O(h)
+    A binary tree's maximum depth is the number of nodes along the longest path 
+    from the root node down to the farthest leaf node.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^4]
+    - -100 <= Node.val <= 100
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [3,9,20,null,null,15,7]
+        Output: 3
+    
+    Example 2:
+        Input: root = [1,null,2]
+        Output: 2
+    
+    APPROACH: Recursive (Bottom-up)
+    
+    Maximum depth = 1 + max(left_depth, right_depth)
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return 0
@@ -245,55 +290,140 @@ def max_depth(root):
     return 1 + max(left_depth, right_depth)
 
 
+# =============================================================================
+# PROBLEM 3: MINIMUM DEPTH OF BINARY TREE (EASY) - 30 MIN
+# =============================================================================
+
 def min_depth(root):
     """
-    Calculate minimum depth to any leaf node
+    PROBLEM: Minimum Depth of Binary Tree
     
-    Important: Must reach a leaf (node with no children)
+    Given a binary tree, find its minimum depth.
     
-    Time: O(n), Space: O(h)
+    The minimum depth is the number of nodes along the shortest path from the 
+    root node down to the nearest leaf node.
+    
+    Note: A leaf is a node with no children.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 10^5]
+    - -1000 <= Node.val <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [3,9,20,null,null,15,7]
+        Output: 2
+    
+    Example 2:
+        Input: root = [2,null,3,null,4,null,5,null,6]
+        Output: 5
+    
+    APPROACH: Recursive with Leaf Check
+    
+    Must reach a leaf node (both children are null)
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return 0
     
-    # If one subtree is empty, use the other
+    # If one child is missing, go to the other side
     if not root.left:
         return 1 + min_depth(root.right)
     if not root.right:
         return 1 + min_depth(root.left)
     
-    # Both subtrees exist
+    # Both children exist
     return 1 + min(min_depth(root.left), min_depth(root.right))
 
 
+# =============================================================================
+# PROBLEM 4: COUNT COMPLETE TREE NODES (MEDIUM) - 45 MIN
+# =============================================================================
+
 def count_nodes(root):
     """
-    Count total number of nodes in tree
+    PROBLEM: Count Complete Tree Nodes
     
-    Time: O(n), Space: O(h)
+    Given the root of a complete binary tree, return the number of the nodes in the tree.
+    
+    According to Wikipedia, every level, except possibly the last, is completely filled 
+    in a complete binary tree, and all nodes in the last level are as far left as possible. 
+    It can have between 1 and 2^h nodes inclusive at the last level h.
+    
+    Design an algorithm that runs in less than O(n) time complexity.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 5 * 10^4]
+    - 0 <= Node.val <= 5 * 10^4
+    - The tree is guaranteed to be complete
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,2,3,4,5,6]
+        Output: 6
+    
+    Example 2:
+        Input: root = []
+        Output: 0
+    
+    Example 3:
+        Input: root = [1]
+        Output: 1
+    
+    APPROACH: Optimized for Complete Tree
+    
+    Use properties of complete binary tree for O(log²n) solution
+    
+    TIME: O(log²n), SPACE: O(logn)
     """
     if not root:
         return 0
     
+    # Simple O(n) approach for educational purposes
     return 1 + count_nodes(root.left) + count_nodes(root.right)
 
 
+# =============================================================================
+# PROBLEM 5: SYMMETRIC TREE (EASY) - 30 MIN
+# =============================================================================
+
 def is_symmetric(root):
     """
-    Check if binary tree is symmetric (mirror of itself)
+    PROBLEM: Symmetric Tree
     
-    Time: O(n), Space: O(h)
+    Given the root of a binary tree, check whether it is a mirror of itself 
+    (i.e., symmetric around its center).
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 1000]
+    - -100 <= Node.val <= 100
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,2,2,3,4,4,3]
+        Output: true
+    
+    Example 2:
+        Input: root = [1,2,2,null,3,null,3]
+        Output: false
+    
+    APPROACH: Recursive Mirror Check
+    
+    Check if left and right subtrees are mirrors of each other
+    
+    TIME: O(n), SPACE: O(h)
     """
     def is_mirror(left, right):
         # Both null
         if not left and not right:
             return True
         
-        # One null, one not
+        # One null, one not null
         if not left or not right:
             return False
         
-        # Both exist: check value equality and mirror structure
+        # Both exist: check value and recursive mirror property
         return (left.val == right.val and
                 is_mirror(left.left, right.right) and
                 is_mirror(left.right, right.left))
@@ -304,35 +434,96 @@ def is_symmetric(root):
     return is_mirror(root.left, root.right)
 
 
-# Problem 3: Path Problems - Common tree pattern
+# =============================================================================
+# PROBLEM 6: PATH SUM (EASY) - 30 MIN
+# =============================================================================
+
 def has_path_sum(root, target_sum):
     """
-    Check if any root-to-leaf path sums to target
+    PROBLEM: Path Sum
     
-    Classic DFS with target tracking
+    Given the root of a binary tree and an integer targetSum, return true if the tree 
+    has a root-to-leaf path such that adding up all the values along the path equals targetSum.
     
-    Time: O(n), Space: O(h)
+    A leaf is a node with no children.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 5000]
+    - -1000 <= Node.val <= 1000
+    - -1000 <= targetSum <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+        Output: true
+        Explanation: The root-to-leaf path with the target sum is shown.
+    
+    Example 2:
+        Input: root = [1,2,3], targetSum = 5
+        Output: false
+    
+    Example 3:
+        Input: root = [], targetSum = 0
+        Output: false
+    
+    APPROACH: Recursive DFS
+    
+    Subtract current node value and check remaining sum
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return False
     
     # Leaf node: check if remaining sum equals node value
     if not root.left and not root.right:
-        return root.val == target_sum
+        return target_sum == root.val
     
-    # Recurse with reduced target
+    # Recursive case: subtract current value and check children
     remaining = target_sum - root.val
-    return (has_path_sum(root.left, remaining) or
+    return (has_path_sum(root.left, remaining) or 
             has_path_sum(root.right, remaining))
 
 
+# =============================================================================
+# PROBLEM 7: PATH SUM II (MEDIUM) - 45 MIN
+# =============================================================================
+
 def path_sum_all_paths(root, target_sum):
     """
-    Find all root-to-leaf paths that sum to target
+    PROBLEM: Path Sum II
     
-    DFS with backtracking to track current path
+    Given the root of a binary tree and an integer targetSum, return all root-to-leaf 
+    paths where the sum of the node values in the path equals targetSum.
     
-    Time: O(n * h), Space: O(h) for recursion + O(n * h) for result
+    Each path should be returned as a list of the node values, not node references.
+    
+    A root-to-leaf path is a path starting from the root and ending at any leaf node. 
+    A leaf is a node with no children.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 5000]
+    - -1000 <= Node.val <= 1000
+    - -1000 <= targetSum <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+        Output: [[5,4,11,2],[5,8,4,5]]
+    
+    Example 2:
+        Input: root = [1,2,3], targetSum = 5
+        Output: []
+    
+    Example 3:
+        Input: root = [1,2], targetSum = 0
+        Output: []
+    
+    APPROACH: DFS with Backtracking
+    
+    Build path during traversal, backtrack when returning
+    
+    TIME: O(n²) worst case, SPACE: O(h)
     """
     def dfs(node, current_path, current_sum, all_paths):
         if not node:
@@ -342,15 +533,15 @@ def path_sum_all_paths(root, target_sum):
         current_path.append(node.val)
         current_sum += node.val
         
-        # Check if we've reached a leaf with target sum
+        # Check if leaf and sum matches
         if not node.left and not node.right and current_sum == target_sum:
-            all_paths.append(current_path[:])  # Copy current path
+            all_paths.append(current_path[:])  # Copy the path
         
-        # Continue DFS
+        # Recurse on children
         dfs(node.left, current_path, current_sum, all_paths)
         dfs(node.right, current_path, current_sum, all_paths)
         
-        # Backtrack: remove current node from path
+        # Backtrack
         current_path.pop()
     
     result = []
@@ -358,16 +549,43 @@ def path_sum_all_paths(root, target_sum):
     return result
 
 
+# =============================================================================
+# PROBLEM 8: MAXIMUM PATH SUM (HARD) - 60 MIN
+# =============================================================================
+
 def max_path_sum_leaf_to_leaf(root):
     """
-    Find maximum sum path from any leaf to any leaf
+    PROBLEM: Binary Tree Maximum Path Sum
     
-    Path must go through some node (can't be empty)
+    A path in a binary tree is a sequence of nodes where each pair of adjacent nodes 
+    in the sequence has an edge connecting them. A node can only appear in the sequence 
+    at most once. Note that the path does not need to pass through the root.
     
-    Time: O(n), Space: O(h)
+    The path sum of a path is the sum of the node's values in the path.
+    
+    Given the root of a binary tree, return the maximum path sum of any non-empty path.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [1, 3 * 10^4]
+    - -1000 <= Node.val <= 1000
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [1,2,3]
+        Output: 6
+        Explanation: The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6
+    
+    Example 2:
+        Input: root = [-10,9,20,null,null,15,7]
+        Output: 42
+        Explanation: The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42
+    
+    APPROACH: Post-order with Global Maximum
+    
+    For each node, consider path through it connecting left and right subtrees
+    
+    TIME: O(n), SPACE: O(h)
     """
-    max_sum = float('-inf')
-    
     def max_path_ending_at(node):
         nonlocal max_sum
         
@@ -375,93 +593,153 @@ def max_path_sum_leaf_to_leaf(root):
             return 0
         
         # Get maximum path sum ending at left and right children
-        left_sum = max_path_ending_at(node.left)
-        right_sum = max_path_ending_at(node.right)
+        left_max = max(0, max_path_ending_at(node.left))   # Ignore negative paths
+        right_max = max(0, max_path_ending_at(node.right))
         
-        # Maximum path through current node (left + node + right)
-        path_through_node = left_sum + node.val + right_sum
+        # Maximum path through current node (connecting left and right)
+        path_through_node = node.val + left_max + right_max
         max_sum = max(max_sum, path_through_node)
         
-        # Return maximum path ending at current node
-        return node.val + max(left_sum, right_sum)
+        # Return maximum path ending at current node (can only go one direction)
+        return node.val + max(left_max, right_max)
     
+    max_sum = float('-inf')
     max_path_ending_at(root)
     return max_sum
 
 
-# Problem 4: Tree Construction - Build from traversals
+# =============================================================================
+# PROBLEM 9: CONSTRUCT BINARY TREE FROM TRAVERSALS (MEDIUM) - 45 MIN
+# =============================================================================
+
 def build_tree_preorder_inorder(preorder, inorder):
     """
-    Build binary tree from preorder and inorder traversals
+    PROBLEM: Construct Binary Tree from Preorder and Inorder Traversal
     
-    Preorder gives root, inorder gives left/right subtree split
+    Given two integer arrays preorder and inorder where preorder is the preorder 
+    traversal of a binary tree and inorder is the inorder traversal of the same tree, 
+    construct and return the binary tree.
     
-    Time: O(n), Space: O(n)
+    CONSTRAINTS:
+    - 1 <= preorder.length <= 3000
+    - inorder.length == preorder.length
+    - -3000 <= preorder[i], inorder[i] <= 3000
+    - preorder and inorder consist of unique values
+    - Each value of inorder also appears in preorder
+    - preorder is guaranteed to be the preorder traversal of the tree
+    - inorder is guaranteed to be the inorder traversal of the tree
+    
+    EXAMPLES:
+    Example 1:
+        Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+        Output: [3,9,20,null,null,15,7]
+    
+    Example 2:
+        Input: preorder = [-1], inorder = [-1]
+        Output: [-1]
+    
+    APPROACH: Recursive Construction
+    
+    Use preorder to identify root, inorder to split left/right subtrees
+    
+    TIME: O(n), SPACE: O(n)
     """
     if not preorder or not inorder:
         return None
     
     # First element in preorder is always root
-    root = TreeNode(preorder[0])
+    root_val = preorder[0]
+    root = TreeNode(root_val)
     
-    # Find root position in inorder to split left/right
-    mid = inorder.index(preorder[0])
+    # Find root position in inorder
+    root_idx = inorder.index(root_val)
     
-    # Recursively build left and right subtrees
-    root.left = build_tree_preorder_inorder(
-        preorder[1:mid+1], 
-        inorder[:mid]
-    )
-    root.right = build_tree_preorder_inorder(
-        preorder[mid+1:], 
-        inorder[mid+1:]
-    )
+    # Split arrays for left and right subtrees
+    left_inorder = inorder[:root_idx]
+    right_inorder = inorder[root_idx + 1:]
+    
+    left_preorder = preorder[1:1 + len(left_inorder)]
+    right_preorder = preorder[1 + len(left_inorder):]
+    
+    # Recursively build subtrees
+    root.left = build_tree_preorder_inorder(left_preorder, left_inorder)
+    root.right = build_tree_preorder_inorder(right_preorder, right_inorder)
     
     return root
 
 
 def build_tree_postorder_inorder(postorder, inorder):
     """
-    Build binary tree from postorder and inorder traversals
+    APPROACH: Construct from Postorder and Inorder
     
-    Postorder: last element is root
+    Similar to preorder approach but build from right to left
     
-    Time: O(n), Space: O(n)
+    TIME: O(n), SPACE: O(n)
     """
     if not postorder or not inorder:
         return None
     
-    # Last element in postorder is root
-    root = TreeNode(postorder[-1])
+    # Last element in postorder is always root
+    root_val = postorder[-1]
+    root = TreeNode(root_val)
     
     # Find root position in inorder
-    mid = inorder.index(postorder[-1])
+    root_idx = inorder.index(root_val)
     
-    # Build subtrees (note: order matters for postorder slicing)
-    root.left = build_tree_postorder_inorder(
-        postorder[:mid], 
-        inorder[:mid]
-    )
-    root.right = build_tree_postorder_inorder(
-        postorder[mid:-1], 
-        inorder[mid+1:]
-    )
+    # Split arrays for left and right subtrees
+    left_inorder = inorder[:root_idx]
+    right_inorder = inorder[root_idx + 1:]
+    
+    left_postorder = postorder[:len(left_inorder)]
+    right_postorder = postorder[len(left_inorder):-1]
+    
+    # Recursively build subtrees
+    root.left = build_tree_postorder_inorder(left_postorder, left_inorder)
+    root.right = build_tree_postorder_inorder(right_postorder, right_inorder)
     
     return root
 
 
-# Problem 5: Tree Comparison and Validation
+# =============================================================================
+# PROBLEM 10: SAME TREE (EASY) - 30 MIN
+# =============================================================================
+
 def is_same_tree(p, q):
     """
-    Check if two binary trees are identical
+    PROBLEM: Same Tree
     
-    Time: O(min(m,n)), Space: O(min(m,n))
+    Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+    
+    Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+    
+    CONSTRAINTS:
+    - The number of nodes in both trees is in the range [0, 100]
+    - -10^4 <= Node.val <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: p = [1,2,3], q = [1,2,3]
+        Output: true
+    
+    Example 2:
+        Input: p = [1,2], q = [1,null,2]
+        Output: false
+    
+    Example 3:
+        Input: p = [1,2,1], q = [1,1,2]
+        Output: false
+    
+    APPROACH: Recursive Comparison
+    
+    Compare structure and values recursively
+    
+    TIME: O(min(m,n)), SPACE: O(min(m,n))
     """
     # Both null
     if not p and not q:
         return True
     
-    # One null, one not
+    # One null, one not null
     if not p or not q:
         return False
     
@@ -471,33 +749,89 @@ def is_same_tree(p, q):
             is_same_tree(p.right, q.right))
 
 
+# =============================================================================
+# PROBLEM 11: SUBTREE OF ANOTHER TREE (MEDIUM) - 45 MIN
+# =============================================================================
+
 def is_subtree(s, t):
     """
-    Check if tree t is a subtree of tree s
+    PROBLEM: Subtree of Another Tree
     
-    Time: O(m * n), Space: O(h)
+    Given the roots of two binary trees root and subRoot, return true if there is a 
+    subtree of root with the same structure and node values of subRoot and false otherwise.
+    
+    A subtree of a binary tree tree is a tree that consists of a node in tree and all 
+    of this node's descendants. The tree tree could also be considered as a subtree of itself.
+    
+    CONSTRAINTS:
+    - The number of nodes in the root tree is in the range [1, 2000]
+    - The number of nodes in the subRoot tree is in the range [1, 1000]
+    - -10^4 <= root.val <= 10^4
+    - -10^4 <= subRoot.val <= 10^4
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [3,4,5,1,2], subRoot = [4,1,2]
+        Output: true
+    
+    Example 2:
+        Input: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+        Output: false
+    
+    APPROACH: Check Each Node as Potential Root
+    
+    For each node in main tree, check if subtree starting there matches target
+    
+    TIME: O(m*n), SPACE: O(max(m,n))
     """
     if not s:
         return False
     
-    # Check if trees rooted at s and t are same
+    # Check if subtree rooted at current node matches
     if is_same_tree(s, t):
         return True
     
-    # Check if t is subtree of left or right subtree of s
+    # Recursively check left and right subtrees
     return is_subtree(s.left, t) or is_subtree(s.right, t)
 
 
+# =============================================================================
+# PROBLEM 12: INVERT BINARY TREE (EASY) - 30 MIN
+# =============================================================================
+
 def invert_tree(root):
     """
-    Invert binary tree (swap left and right children recursively)
+    PROBLEM: Invert Binary Tree
     
-    Time: O(n), Space: O(h)
+    Given the root of a binary tree, invert the tree, and return its root.
+    
+    CONSTRAINTS:
+    - The number of nodes in the tree is in the range [0, 100]
+    - -100 <= Node.val <= 100
+    
+    EXAMPLES:
+    Example 1:
+        Input: root = [4,2,7,1,3,6,9]
+        Output: [4,7,2,9,6,3,1]
+    
+    Example 2:
+        Input: root = [2,1,3]
+        Output: [2,3,1]
+    
+    Example 3:
+        Input: root = []
+        Output: []
+    
+    APPROACH: Recursive Swap
+    
+    Recursively swap left and right children
+    
+    TIME: O(n), SPACE: O(h)
     """
     if not root:
         return None
     
-    # Swap left and right children
+    # Swap children
     root.left, root.right = root.right, root.left
     
     # Recursively invert subtrees

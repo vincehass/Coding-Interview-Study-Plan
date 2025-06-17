@@ -41,10 +41,50 @@ from collections import defaultdict, deque, Counter
 import heapq
 
 
-# INTEGRATION PROBLEM 1: LRU Cache (Hash Table + Doubly Linked List)
+# =============================================================================
+# INTEGRATION PROBLEM 1: LRU CACHE (MEDIUM) - 60 MIN
+# =============================================================================
+
 class LRUCache:
     """
-    Least Recently Used Cache
+    PROBLEM: LRU Cache
+    
+    Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+    
+    Implement the LRUCache class:
+    - LRUCache(int capacity) Initialize the LRU cache with positive size capacity
+    - int get(int key) Return the value of the key if the key exists, otherwise return -1
+    - void put(int key, int value) Update the value of the key if the key exists. 
+      Otherwise, add the key-value pair to the cache. If the number of keys exceeds 
+      the capacity from this operation, evict the least recently used key.
+    
+    The functions get and put must each run in O(1) average time complexity.
+    
+    CONSTRAINTS:
+    - 1 <= capacity <= 3000
+    - 0 <= key <= 10^4
+    - 0 <= value <= 10^5
+    - At most 2 * 10^5 calls will be made to get and put
+    
+    EXAMPLES:
+    Example 1:
+        Input: ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+               [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+        Output: [null, null, null, 1, null, -1, null, -1, 3, 4]
+        
+        Explanation:
+        LRUCache lRUCache = new LRUCache(2);
+        lRUCache.put(1, 1); // cache is {1=1}
+        lRUCache.put(2, 2); // cache is {1=1, 2=2}
+        lRUCache.get(1);    // return 1
+        lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+        lRUCache.get(2);    // returns -1 (not found)
+        lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+        lRUCache.get(1);    // return -1 (not found)
+        lRUCache.get(3);    // return 3
+        lRUCache.get(4);    // return 4
+    
+    APPROACH: Hash Table + Doubly Linked List
     
     Combines hash table (O(1) access) with doubly linked list (O(1) insertion/deletion)
     Demonstrates integration of multiple data structures
@@ -128,15 +168,58 @@ class LRUCache:
             self._move_to_head(node)
 
 
-# INTEGRATION PROBLEM 2: Design Browser History (Stack + Array)
+# =============================================================================
+# INTEGRATION PROBLEM 2: DESIGN BROWSER HISTORY (MEDIUM) - 45 MIN
+# =============================================================================
+
 class BrowserHistory:
     """
-    Browser History with back/forward functionality
+    PROBLEM: Design Browser History
+    
+    You have a browser of one tab where you start on the homepage and you can visit 
+    another url, get back in the history number of steps or move forward in the history 
+    number of steps.
+    
+    Implement the BrowserHistory class:
+    - BrowserHistory(string homepage) Initializes the object with the homepage of the browser
+    - void visit(string url) Visits url from the current page. It clears up all the forward history
+    - string back(int steps) Move steps back in history. Return the current url after moving back
+    - string forward(int steps) Move steps forward in history. Return the current url after moving forward
+    
+    CONSTRAINTS:
+    - 1 <= homepage.length <= 20
+    - 1 <= url.length <= 20
+    - 1 <= steps <= 100
+    - homepage and url consist of '.' or lower case English letters
+    - At most 5000 calls will be made to visit, back, and forward
+    
+    EXAMPLES:
+    Example 1:
+        Input:
+        ["BrowserHistory","visit","visit","visit","back","back","forward","visit","forward","back","back"]
+        [["leetcode.com"],["google.com"],["facebook.com"],["youtube.com"],[1],[1],[1],["linkedin.com"],[2],[2],[7]]
+        Output:
+        [null,null,null,null,"facebook.com","google.com","facebook.com",null,"linkedin.com","google.com","leetcode.com"]
+        
+        Explanation:
+        BrowserHistory browserHistory = new BrowserHistory("leetcode.com");
+        browserHistory.visit("google.com");       // You are in "leetcode.com". Visit "google.com"
+        browserHistory.visit("facebook.com");     // You are in "google.com". Visit "facebook.com"
+        browserHistory.visit("youtube.com");      // You are in "facebook.com". Visit "youtube.com"
+        browserHistory.back(1);                   // You are in "youtube.com", move back to "facebook.com" return "facebook.com"
+        browserHistory.back(1);                   // You are in "facebook.com", move back to "google.com" return "google.com"
+        browserHistory.forward(1);                // You are in "google.com", move forward to "facebook.com" return "facebook.com"
+        browserHistory.visit("linkedin.com");     // You are in "facebook.com". Visit "linkedin.com"
+        browserHistory.forward(2);                // You are in "linkedin.com", you cannot move forward any steps.
+        browserHistory.back(2);                   // You are in "linkedin.com", move back two steps to "facebook.com" then to "google.com" return "google.com"
+        browserHistory.back(7);                   // You are in "google.com", you can move back only one step to "leetcode.com" return "leetcode.com"
+    
+    APPROACH: Array with Current Pointer
     
     Combines array-like structure with stack operations
     Demonstrates practical application of data structures
     
-    Time: O(1) for all operations, Space: O(n)
+    TIME: O(1) for all operations, SPACE: O(n)
     """
     
     def __init__(self, homepage):
@@ -161,170 +244,377 @@ class BrowserHistory:
         return self.history[self.current]
 
 
-# INTEGRATION PROBLEM 3: Design Phone Directory (Trie + Set)
+# =============================================================================
+# INTEGRATION PROBLEM 3: DESIGN PHONE DIRECTORY (MEDIUM) - 45 MIN
+# =============================================================================
+
 class PhoneDirectory:
     """
-    Phone directory with prefix search
+    PROBLEM: Design Phone Directory
     
-    Combines Trie (prefix matching) with hash sets (fast lookup)
-    Shows integration of string processing with tree structures
+    Design a phone directory which supports the following operations:
+    - get(): Provide a number which is not assigned to anyone
+    - check(number): Check if a number is available or not
+    - release(number): Recycle or release a number
+    
+    CONSTRAINTS:
+    - 1 <= maxNumbers <= 10^4
+    - 0 <= number < maxNumbers
+    - At most 2 * 10^4 calls will be made to get, check, and release
+    
+    EXAMPLES:
+    Example 1:
+        Input: ["PhoneDirectory", "get", "get", "check", "get", "check", "release", "check"]
+               [[3], [], [], [2], [], [2], [2], [2]]
+        Output: [null, 0, 1, true, 2, false, null, true]
+        
+        Explanation:
+        PhoneDirectory phoneDirectory = new PhoneDirectory(3);
+        phoneDirectory.get();      // It can return any available phone number. Here we assume it returns 0.
+        phoneDirectory.get();      // Assume it returns 1.
+        phoneDirectory.check(2);   // The number 2 is available, so return true.
+        phoneDirectory.get();      // It returns 2, the only number that is left.
+        phoneDirectory.check(2);   // The number 2 is no longer available, so return false.
+        phoneDirectory.release(2); // Release number 2 back to the pool.
+        phoneDirectory.check(2);   // Number 2 is available again, return true.
+    
+    APPROACH: Set + Queue
+    
+    Combines set (fast lookup) with queue (FIFO order for available numbers)
+    Shows integration of multiple data structures for efficiency
+    
+    TIME: O(1) for all operations, SPACE: O(n)
     """
     
-    class TrieNode:
-        def __init__(self):
-            self.children = {}
-            self.phone_numbers = set()
+    def __init__(self, maxNumbers):
+        """Initialize with maxNumbers phone numbers"""
+        self.available = set(range(maxNumbers))
+        self.queue = deque(range(maxNumbers))
     
-    def __init__(self):
-        self.root = self.TrieNode()
-        self.all_numbers = set()
-    
-    def add_contact(self, name, phone):
-        """Add contact with name and phone number"""
-        self.all_numbers.add(phone)
+    def get(self):
+        """Get an available phone number"""
+        if not self.queue:
+            return -1
         
-        # Add to trie for prefix search
-        node = self.root
-        for char in name.lower():
-            if char not in node.children:
-                node.children[char] = self.TrieNode()
-            node = node.children[char]
-            node.phone_numbers.add(phone)
+        number = self.queue.popleft()
+        self.available.remove(number)
+        return number
     
-    def search_by_prefix(self, prefix):
-        """Find all phone numbers for names starting with prefix"""
-        node = self.root
-        for char in prefix.lower():
-            if char not in node.children:
-                return []
-            node = node.children[char]
-        
-        return list(node.phone_numbers)
+    def check(self, number):
+        """Check if number is available"""
+        return number in self.available
     
-    def has_phone(self, phone):
-        """Check if phone number exists"""
-        return phone in self.all_numbers
+    def release(self, number):
+        """Release number back to available pool"""
+        if number not in self.available:
+            self.available.add(number)
+            self.queue.append(number)
 
 
-# INTEGRATION PROBLEM 4: Evaluate Mathematical Expression
+# =============================================================================
+# INTEGRATION PROBLEM 4: EVALUATE EXPRESSION (HARD) - 60 MIN
+# =============================================================================
+
 def evaluate_expression(expression):
     """
-    Evaluate mathematical expression with +, -, *, /, (, )
+    PROBLEM: Basic Calculator
     
-    Combines:
-    - Stack for operator precedence
-    - String processing for parsing
-    - Two stacks algorithm
+    Given a string s representing a valid expression, implement a basic calculator 
+    to evaluate it, and return the result of the evaluation.
     
-    Time: O(n), Space: O(n)
+    Note: You are not allowed to use any built-in function which evaluates strings 
+    as mathematical expressions, such as eval().
+    
+    CONSTRAINTS:
+    - 1 <= s.length <= 3 * 10^5
+    - s consists of integers and operators ('+', '-', '*', '/') and spaces ' '
+    - s represents a valid expression
+    - All the integers in the expression are non-negative integers in the range [0, 2^31 - 1]
+    - The answer is guaranteed to fit in a 32-bit integer
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "3+2*2"
+        Output: 7
+    
+    Example 2:
+        Input: s = " 3/2 "
+        Output: 1
+    
+    Example 3:
+        Input: s = " 3+5 / 2 "
+        Output: 5
+    
+    APPROACH: Stack with Operator Precedence
+    
+    Use stack to handle operator precedence (* and / before + and -)
+    Process expression left to right, handling high precedence immediately
+    
+    TIME: O(n), SPACE: O(n)
     """
-    def apply_operator(operators, values):
-        """Apply top operator to top two values"""
-        operator = operators.pop()
-        right = values.pop()
-        left = values.pop()
-        
-        if operator == '+':
-            values.append(left + right)
-        elif operator == '-':
-            values.append(left - right)
-        elif operator == '*':
-            values.append(left * right)
-        elif operator == '/':
-            values.append(left // right)
-    
-    def precedence(op):
-        """Return operator precedence"""
-        if op in ['+', '-']:
-            return 1
-        if op in ['*', '/']:
-            return 2
+    if not expression:
         return 0
     
-    values = []  # Stack for numbers
-    operators = []  # Stack for operators
-    i = 0
+    stack = []
+    num = 0
+    sign = '+'
     
-    while i < len(expression):
-        char = expression[i]
-        
-        if char == ' ':
-            i += 1
-            continue
-        
+    for i, char in enumerate(expression):
         if char.isdigit():
-            # Parse number
+            num = num * 10 + int(char)
+        
+        if char in '+-*/' or i == len(expression) - 1:
+            if sign == '+':
+                stack.append(num)
+            elif sign == '-':
+                stack.append(-num)
+            elif sign == '*':
+                stack.append(stack.pop() * num)
+            elif sign == '/':
+                # Handle negative division (truncate toward zero)
+                prev = stack.pop()
+                stack.append(int(prev / num))
+            
+            sign = char
             num = 0
-            while i < len(expression) and expression[i].isdigit():
-                num = num * 10 + int(expression[i])
-                i += 1
-            values.append(num)
-            continue
-        
-        if char == '(':
-            operators.append(char)
-        elif char == ')':
-            # Apply all operators until '('
-            while operators and operators[-1] != '(':
-                apply_operator(operators, values)
-            operators.pop()  # Remove '('
-        else:
-            # Operator
-            while (operators and operators[-1] != '(' and
-                   precedence(operators[-1]) >= precedence(char)):
-                apply_operator(operators, values)
-            operators.append(char)
-        
-        i += 1
     
-    # Apply remaining operators
-    while operators:
-        apply_operator(operators, values)
-    
-    return values[0]
+    return sum(stack)
 
 
-# INTEGRATION PROBLEM 5: Design Hit Counter (Queue + Sliding Window)
+# =============================================================================
+# INTEGRATION PROBLEM 5: HIT COUNTER (MEDIUM) - 45 MIN
+# =============================================================================
+
 class HitCounter:
     """
-    Design hit counter that counts hits in past 5 minutes
+    PROBLEM: Design Hit Counter
     
-    Combines queue (time-based ordering) with sliding window concept
-    Efficient for time-based problems
+    Design a hit counter which counts the number of hits received in the past 5 minutes (i.e., the past 300 seconds).
     
-    Time: O(1) amortized, Space: O(k) where k is number of hits in window
+    Your system should accept a timestamp parameter (in seconds granularity), and you may assume that 
+    calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). 
+    Several hits may arrive roughly at the same time.
+    
+    Implement the HitCounter class:
+    - HitCounter() Initializes the object of the hit counter system
+    - void hit(int timestamp) Records a hit that happened at timestamp (in seconds)
+    - int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp
+    
+    CONSTRAINTS:
+    - 1 <= timestamp <= 2 * 10^9
+    - All the calls are being made to the system in chronological order
+    - At most 300 calls will be made to hit and getHits
+    
+    EXAMPLES:
+    Example 1:
+        Input: ["HitCounter", "hit", "hit", "hit", "getHits", "hit", "getHits", "getHits"]
+               [[], [1], [2], [3], [4], [300], [300], [301]]
+        Output: [null, null, null, null, 3, null, 4, 3]
+        
+        Explanation:
+        HitCounter hitCounter = new HitCounter();
+        hitCounter.hit(1);       // hit at timestamp 1.
+        hitCounter.hit(2);       // hit at timestamp 2.
+        hitCounter.hit(3);       // hit at timestamp 3.
+        hitCounter.getHits(4);   // get hits at timestamp 4, return 3.
+        hitCounter.hit(300);     // hit at timestamp 300.
+        hitCounter.getHits(300); // get hits at timestamp 300, return 4.
+        hitCounter.getHits(301); // get hits at timestamp 301, return 3.
+    
+    APPROACH: Circular Array with Timestamps
+    
+    Use circular array to store hit counts for each second in 300-second window
+    Efficiently handles the sliding window requirement
+    
+    TIME: O(1) for both operations, SPACE: O(300) = O(1)
     """
     
     def __init__(self):
-        self.hits = deque()  # Store (timestamp, count) pairs
-        self.total = 0
+        """Initialize hit counter with 300-second window"""
+        self.times = [0] * 300  # timestamps
+        self.hits = [0] * 300   # hit counts
     
     def hit(self, timestamp):
         """Record a hit at given timestamp"""
-        # Group hits by timestamp for efficiency
-        if self.hits and self.hits[-1][0] == timestamp:
-            # Same timestamp, increment count
-            old_count = self.hits[-1][1]
-            self.hits[-1] = (timestamp, old_count + 1)
-            self.total += 1
-        else:
-            # New timestamp
-            self.hits.append((timestamp, 1))
-            self.total += 1
+        index = timestamp % 300
         
-        # Remove old hits (older than 300 seconds)
-        self._clean_old_hits(timestamp)
+        if self.times[index] != timestamp:
+            # New timestamp, reset count
+            self.times[index] = timestamp
+            self.hits[index] = 1
+        else:
+            # Same timestamp, increment count
+            self.hits[index] += 1
     
     def get_hits(self, timestamp):
-        """Get number of hits in past 300 seconds"""
-        self._clean_old_hits(timestamp)
-        return self.total
+        """Get hits in past 300 seconds"""
+        total = 0
+        
+        for i in range(300):
+            # Only count hits within 300 seconds
+            if timestamp - self.times[i] < 300:
+                total += self.hits[i]
+        
+        return total
+
+
+# =============================================================================
+# INTEGRATION PROBLEM 6: FIND ANAGRAM GROUPS WITH INDICES (MEDIUM) - 45 MIN
+# =============================================================================
+
+def find_anagram_groups_with_indices(words):
+    """
+    PROBLEM: Group Anagrams with Indices
     
-    def _clean_old_hits(self, timestamp):
-        """Remove hits older than 300 seconds"""
-        while self.hits and self.hits[0][0] <= timestamp - 300:
-            _, count = self.hits.popleft()
-            self.total -= count
+    Given an array of strings strs, group the anagrams together and return both 
+    the grouped anagrams and their original indices.
+    
+    CONSTRAINTS:
+    - 1 <= strs.length <= 10^4
+    - 0 <= strs[i].length <= 100
+    - strs[i] consists of lowercase English letters
+    
+    EXAMPLES:
+    Example 1:
+        Input: strs = ["eat","tea","tan","ate","nat","bat"]
+        Output: {
+            "aet": [(0, "eat"), (1, "tea"), (3, "ate")],
+            "ant": [(2, "tan"), (4, "nat")],
+            "abt": [(5, "bat")]
+        }
+    
+    APPROACH: Hash Map with Sorted Keys + Index Tracking
+    
+    Combines anagram grouping with index preservation
+    Demonstrates data structure integration for complex requirements
+    
+    TIME: O(n * m log m), SPACE: O(n * m)
+    """
+    anagram_groups = defaultdict(list)
+    
+    for i, word in enumerate(words):
+        # Sort characters to create anagram key
+        key = ''.join(sorted(word))
+        anagram_groups[key].append((i, word))
+    
+    return dict(anagram_groups)
+
+
+# =============================================================================
+# INTEGRATION PROBLEM 7: MERGE K SORTED ARRAYS (HARD) - 60 MIN
+# =============================================================================
+
+def merge_k_sorted_arrays(arrays):
+    """
+    PROBLEM: Merge k Sorted Arrays
+    
+    Given k sorted arrays, merge them into one sorted array.
+    
+    CONSTRAINTS:
+    - k == arrays.length
+    - 0 <= k <= 10^4
+    - 0 <= arrays[i].length <= 500
+    - -10^4 <= arrays[i][j] <= 10^4
+    - arrays[i] is sorted in ascending order
+    
+    EXAMPLES:
+    Example 1:
+        Input: arrays = [[1,4,5],[1,3,4],[2,6]]
+        Output: [1,1,2,3,4,4,5,6]
+    
+    Example 2:
+        Input: arrays = []
+        Output: []
+    
+    Example 3:
+        Input: arrays = [[]]
+        Output: []
+    
+    APPROACH: Min Heap
+    
+    Use min heap to efficiently get the smallest element among all arrays
+    Demonstrates heap usage for merging multiple sorted sequences
+    
+    TIME: O(n log k), SPACE: O(k) where n = total elements, k = number of arrays
+    """
+    if not arrays:
+        return []
+    
+    result = []
+    heap = []
+    
+    # Initialize heap with first element from each non-empty array
+    for i, arr in enumerate(arrays):
+        if arr:
+            heapq.heappush(heap, (arr[0], i, 0))  # (value, array_index, element_index)
+    
+    while heap:
+        val, arr_idx, elem_idx = heapq.heappop(heap)
+        result.append(val)
+        
+        # Add next element from same array if exists
+        if elem_idx + 1 < len(arrays[arr_idx]):
+            next_val = arrays[arr_idx][elem_idx + 1]
+            heapq.heappush(heap, (next_val, arr_idx, elem_idx + 1))
+    
+    return result
+
+
+# =============================================================================
+# INTEGRATION PROBLEM 8: LONGEST VALID PARENTHESES (HARD) - 60 MIN
+# =============================================================================
+
+def longest_valid_parentheses(s):
+    """
+    PROBLEM: Longest Valid Parentheses
+    
+    Given a string containing just the characters '(' and ')', find the length 
+    of the longest valid (well-formed) parentheses substring.
+    
+    CONSTRAINTS:
+    - 0 <= s.length <= 3 * 10^4
+    - s[i] is '(' or ')'
+    
+    EXAMPLES:
+    Example 1:
+        Input: s = "(()"
+        Output: 2
+        Explanation: The longest valid parentheses substring is "()"
+    
+    Example 2:
+        Input: s = ")()())"
+        Output: 4
+        Explanation: The longest valid parentheses substring is "()()"
+    
+    Example 3:
+        Input: s = ""
+        Output: 0
+    
+    APPROACH: Stack with Index Tracking
+    
+    Use stack to track indices of unmatched parentheses
+    Calculate lengths of valid substrings between unmatched positions
+    
+    TIME: O(n), SPACE: O(n)
+    """
+    stack = [-1]  # Initialize with -1 to handle edge cases
+    max_length = 0
+    
+    for i, char in enumerate(s):
+        if char == '(':
+            stack.append(i)
+        else:  # char == ')'
+            stack.pop()
+            
+            if not stack:
+                # No matching '(', push current index as base
+                stack.append(i)
+            else:
+                # Calculate length of current valid substring
+                current_length = i - stack[-1]
+                max_length = max(max_length, current_length)
+    
+    return max_length
 
 
 # COMPREHENSIVE MIXED PRACTICE PROBLEMS
