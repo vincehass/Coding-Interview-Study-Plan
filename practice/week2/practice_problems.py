@@ -64,8 +64,16 @@ def inorder_traversal_practice(root):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    result = []
+    
+    def inorder(node):
+        if node:
+            inorder(node.left)
+            result.append(node.val)
+            inorder(node.right)
+    
+    inorder(root)
+    return result
 
 
 def max_depth_practice(root):
@@ -96,8 +104,13 @@ def max_depth_practice(root):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not root:
+        return 0
+    
+    left_depth = max_depth_practice(root.left)
+    right_depth = max_depth_practice(root.right)
+    
+    return max(left_depth, right_depth) + 1
 
 
 def is_same_tree_practice(p, q):
@@ -132,8 +145,17 @@ def is_same_tree_practice(p, q):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not p and not q:
+        return True
+    
+    if not p or not q:
+        return False
+    
+    if p.val != q.val:
+        return False
+    
+    return (is_same_tree_practice(p.left, q.left) and 
+            is_same_tree_practice(p.right, q.right))
 
 
 def has_path_sum_practice(root, targetSum):
@@ -175,8 +197,16 @@ def has_path_sum_practice(root, targetSum):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not root:
+        return False
+    
+    # If it's a leaf node, check if the remaining sum equals the node value
+    if not root.left and not root.right:
+        return targetSum == root.val
+    
+    # Recursively check left and right subtrees with updated target sum
+    return (has_path_sum_practice(root.left, targetSum - root.val) or
+            has_path_sum_practice(root.right, targetSum - root.val))
 
 
 # BINARY SEARCH TREES PRACTICE
@@ -212,8 +242,17 @@ def is_valid_bst_practice(root):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    def validate(node, min_val, max_val):
+        if not node:
+            return True
+        
+        if node.val <= min_val or node.val >= max_val:
+            return False
+        
+        return (validate(node.left, min_val, node.val) and
+                validate(node.right, node.val, max_val))
+    
+    return validate(root, float('-inf'), float('inf'))
 
 
 def search_bst_practice(root, val):
@@ -241,13 +280,20 @@ def search_bst_practice(root, val):
         Input: root = [4,2,7,1,3], val = 5
         Output: []
     
-    EXPECTED TIME COMPLEXITY: O(h)
+    EXPECTED TIME COMPLEXITY: O(h) where h is height
     EXPECTED SPACE COMPLEXITY: O(1) iterative, O(h) recursive
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not root:
+        return None
+    
+    if root.val == val:
+        return root
+    elif val < root.val:
+        return search_bst_practice(root.left, val)
+    else:
+        return search_bst_practice(root.right, val)
 
 
 def insert_into_bst_practice(root, val):
@@ -256,8 +302,8 @@ def insert_into_bst_practice(root, val):
     
     DESCRIPTION:
     You are given the root node of a binary search tree (BST) and a value to insert into the tree. 
-    Return the root node of the BST after the insertion. It is guaranteed that the new value 
-    does not exist in the original BST.
+    Return the root node of the BST after the insertion. It is guaranteed that the new value does 
+    not exist in the original BST.
     
     Notice that there may exist multiple valid ways for the insertion, as long as the tree 
     remains a BST after insertion. You can return any of them.
@@ -273,7 +319,6 @@ def insert_into_bst_practice(root, val):
     Example 1:
         Input: root = [4,2,7,1,3], val = 5
         Output: [4,2,7,1,3,5]
-        Explanation: Another accepted tree is [5,2,7,1,3,null,null,null,null,null,4].
     
     Example 2:
         Input: root = [40,20,60,10,30,50,70], val = 25
@@ -284,32 +329,36 @@ def insert_into_bst_practice(root, val):
         Output: [4,2,7,1,3,5]
     
     EXPECTED TIME COMPLEXITY: O(h)
-    EXPECTED SPACE COMPLEXITY: O(h) recursive, O(1) iterative
+    EXPECTED SPACE COMPLEXITY: O(h)
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not root:
+        return TreeNode(val)
+    
+    if val < root.val:
+        root.left = insert_into_bst_practice(root.left, val)
+    else:
+        root.right = insert_into_bst_practice(root.right, val)
+    
+    return root
 
 
-# BINARY SEARCH PRACTICE
+# BINARY SEARCH ON ARRAYS PRACTICE
 
 def binary_search_practice(nums, target):
     """
     PROBLEM: Binary Search
     
     DESCRIPTION:
-    Given an array of integers nums which is sorted in ascending order, and an integer target, 
-    write a function to search target in nums. If target exists, then return its index. 
-    Otherwise, return -1.
-    
-    You must write an algorithm with O(log n) runtime complexity.
+    Given a sorted (in ascending order) integer array nums of n elements and a target value, 
+    write a function to search target in nums. If target exists, then return its index, 
+    otherwise return -1.
     
     CONSTRAINTS:
-    - 1 <= nums.length <= 10^4
-    - -10^4 < nums[i], target < 10^4
-    - All the integers in nums are unique.
-    - nums is sorted in ascending order.
+    - You may assume that all elements in nums are unique.
+    - n will be in the range [1, 10000].
+    - The value of each element in nums will be in the range [-9999, 9999].
     
     EXAMPLES:
     Example 1:
@@ -327,8 +376,19 @@ def binary_search_practice(nums, target):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1
 
 
 def search_range_practice(nums, target):
@@ -367,8 +427,46 @@ def search_range_practice(nums, target):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    def find_first(nums, target):
+        left, right = 0, len(nums) - 1
+        first_pos = -1
+        
+        while left <= right:
+            mid = left + (right - left) // 2
+            
+            if nums[mid] == target:
+                first_pos = mid
+                right = mid - 1  # Continue searching left
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return first_pos
+    
+    def find_last(nums, target):
+        left, right = 0, len(nums) - 1
+        last_pos = -1
+        
+        while left <= right:
+            mid = left + (right - left) // 2
+            
+            if nums[mid] == target:
+                last_pos = mid
+                left = mid + 1  # Continue searching right
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return last_pos
+    
+    first = find_first(nums, target)
+    if first == -1:
+        return [-1, -1]
+    
+    last = find_last(nums, target)
+    return [first, last]
 
 
 def search_rotated_array_practice(nums, target):
@@ -378,8 +476,8 @@ def search_rotated_array_practice(nums, target):
     DESCRIPTION:
     There is an integer array nums sorted in ascending order (with distinct values).
     
-    Prior to being passed to your function, nums is possibly rotated at an unknown pivot 
-    index k (1 <= k < nums.length) such that the resulting array is 
+    Prior to being passed to your function, nums is possibly rotated at an unknown 
+    pivot index k (1 <= k < nums.length) such that the resulting array is 
     [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). 
     For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
     
@@ -413,11 +511,31 @@ def search_rotated_array_practice(nums, target):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] == target:
+            return mid
+        
+        # Left half is sorted
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        # Right half is sorted
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    
+    return -1
 
 
-# HEAPS PRACTICE
+# HEAP / PRIORITY QUEUE PRACTICE
 
 def find_kth_largest_practice(nums, k):
     """
@@ -443,13 +561,22 @@ def find_kth_largest_practice(nums, k):
         Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
         Output: 4
     
-    EXPECTED TIME COMPLEXITY: O(n) average, O(n log k) using heap
+    EXPECTED TIME COMPLEXITY: O(n log k) using heap, O(n) average using quickselect
     EXPECTED SPACE COMPLEXITY: O(k) using heap
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    import heapq
+    
+    # Use a min heap of size k
+    heap = []
+    
+    for num in nums:
+        heapq.heappush(heap, num)
+        if len(heap) > k:
+            heapq.heappop(heap)
+    
+    return heap[0]
 
 
 def top_k_frequent_practice(nums, k):
@@ -478,12 +605,17 @@ def top_k_frequent_practice(nums, k):
     where n is the array's size.
     
     EXPECTED TIME COMPLEXITY: O(n log k)
-    EXPECTED SPACE COMPLEXITY: O(n + k)
+    EXPECTED SPACE COMPLEXITY: O(n)
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    from collections import Counter
+    
+    # Count frequencies
+    counter = Counter(nums)
+    
+    # Use heap to find top k elements
+    return heapq.nlargest(k, counter.keys(), key=counter.get)
 
 
 class MedianFinder_Practice:
@@ -506,45 +638,51 @@ class MedianFinder_Practice:
     
     EXAMPLES:
     Example 1:
-        Input: ["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
-               [[], [1], [2], [], [3], []]
-        Output: [null, null, null, 1.5, null, 2.0]
-        
-        Explanation:
-        MedianFinder medianFinder = new MedianFinder();
-        medianFinder.addNum(1);    // arr = [1]
-        medianFinder.addNum(2);    // arr = [1, 2]
-        medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
-        medianFinder.addNum(3);    // arr = [1, 2, 3]
-        medianFinder.findMedian(); // return 2.0
-    
-    FOLLOW-UP:
-    - If all integer numbers from the stream are in the range [0, 100], how would you optimize it?
-    - If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize it?
+        Input: 
+        ["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+        [[], [1], [2], [], [3], []]
+        Output:
+        [null, null, null, 1.5, null, 2.0]
     
     EXPECTED TIME COMPLEXITY: O(log n) for addNum, O(1) for findMedian
     EXPECTED SPACE COMPLEXITY: O(n)
-    
-    YOUR SOLUTION:
     """
 
     def __init__(self):
-        # Write your initialization here
-        pass
+        # Use two heaps: max heap for smaller half, min heap for larger half
+        self.small = []  # max heap (use negative values)
+        self.large = []  # min heap
 
     def addNum(self, num: int) -> None:
-        # Write your addNum implementation here
-        pass
+        # Always add to small first
+        heapq.heappush(self.small, -num)
+        
+        # Ensure all elements in small are <= all elements in large
+        if self.small and self.large and -self.small[0] > self.large[0]:
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+        
+        # Balance the heaps
+        if len(self.small) > len(self.large) + 1:
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+        if len(self.large) > len(self.small) + 1:
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small, -val)
 
     def findMedian(self) -> float:
-        # Write your findMedian implementation here
-        pass
+        if len(self.small) > len(self.large):
+            return -self.small[0]
+        elif len(self.large) > len(self.small):
+            return self.large[0]
+        else:
+            return (-self.small[0] + self.large[0]) / 2.0
 
 
-# UTILITY FUNCTIONS FOR TESTING
+# HELPER FUNCTIONS
 
 def create_tree_from_list(values):
-    """Create binary tree from level-order list representation"""
+    """Helper function to create binary tree from level-order list"""
     if not values or values[0] is None:
         return None
     
@@ -555,11 +693,13 @@ def create_tree_from_list(values):
     while queue and index < len(values):
         node = queue.popleft()
         
+        # Add left child
         if index < len(values) and values[index] is not None:
             node.left = TreeNode(values[index])
             queue.append(node.left)
         index += 1
         
+        # Add right child
         if index < len(values) and values[index] is not None:
             node.right = TreeNode(values[index])
             queue.append(node.right)
@@ -569,7 +709,7 @@ def create_tree_from_list(values):
 
 
 def tree_to_list(root):
-    """Convert tree to level-order list representation"""
+    """Helper function to convert tree to level-order list"""
     if not root:
         return []
     

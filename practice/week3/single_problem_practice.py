@@ -12,6 +12,7 @@ This represents the most fundamental graph traversal pattern in interviews.
 """
 
 from typing import List
+from collections import deque
 
 
 def num_islands(grid: List[List[str]]) -> int:
@@ -60,9 +61,34 @@ def num_islands(grid: List[List[str]]) -> int:
     Returns:
         int: Number of islands in the grid
     """
-    # Write your solution here
-    # Hint: Use DFS or BFS to mark connected land cells as visited
-    pass
+    if not grid or not grid[0]:
+        return 0
+    
+    rows, cols = len(grid), len(grid[0])
+    islands = 0
+    
+    def dfs(r, c):
+        # Base case: out of bounds or water/visited
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
+            return
+        
+        # Mark current cell as visited by changing it to '0'
+        grid[r][c] = '0'
+        
+        # Explore all 4 directions
+        dfs(r + 1, c)  # down
+        dfs(r - 1, c)  # up
+        dfs(r, c + 1)  # right
+        dfs(r, c - 1)  # left
+    
+    # Traverse the entire grid
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':  # Found unvisited land
+                islands += 1
+                dfs(r, c)  # Mark entire island as visited
+    
+    return islands
 
 
 def print_grid(grid: List[List[str]], title: str = "Grid"):
@@ -90,7 +116,9 @@ def main():
         ["0","0","0","0","0"]
     ]
     expected1 = 1
-    result1 = num_islands(grid1)
+    # Make a copy since our solution modifies the grid
+    grid1_copy = [row[:] for row in grid1]
+    result1 = num_islands(grid1_copy)
     
     print_grid(grid1, "Input Grid")
     print(f"Expected: {expected1}")
@@ -106,7 +134,8 @@ def main():
         ["0","0","0","1","1"]
     ]
     expected2 = 3
-    result2 = num_islands(grid2)
+    grid2_copy = [row[:] for row in grid2]
+    result2 = num_islands(grid2_copy)
     
     print_grid(grid2, "Input Grid")
     print(f"Expected: {expected2}")
@@ -121,7 +150,8 @@ def main():
         ["0","0","0"]
     ]
     expected3 = 0
-    result3 = num_islands(grid3)
+    grid3_copy = [row[:] for row in grid3]
+    result3 = num_islands(grid3_copy)
     
     print_grid(grid3, "Input Grid")
     print(f"Expected: {expected3}")
@@ -136,7 +166,8 @@ def main():
         ["1","1","1"]
     ]
     expected4 = 1
-    result4 = num_islands(grid4)
+    grid4_copy = [row[:] for row in grid4]
+    result4 = num_islands(grid4_copy)
     
     print_grid(grid4, "Input Grid")
     print(f"Expected: {expected4}")
@@ -147,7 +178,8 @@ def main():
     print("\n🧪 Test Case 5: Single Cell Island")
     grid5 = [["1"]]
     expected5 = 1
-    result5 = num_islands(grid5)
+    grid5_copy = [row[:] for row in grid5]
+    result5 = num_islands(grid5_copy)
     
     print_grid(grid5, "Input Grid")
     print(f"Expected: {expected5}")
@@ -158,7 +190,8 @@ def main():
     print("\n🧪 Test Case 6: Single Cell Water")
     grid6 = [["0"]]
     expected6 = 0
-    result6 = num_islands(grid6)
+    grid6_copy = [row[:] for row in grid6]
+    result6 = num_islands(grid6_copy)
     
     print_grid(grid6, "Input Grid")
     print(f"Expected: {expected6}")
@@ -173,7 +206,8 @@ def main():
         ["1","0","1"]
     ]
     expected7 = 5  # Each '1' is a separate island (no diagonal connections)
-    result7 = num_islands(grid7)
+    grid7_copy = [row[:] for row in grid7]
+    result7 = num_islands(grid7_copy)
     
     print_grid(grid7, "Input Grid")
     print(f"Expected: {expected7} (diagonal doesn't count as connected)")
@@ -189,14 +223,15 @@ def main():
         ["1","1","1","0"]
     ]
     expected8 = 2  # One L-shaped island on left, one small island on right
-    result8 = num_islands(grid8)
+    grid8_copy = [row[:] for row in grid8]
+    result8 = num_islands(grid8_copy)
     
     print_grid(grid8, "Input Grid")
     print(f"Expected: {expected8}")
     print(f"Got: {result8}")
     print(f"✅ PASS" if result8 == expected8 else f"❌ FAIL")
     
-    # Test Case 9: Large grid with many small islands
+    # Test Case 9: Many Small Islands
     print("\n🧪 Test Case 9: Many Small Islands")
     grid9 = [
         ["1","0","1","0","1"],
@@ -204,8 +239,9 @@ def main():
         ["1","0","1","0","1"],
         ["0","1","0","1","0"]
     ]
-    expected9 = 12  # Each '1' is a separate island
-    result9 = num_islands(grid9)
+    expected9 = 10  # Each '1' is separate
+    grid9_copy = [row[:] for row in grid9]
+    result9 = num_islands(grid9_copy)
     
     print_grid(grid9, "Input Grid")
     print(f"Expected: {expected9}")
@@ -241,27 +277,20 @@ def main():
     print("\n💡 SOLUTION APPROACHES:")
     print("1. DFS (Depth-First Search): Use recursion to explore connected land")
     print("2. BFS (Breadth-First Search): Use queue to explore level by level")
-    print("3. Union-Find: Advanced approach using disjoint set data structure")
-    
-    print("\n🔍 ALGORITHM STEPS (DFS):")
-    print("1. Iterate through each cell in the grid")
-    print("2. If cell is '1' (land), increment island count")
-    print("3. Use DFS to mark all connected land cells as visited ('0')")
-    print("4. DFS explores 4 directions: up, down, left, right")
-    print("5. Continue until all cells are processed")
+    print("3. Union-Find: Use disjoint set data structure")
     
     print("\n📚 LEARNING OBJECTIVES:")
     print("- Master graph traversal algorithms (DFS/BFS)")
-    print("- Understand 2D grid as a graph representation")
-    print("- Practice with boundary checking and visited marking")
-    print("- Learn to modify input vs using separate visited array")
+    print("- Understand connected components in graphs")
+    print("- Practice 2D grid traversal patterns")
+    print("- Learn to handle boundary conditions and edge cases")
 
 
 # Reference solutions (uncomment to check your work)
 def num_islands_dfs(grid: List[List[str]]) -> int:
     """
-    Reference solution using DFS with grid modification
-    Time: O(m*n), Space: O(m*n) for recursion stack
+    Reference DFS solution
+    Time: O(m * n), Space: O(m * n) for recursion stack
     """
     if not grid or not grid[0]:
         return 0
@@ -271,36 +300,34 @@ def num_islands_dfs(grid: List[List[str]]) -> int:
     
     def dfs(r, c):
         # Base case: out of bounds or water
-        if (r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == '0'):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
             return
         
-        # Mark current cell as visited by changing to '0'
+        # Mark as visited
         grid[r][c] = '0'
         
         # Explore 4 directions
-        dfs(r + 1, c)  # down
-        dfs(r - 1, c)  # up
-        dfs(r, c + 1)  # right
-        dfs(r, c - 1)  # left
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
     
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == '1':
                 islands += 1
-                dfs(r, c)  # Mark entire island as visited
+                dfs(r, c)
     
     return islands
 
 
 def num_islands_bfs(grid: List[List[str]]) -> int:
     """
-    Reference solution using BFS with queue
-    Time: O(m*n), Space: O(min(m,n)) for queue
+    Reference BFS solution
+    Time: O(m * n), Space: O(m * n) for queue
     """
     if not grid or not grid[0]:
         return 0
-    
-    from collections import deque
     
     rows, cols = len(grid), len(grid[0])
     islands = 0
@@ -317,7 +344,8 @@ def num_islands_bfs(grid: List[List[str]]) -> int:
             for dr, dc in directions:
                 nr, nc = r + dr, c + dc
                 
-                if (0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == '1'):
+                if (0 <= nr < rows and 0 <= nc < cols and 
+                    grid[nr][nc] == '1'):
                     grid[nr][nc] = '0'  # Mark as visited
                     queue.append((nr, nc))
     
@@ -325,7 +353,7 @@ def num_islands_bfs(grid: List[List[str]]) -> int:
         for c in range(cols):
             if grid[r][c] == '1':
                 islands += 1
-                bfs(r, c)  # Mark entire island as visited
+                bfs(r, c)
     
     return islands
 

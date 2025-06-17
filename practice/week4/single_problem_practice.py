@@ -49,9 +49,21 @@ def climb_stairs(n: int) -> int:
     Returns:
         int: Number of distinct ways to climb to the top
     """
-    # Write your solution here
-    # Hint: This follows Fibonacci sequence pattern - think about how to reach step n
-    pass
+    # Base cases
+    if n <= 2:
+        return n
+    
+    # Dynamic programming approach with O(1) space
+    # dp[i] = dp[i-1] + dp[i-2] (Fibonacci pattern)
+    prev2 = 1  # ways to reach step 1
+    prev1 = 2  # ways to reach step 2
+    
+    for i in range(3, n + 1):
+        current = prev1 + prev2
+        prev2 = prev1
+        prev1 = current
+    
+    return prev1
 
 
 def main():
@@ -208,30 +220,29 @@ def main():
         print("❌ Some tests failed. Review your solution.")
     
     print("\n💡 SOLUTION APPROACHES:")
-    print("1. RECURSIVE: climb(n) = climb(n-1) + climb(n-2) (exponential time)")
-    print("2. MEMOIZATION: Add caching to recursive solution (O(n) time)")
-    print("3. BOTTOM-UP DP: Build table from bottom up (O(n) time, O(n) space)")
-    print("4. OPTIMIZED: Use only two variables (O(n) time, O(1) space)")
-    
-    print("\n🔍 ALGORITHM INSIGHT:")
-    print("To reach step n, you can come from:")
-    print("- Step (n-1) by taking 1 step")
-    print("- Step (n-2) by taking 2 steps")
-    print("So: ways(n) = ways(n-1) + ways(n-2)")
-    print("This is exactly the Fibonacci sequence!")
+    print("1. RECURSIVE: Simple but inefficient - O(2^n) time complexity")
+    print("2. MEMOIZATION: Top-down DP with caching - O(n) time, O(n) space")
+    print("3. TABULATION: Bottom-up DP with array - O(n) time, O(n) space")
+    print("4. OPTIMIZED: Space-optimized DP - O(n) time, O(1) space")
     
     print("\n📚 LEARNING OBJECTIVES:")
     print("- Recognize Fibonacci pattern in DP problems")
-    print("- Master bottom-up vs top-down DP approaches")
-    print("- Optimize space complexity from O(n) to O(1)")
-    print("- Understand recurrence relations and base cases")
+    print("- Understand state transitions: dp[i] = dp[i-1] + dp[i-2]")
+    print("- Practice space optimization techniques")
+    print("- Master the fundamental 1D DP pattern")
+    
+    print("\n🔍 PROBLEM ANALYSIS:")
+    print("- To reach step n, you can come from step (n-1) or step (n-2)")
+    print("- Number of ways = ways to reach (n-1) + ways to reach (n-2)")
+    print("- This creates the recurrence relation: f(n) = f(n-1) + f(n-2)")
+    print("- Base cases: f(1) = 1, f(2) = 2")
 
 
 # Reference solutions (uncomment to check your work)
 def climb_stairs_recursive(n: int) -> int:
     """
-    Reference solution using recursion (inefficient - exponential time)
-    Time: O(2^n), Space: O(n) for recursion stack
+    Naive recursive solution - O(2^n) time, O(n) space
+    Too slow for large inputs but demonstrates the recurrence relation
     """
     if n <= 2:
         return n
@@ -240,16 +251,16 @@ def climb_stairs_recursive(n: int) -> int:
 
 def climb_stairs_memoization(n: int) -> int:
     """
-    Reference solution using memoization (top-down DP)
-    Time: O(n), Space: O(n)
+    Top-down DP with memoization - O(n) time, O(n) space
     """
     memo = {}
     
     def helper(n):
-        if n <= 2:
-            return n
         if n in memo:
             return memo[n]
+        
+        if n <= 2:
+            return n
         
         memo[n] = helper(n - 1) + helper(n - 2)
         return memo[n]
@@ -259,8 +270,7 @@ def climb_stairs_memoization(n: int) -> int:
 
 def climb_stairs_dp(n: int) -> int:
     """
-    Reference solution using bottom-up DP
-    Time: O(n), Space: O(n)
+    Bottom-up DP with array - O(n) time, O(n) space
     """
     if n <= 2:
         return n
@@ -277,14 +287,14 @@ def climb_stairs_dp(n: int) -> int:
 
 def climb_stairs_optimized(n: int) -> int:
     """
-    Reference solution with optimized space
-    Time: O(n), Space: O(1)
+    Space-optimized DP - O(n) time, O(1) space
+    Since we only need the previous two values, we can optimize space
     """
     if n <= 2:
         return n
     
-    prev2 = 1  # ways to reach step 1
-    prev1 = 2  # ways to reach step 2
+    prev2 = 1  # f(1)
+    prev1 = 2  # f(2)
     
     for i in range(3, n + 1):
         current = prev1 + prev2

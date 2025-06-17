@@ -203,14 +203,21 @@ def two_sum_reference(nums, target):
     Reference solution using hash map approach
     Time: O(n), Space: O(n)
     """
+    # seen = {}
+    # for i, num in enumerate(nums):
+    #     complement = target - num
+    #     if complement in seen:
+    #         return [seen[complement], i]
+    #     seen[num] = i
+    # return []
+
     seen = {}
     for i, num in enumerate(nums):
         complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
         seen[num] = i
+        if complement in seen:
+            return seen[complement]
     return []
-
 
 if __name__ == "__main__":
     main()

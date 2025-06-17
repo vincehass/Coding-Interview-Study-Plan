@@ -57,8 +57,16 @@ def two_sum_practice(nums, target):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    # Hash map to store number and its index
+    seen = {}
+    
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    
+    return []
 
 
 def three_sum_practice(nums):
@@ -100,8 +108,37 @@ def three_sum_practice(nums):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    nums.sort()
+    result = []
+    
+    for i in range(len(nums) - 2):
+        # Skip duplicates for the first element
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        
+        left, right = i + 1, len(nums) - 1
+        
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+            
+            if total == 0:
+                result.append([nums[i], nums[left], nums[right]])
+                
+                # Skip duplicates for second element
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                # Skip duplicates for third element
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+                
+                left += 1
+                right -= 1
+            elif total < 0:
+                left += 1
+            else:
+                right -= 1
+    
+    return result
 
 
 def container_with_most_water_practice(height):
@@ -140,8 +177,22 @@ def container_with_most_water_practice(height):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    left, right = 0, len(height) - 1
+    max_area = 0
+    
+    while left < right:
+        # Calculate current area
+        width = right - left
+        current_area = width * min(height[left], height[right])
+        max_area = max(max_area, current_area)
+        
+        # Move the pointer with smaller height
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+    
+    return max_area
 
 
 # STRINGS & PATTERNS PRACTICE
@@ -179,8 +230,19 @@ def longest_substring_without_repeating_practice(s):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    char_index = {}
+    left = 0
+    max_length = 0
+    
+    for right, char in enumerate(s):
+        if char in char_index and char_index[char] >= left:
+            # Move left pointer to avoid repetition
+            left = char_index[char] + 1
+        
+        char_index[char] = right
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
 
 
 def group_anagrams_practice(strs):
@@ -217,8 +279,16 @@ def group_anagrams_practice(strs):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    from collections import defaultdict
+    
+    anagram_groups = defaultdict(list)
+    
+    for s in strs:
+        # Sort the string to get the key
+        key = ''.join(sorted(s))
+        anagram_groups[key].append(s)
+    
+    return list(anagram_groups.values())
 
 
 def valid_parentheses_practice(s):
@@ -256,8 +326,19 @@ def valid_parentheses_practice(s):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+    
+    for char in s:
+        if char in mapping:
+            # Closing bracket
+            if not stack or stack.pop() != mapping[char]:
+                return False
+        else:
+            # Opening bracket
+            stack.append(char)
+    
+    return len(stack) == 0
 
 
 # HASH TABLES & SETS PRACTICE
@@ -292,8 +373,14 @@ def top_k_frequent_practice(nums, k):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    from collections import Counter
+    import heapq
+    
+    # Count frequencies
+    counter = Counter(nums)
+    
+    # Use heap to find top k elements
+    return heapq.nlargest(k, counter.keys(), key=counter.get)
 
 
 def longest_consecutive_practice(nums):
@@ -326,8 +413,26 @@ def longest_consecutive_practice(nums):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not nums:
+        return 0
+    
+    num_set = set(nums)
+    longest = 0
+    
+    for num in num_set:
+        # Only start counting if this is the beginning of a sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_length = 1
+            
+            # Count consecutive numbers
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_length += 1
+            
+            longest = max(longest, current_length)
+    
+    return longest
 
 
 # LINKED LISTS PRACTICE
@@ -370,8 +475,16 @@ def reverse_linked_list_practice(head):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    prev = None
+    current = head
+    
+    while current:
+        next_temp = current.next
+        current.next = prev
+        prev = current
+        current = next_temp
+    
+    return prev
 
 
 def merge_two_sorted_lists_practice(list1, list2):
@@ -409,8 +522,22 @@ def merge_two_sorted_lists_practice(list1, list2):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    dummy = ListNode(0)
+    current = dummy
+    
+    while list1 and list2:
+        if list1.val <= list2.val:
+            current.next = list1
+            list1 = list1.next
+        else:
+            current.next = list2
+            list2 = list2.next
+        current = current.next
+    
+    # Attach remaining nodes
+    current.next = list1 or list2
+    
+    return dummy.next
 
 
 def has_cycle_practice(head):
@@ -455,8 +582,20 @@ def has_cycle_practice(head):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    if not head or not head.next:
+        return False
+    
+    slow = head
+    fast = head
+    
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+        if slow == fast:
+            return True
+    
+    return False
 
 
 # STACKS & QUEUES PRACTICE
@@ -498,8 +637,18 @@ def daily_temperatures_practice(temperatures):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    result = [0] * len(temperatures)
+    stack = []  # Stack to store indices
+    
+    for i, temp in enumerate(temperatures):
+        # While stack is not empty and current temp is greater than temp at stack top
+        while stack and temperatures[stack[-1]] < temp:
+            prev_index = stack.pop()
+            result[prev_index] = i - prev_index
+        
+        stack.append(i)
+    
+    return result
 
 
 def sliding_window_maximum_practice(nums, k):
@@ -541,8 +690,30 @@ def sliding_window_maximum_practice(nums, k):
     
     YOUR SOLUTION:
     """
-    # Write your solution here
-    pass
+    from collections import deque
+    
+    if not nums or k == 0:
+        return []
+    
+    deq = deque()  # Store indices
+    result = []
+    
+    for i in range(len(nums)):
+        # Remove indices that are out of current window
+        while deq and deq[0] < i - k + 1:
+            deq.popleft()
+        
+        # Remove indices whose corresponding values are smaller than current
+        while deq and nums[deq[-1]] < nums[i]:
+            deq.pop()
+        
+        deq.append(i)
+        
+        # Add to result if we have processed at least k elements
+        if i >= k - 1:
+            result.append(nums[deq[0]])
+    
+    return result
 
 
 # TEST CASES FOR VERIFICATION

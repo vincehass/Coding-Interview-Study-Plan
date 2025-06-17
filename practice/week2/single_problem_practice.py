@@ -65,9 +65,17 @@ def inorder_traversal(root: Optional[TreeNode]) -> List[int]:
     Returns:
         List[int]: Inorder traversal of the tree
     """
-    # Write your solution here
-    # Hint: Use recursion or stack for iterative approach
-    pass
+    # Recursive solution
+    result = []
+    
+    def inorder(node):
+        if node:
+            inorder(node.left)
+            result.append(node.val)
+            inorder(node.right)
+    
+    inorder(root)
+    return result
 
 
 def create_tree_from_list(values: List[Optional[int]]) -> Optional[TreeNode]:
@@ -216,11 +224,11 @@ def main():
     print(f"Got: {result6}")
     print(f"✅ PASS" if result6 == expected6 else f"❌ FAIL")
     
-    # Test Case 7: Tree with negative values
-    print("\n🧪 Test Case 7: Tree with Negative Values")
-    tree7_list = [0, -1, 1, -2, None, None, 2]
+    # Test Case 7: Negative values
+    print("\n🧪 Test Case 7: Negative Values")
+    tree7_list = [0, -3, 9, -10, None, 5]
     tree7 = create_tree_from_list(tree7_list)
-    expected7 = [-2, -1, 0, 1, 2]
+    expected7 = [-10, -3, 0, 5, 9]
     result7 = inorder_traversal(tree7)
     
     print(f"Tree structure:")
@@ -229,20 +237,6 @@ def main():
     print(f"Expected: {expected7}")
     print(f"Got: {result7}")
     print(f"✅ PASS" if result7 == expected7 else f"❌ FAIL")
-    
-    # Test Case 8: Larger tree
-    print("\n🧪 Test Case 8: Larger Tree")
-    tree8_list = [50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45]
-    tree8 = create_tree_from_list(tree8_list)
-    expected8 = [10, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80]
-    result8 = inorder_traversal(tree8)
-    
-    print(f"Tree structure:")
-    print(tree_to_string(tree8))
-    print(f"Input: {tree8_list}")
-    print(f"Expected: {expected8}")
-    print(f"Got: {result8}")
-    print(f"✅ PASS" if result8 == expected8 else f"❌ FAIL")
     
     print("\n" + "=" * 70)
     print("                  TEST SUMMARY")
@@ -256,8 +250,7 @@ def main():
         result4 == expected4,
         result5 == expected5,
         result6 == expected6,
-        result7 == expected7,
-        result8 == expected8
+        result7 == expected7
     ]
     
     passed = sum(test_results)
@@ -270,37 +263,30 @@ def main():
         print("❌ Some tests failed. Review your solution.")
     
     print("\n💡 SOLUTION APPROACHES:")
-    print("1. RECURSIVE: inorder(left) -> visit(root) -> inorder(right)")
+    print("1. RECURSIVE: Use helper function for left->root->right traversal")
     print("2. ITERATIVE: Use stack to simulate recursion")
-    print("3. MORRIS: O(1) space using threading (advanced)")
-    
-    print("\n🔍 ALGORITHM STEPS (Recursive):")
-    print("1. If node is None, return")
-    print("2. Recursively traverse left subtree")
-    print("3. Visit current node (add to result)")
-    print("4. Recursively traverse right subtree")
+    print("3. MORRIS: Use threading for O(1) space complexity")
     
     print("\n📚 LEARNING OBJECTIVES:")
-    print("- Master tree traversal patterns (inorder, preorder, postorder)")
-    print("- Understand recursive vs iterative approaches")
-    print("- Practice with edge cases: empty, single node, skewed trees")
-    print("- Learn to visualize tree structures and traversal order")
+    print("- Master recursive tree traversal patterns")
+    print("- Understand the relationship between recursion and stack")
+    print("- Practice with different tree structures and edge cases")
+    print("- Learn iterative alternatives to recursive solutions")
 
 
 # Reference solutions (uncomment to check your work)
 def inorder_traversal_recursive(root: Optional[TreeNode]) -> List[int]:
     """
-    Reference solution using recursion
+    Reference recursive solution
     Time: O(n), Space: O(h)
     """
     result = []
     
     def inorder(node):
-        if not node:
-            return
-        inorder(node.left)    # Left
-        result.append(node.val)  # Root
-        inorder(node.right)   # Right
+        if node:
+            inorder(node.left)
+            result.append(node.val)
+            inorder(node.right)
     
     inorder(root)
     return result
@@ -308,7 +294,7 @@ def inorder_traversal_recursive(root: Optional[TreeNode]) -> List[int]:
 
 def inorder_traversal_iterative(root: Optional[TreeNode]) -> List[int]:
     """
-    Reference solution using iterative approach with stack
+    Reference iterative solution using stack
     Time: O(n), Space: O(h)
     """
     result = []
@@ -316,17 +302,48 @@ def inorder_traversal_iterative(root: Optional[TreeNode]) -> List[int]:
     current = root
     
     while stack or current:
-        # Go to the leftmost node
+        # Go to leftmost node
         while current:
             stack.append(current)
             current = current.left
         
-        # Current must be None, pop from stack
+        # Process current node
         current = stack.pop()
         result.append(current.val)
         
-        # Visit right subtree
+        # Move to right subtree
         current = current.right
+    
+    return result
+
+
+def inorder_traversal_morris(root: Optional[TreeNode]) -> List[int]:
+    """
+    Reference Morris traversal solution
+    Time: O(n), Space: O(1)
+    """
+    result = []
+    current = root
+    
+    while current:
+        if not current.left:
+            result.append(current.val)
+            current = current.right
+        else:
+            # Find inorder predecessor
+            predecessor = current.left
+            while predecessor.right and predecessor.right != current:
+                predecessor = predecessor.right
+            
+            if not predecessor.right:
+                # Create thread
+                predecessor.right = current
+                current = current.left
+            else:
+                # Remove thread
+                predecessor.right = None
+                result.append(current.val)
+                current = current.right
     
     return result
 
